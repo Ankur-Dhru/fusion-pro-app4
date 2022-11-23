@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>220917791557-g777vhfg543cdsq87p744cfuj6vo15c7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.220917791557-g777vhfg543cdsq87p744cfuj6vo15c7</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>220917791557-60bv2pcggnu631pu25v0jo1gpkiuosig.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCm8nD43j9fgdCEoG1H0jau3QnDouir9zw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>220917791557</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dhru.account</string>
+	<key>PROJECT_ID</key>
+	<string>dhru-erp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dhru-erp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:220917791557:ios:b0d4e30dd25df20476dc2c</string>
+</dict>
+</plist>

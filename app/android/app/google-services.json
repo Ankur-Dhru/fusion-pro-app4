@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "220917791557",
+    "project_id": "dhru-erp",
+    "storage_bucket": "dhru-erp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220917791557:android:d3aeef3e9032c06076dc2c",
+        "android_client_info": {
+          "package_name": "com.dhru.account"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220917791557-60bv2pcggnu631pu25v0jo1gpkiuosig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dhru.account",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "220917791557-3bbbab3fcga2k0kl1bb4savn7afh7n8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvkVrKciMT_59PQNLlot9L9RjgGQxQgUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220917791557-3bbbab3fcga2k0kl1bb4savn7afh7n8t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "220917791557-2iun5brb0dv7ev3ca4uhhjsd4r19jngv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dhru.erp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220917791557:android:4429794e6051a9e176dc2c",
+        "android_client_info": {
+          "package_name": "com.dhru.erp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220917791557-3bbbab3fcga2k0kl1bb4savn7afh7n8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvkVrKciMT_59PQNLlot9L9RjgGQxQgUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220917791557-3bbbab3fcga2k0kl1bb4savn7afh7n8t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "220917791557-2iun5brb0dv7ev3ca4uhhjsd4r19jngv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dhru.erp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

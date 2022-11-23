@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/app/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-async-storage/async-storage/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-community/datetimepicker/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-community/netinfo/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-firebase/app/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-firebase/auth/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-firebase/messaging/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/@react-native-google-signin/google-signin/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-camera/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-contacts/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-device-country/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-document-picker/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-extra-dimensions-android/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-fs/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-gesture-handler/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-get-random-values/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-gradle-plugin" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-html-to-pdf/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-image-crop-picker/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-image-picker/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-pager-view/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-permissions/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-print/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-push-notification/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-reanimated/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-safe-area-context/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-screens/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-share/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-sound/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-splash-screen/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-svg/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-vector-icons/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-webview/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/rn-fetch-blob/android" />
+  </component>
+</project>
