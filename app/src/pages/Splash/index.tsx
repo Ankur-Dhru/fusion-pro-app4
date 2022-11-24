@@ -97,7 +97,7 @@ class Index extends Component<any, any> {
                             current.user = Object.keys(companydetails?.companies).find((key: any) => companydetails?.companies[key]?.company === current?.company);
                             getInit(null, null, null, () => {
                                 defaultvalues.ticketdisplayid = data.ticketdisplayid;
-                                navigation.navigate("Task")
+                                navigation.replace("Task")
                             }, "form", true)
                         })
                     }}>Yes</Button>
@@ -107,7 +107,7 @@ class Index extends Component<any, any> {
             } else {
                 defaultvalues.ticketdisplayid = data.ticketdisplayid;
 
-                navigation.navigate("Task")
+                navigation.replace("Task")
                 //log("defaultvalues", remoteMessage)
             }
         });
@@ -129,7 +129,7 @@ class Index extends Component<any, any> {
                     );
                     const {title, body, data}: any = remoteMessage;
                     defaultvalues.ticketdisplayid = data.ticketdisplayid
-                    navigation.navigate("Task")
+                    navigation.replace("Task")
                     //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
                 }
             });
@@ -168,7 +168,7 @@ class Index extends Component<any, any> {
             nav.navigation = navigation;
 
             if (companydetails?.token === 'logout') {
-                navigation.navigate('LoginStack', {
+                navigation.replace('LoginStack', {
                     screen: 'LoginStack',
                 });
             } else if (Boolean(companydetails) && Boolean(companydetails.token)) {
@@ -186,12 +186,12 @@ class Index extends Component<any, any> {
                     //     email, password
                     // })
                 } else {
-                    navigation.navigate('LoginStack', {
+                    navigation.replace('LoginStack', {
                         screen: 'LoginStack',
                     });
                 }
             } else {
-                navigation.navigate('GettingStarted', {
+                navigation.replace('GettingStarted', {
                     screen: 'GettingStarted',
                 });
             }
