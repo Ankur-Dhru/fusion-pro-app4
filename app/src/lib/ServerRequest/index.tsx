@@ -95,7 +95,7 @@ const requestApi = async ({
         // 'x-workspace': companyname   || current.company || (appApiData && appApiData.companydetails && appApiData.companydetails.current)
     };
 
-    if (other && other.token) {
+    if (other && other?.token) {
         token = other.token;
     }
 
@@ -106,6 +106,7 @@ const requestApi = async ({
         };
     }
 
+    log('headers',headers)
 
     const init: any = {
         method,
@@ -128,7 +129,7 @@ const requestApi = async ({
     }));
 
 
-    console.log("url", url)
+    log("url", url)
 
     return fetchData({url, init, requestparams, loader})
 

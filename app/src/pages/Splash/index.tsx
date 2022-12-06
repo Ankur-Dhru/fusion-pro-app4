@@ -16,6 +16,7 @@ import {setDialog} from "../../lib/Store/actions/components";
 // @ts-ignore
 import PushNotification from "react-native-push-notification";
 import DeviceCountry from "react-native-device-country";
+import {CommonActions} from "@react-navigation/native";
 
 
 class Index extends Component<any, any> {
@@ -97,7 +98,7 @@ class Index extends Component<any, any> {
                             current.user = Object.keys(companydetails?.companies).find((key: any) => companydetails?.companies[key]?.company === current?.company);
                             getInit(null, null, null, () => {
                                 defaultvalues.ticketdisplayid = data.ticketdisplayid;
-                                navigation.replace("Task")
+                                navigation.navigate("Task")
                             }, "form", true)
                         })
                     }}>Yes</Button>
@@ -107,7 +108,7 @@ class Index extends Component<any, any> {
             } else {
                 defaultvalues.ticketdisplayid = data.ticketdisplayid;
 
-                navigation.replace("Task")
+                navigation.navigate("Task")
                 //log("defaultvalues", remoteMessage)
             }
         });
@@ -129,7 +130,7 @@ class Index extends Component<any, any> {
                     );
                     const {title, body, data}: any = remoteMessage;
                     defaultvalues.ticketdisplayid = data.ticketdisplayid
-                    navigation.replace("Task")
+                    navigation.navigate("Task")
                     //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
                 }
             });
@@ -154,10 +155,10 @@ class Index extends Component<any, any> {
 
         const {setPreferences}: any = this.props;
         await retrieveData('fusion-pro-app-preferences').then((data: any) => {
-             data = {
-                 printpreviewdisable:false,
-                 ...data,
-             }
+            data = {
+                printpreviewdisable:false,
+                ...data,
+            }
             setPreferences(data);
         });
 
@@ -168,7 +169,7 @@ class Index extends Component<any, any> {
             nav.navigation = navigation;
 
             if (companydetails?.token === 'logout') {
-                navigation.replace('LoginStack', {
+                navigation.navigate('LoginStack', {
                     screen: 'LoginStack',
                 });
             } else if (Boolean(companydetails) && Boolean(companydetails.token)) {
@@ -186,18 +187,17 @@ class Index extends Component<any, any> {
                     //     email, password
                     // })
                 } else {
-                    navigation.replace('LoginStack', {
+                    navigation.navigate('LoginStack', {
                         screen: 'LoginStack',
                     });
                 }
             } else {
-                navigation.replace('GettingStarted', {
+
+                navigation.navigate('GettingStarted', {
                     screen: 'GettingStarted',
                 });
             }
         });
-
-
     }
 
 

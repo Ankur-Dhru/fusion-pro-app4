@@ -28,12 +28,17 @@ class Index extends Component<any> {
 
     _captchaRef:any;
     initdata:any;
+    updateEmail:any;
+
     constructor(props:any) {
         super(props);
         this._captchaRef = React.createRef()
         this.initdata = {
             "new_email": "",
         }
+
+        log('props.route.params',props.route.params)
+        this.updateEmail = props.route.params.updateEmail
     }
 
     componentDidMount() {
@@ -51,7 +56,7 @@ class Index extends Component<any> {
             showlog:false,
         }).then((result) => {
             if (result.status === SUCCESS) {
-                nav.navigation.updateEmail(values.new_email)
+                this.updateEmail(values.new_email)
                 this.props.navigation.goBack();
             }
 

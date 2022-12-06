@@ -118,8 +118,6 @@ class Index extends Component<any> {
         }
 
 
-        nav.navigation.updateEmail = this.updateEmail
-
 
         return (
             <Container>
@@ -145,6 +143,7 @@ class Index extends Component<any> {
                                             <TouchableOpacity onPress={()=>{
                                                 this.props.navigation.navigate('ChangeEmail', {
                                                     screen: 'ChangeEmail',
+                                                    updateEmail:this.updateEmail
                                                 });
                                             }}>
                                                 <Text style={[{color:colors.secondary}]}> Change Email </Text>

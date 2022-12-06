@@ -11,7 +11,7 @@ import {Field, Form} from 'react-final-form';
 
 import {setDialog} from "../../lib/Store/actions/components";
 import {auth, backButton, current, loginUrl, nav} from "../../lib/setting";
-import {CheckConnectivity, getInit, log, queryStringToJSON, retrieveData, storeData} from "../../lib/functions";
+import {CheckConnectivity, getInit, log, retrieveData, storeData} from "../../lib/functions";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import {composeValidators, required, startWithString} from "../../lib/static";
 import {CommonActions} from "@react-navigation/native";
@@ -44,7 +44,12 @@ class CompanyName extends Component<any> {
 
 
                 let workspacelogin = result?.data[0]?.workspace_login;
+
+                log('workspacelogin',workspacelogin)
+
                 const params = queryStringToJSON(workspacelogin);
+
+                log('params',params)
 
                 auth.token = params['t'];
 
@@ -198,3 +203,28 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CompanyName));
 
+
+const queryStringToJSON = (qs: any) => {
+    qs = qs || location.search.slice(1);
+
+    var pairs = qs.split(/[&?]+/);
+
+    var result: any = {};
+    pairs.forEach(function (p: any) {
+        var pair = p.split('=');
+        var key = pair[0];
+        var value = decodeURIComponent(pair[1] || '');
+
+        if (result[key]) {
+            if (Object.prototype.toString.call(result[key]) === '[object Array]') {
+                result[key].push(value);
+            } else {
+                result[key] = [result[key], value];
+            }
+        } else {
+            result[key] = value;
+        }
+    });
+
+    return JSON.parse(JSON.stringify(result));
+};

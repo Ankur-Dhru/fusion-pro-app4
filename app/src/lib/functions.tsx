@@ -270,12 +270,14 @@ export const loginUser = async (email?: string, password?: string, gcaptcha?: st
 
                 if (data.status === SUCCESS) {
                     const {token} = data;
-                    auth.token = token;
+                    if(Boolean(token)) {
+                        auth.token = token;
 
-                    companydetails.token = auth.token;
-                    storeData('fusion-pro-app', companydetails).then((r: any) => {
-                        store.dispatch(setCompany({companydetails: companydetails}));
-                    });
+                        companydetails.token = auth.token;
+                        storeData('fusion-pro-app', companydetails).then((r: any) => {
+                            store.dispatch(setCompany({companydetails: companydetails}));
+                        });
+                    }
                     resolve(true);
                 } else {
                     logoutUser()
@@ -1136,30 +1138,6 @@ export const base64Encode = (content: any) => {
     return base64.encode(bytes);
 }
 
-
-export const queryStringToJSON = (qs: any) => {
-    qs = qs || location.search.slice(1);
-
-    var pairs = qs.split('&');
-    var result: any = {};
-    pairs.forEach(function (p: any) {
-        var pair = p.split('=');
-        var key = pair[0];
-        var value = decodeURIComponent(pair[1] || '');
-
-        if (result[key]) {
-            if (Object.prototype.toString.call(result[key]) === '[object Array]') {
-                result[key].push(value);
-            } else {
-                result[key] = [result[key], value];
-            }
-        } else {
-            result[key] = value;
-        }
-    });
-
-    return JSON.parse(JSON.stringify(result));
-};
 
 
 export function isEmpty(obj: any) {

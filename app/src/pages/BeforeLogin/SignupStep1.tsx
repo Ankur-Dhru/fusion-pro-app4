@@ -28,9 +28,9 @@ class Index extends Component<any> {
         this.state = {recaptcha: false, passwordVisible: true, passwordVisible2: true}
 
         this.initdata = isDevelopment ? {
-            "email": "@dhrusoft.com",
-            "password": "Dhrunet1!",
-            "cpassword": "Dhrunet1!",
+            "email": "ankur9090_1@dhrusoft.com",
+            "password": "Dhrunet1@",
+            "cpassword": "Dhrunet1@",
             "mobile_number": "",
             "first_name": "",
             "last_name": "",

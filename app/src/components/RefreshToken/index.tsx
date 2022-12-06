@@ -41,13 +41,16 @@ class Index extends Component {
               }).then((result) => {
                   if (result.status === SUCCESS) {
                       const {token} = result;
-                      auth.token = token;
 
-                      companydetails.token = token;
-                      storeData('fusion-pro-app', companydetails).then((r: any) => {
-                          setCompany({companydetails:companydetails});
-                      });
-                      CheckConnectivity()
+                      if(Boolean(token)) {
+                          auth.token = token;
+
+                          companydetails.token = token;
+                          storeData('fusion-pro-app', companydetails).then((r: any) => {
+                              setCompany({companydetails: companydetails});
+                          });
+                          CheckConnectivity()
+                      }
                   }
                   setToken({visible: false})
               });

@@ -43,6 +43,7 @@ class Index extends Component<any> {
 
 
     handleSubmit = (values: any) => {
+
         Keyboard.dismiss();
         requestApi({
             method: methods.post,
