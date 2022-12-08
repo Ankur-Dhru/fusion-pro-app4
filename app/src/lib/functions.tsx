@@ -1191,7 +1191,8 @@ export const editOptionItem = (title: string, screen: string, visible: boolean =
 });
 
 export const getRoleModuleList = () => {
-    const {settings} = store.getState().appApiData;
+
+    const {settings} =  store.getState().appApiData;
     const {roleaccess} = settings;
 
     let roleModuleList = {};

@@ -42,14 +42,21 @@ class Index extends React.Component<any> {
         this.state = {
             workspace: true,
             isLoading: false,
+            taskaccess:false
         }
         const {route}: any = this.props;
         this.params = route.params;
         FILTERED_VOUCHER.data = getVisibleNav(vouchers);
 
-        this.taskaccess = getRoleModuleAccess(PERMISSION_NAME.VIEW_TASK)?.access;
+
 
         //this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+    }
+
+    componentDidMount() {
+        setTimeout(()=>{
+            this.setState({taskaccess:getRoleModuleAccess(PERMISSION_NAME.VIEW_TASK)?.access})
+        },1000)
     }
 
 
@@ -60,7 +67,6 @@ class Index extends React.Component<any> {
         //BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 
         const {navigation, connection} = this.props;
-
 
         await retrieveData('fusion-pro-app').then(async (data: any) => {
 
@@ -109,13 +115,18 @@ class Index extends React.Component<any> {
     }*/
 
 
+
+
     render() {
+
 
 
         const {navigation} = this.props;
         const {colors}: any = this.props.theme;
         const {username, adminid}: any = getCurrentCompanyDetails();
-        const {workspace, isLoading, organization}: any = this.state;
+        const {workspace, isLoading, organization,taskaccess}: any = this.state;
+
+        log('taskaccess',taskaccess)
 
         const screenOptions: any = {
             ...screenOptionStyle,
@@ -209,7 +220,7 @@ class Index extends React.Component<any> {
                         }}/>
 
 
-                    {Boolean(this.taskaccess?.view) && <Tab.Screen name="Task" component={Task}
+                    {Boolean(taskaccess?.view) && <Tab.Screen name="Task" component={Task}
                                 options={{
                                     tabBarIcon: ({focused, color, size}) => {
                                         return (
