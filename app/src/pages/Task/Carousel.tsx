@@ -105,7 +105,7 @@ class Index extends React.Component<any> {
 
         return (
             <TouchableOpacity onPress={() => this.addEditTask(item?.ticketdisplayid, item?.ticketrelatedid)}>
-                {item && <Card style={[theme.card,isAfterDate(item.voucherduedate) && theme.overdue]}>
+                {item && <Card style={[theme.card]}>
                     <Card.Content style={[{paddingVertical:10,paddingHorizontal:10}]}>
                         <View>
                             <View>
@@ -204,15 +204,17 @@ class Index extends React.Component<any> {
                     ref={(c) => {
                         this._carousel = c;
                     }}
+                    layout={'default'}
                     data={data}
                     activeSlideAlignment={'start'}
                     inactiveSlideScale={1}
                     renderItem={this.renderColumn}
                     sliderWidth={sliderWidth}
-                    lockScrollTimeoutDuration={100}
                     itemWidth={itemWidth}
-                    lockScrollWhileSnapping={true}
-                    onSnapToItem={(index) => this.setState({activeSlide: index})}
+
+                    /*lockScrollTimeoutDuration={100}
+                    lockScrollWhileSnapping={false}*/
+                    /*onSnapToItem={(index) => this.setState({activeSlide: index})}*/
                 />
 
                 <View style={[{position: "absolute", bottom: -20, left: 0, right: 0}]}>
