@@ -38,6 +38,7 @@ class drawerContentComponents extends Component<any> {
 
     constructor(props: any) {
         super(props);
+
         this.state = {
             locations: [],
             currentuser: props.companydetails.currentuser,
@@ -127,6 +128,8 @@ class drawerContentComponents extends Component<any> {
         const {colors}: any = this.props.theme;
 
         const {other, currentworkspace}: any = this.state;
+
+
 
         const {username, adminid, email}: any = getCurrentCompanyDetails();
 

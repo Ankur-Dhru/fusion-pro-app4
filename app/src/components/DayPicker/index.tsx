@@ -9,6 +9,8 @@ import {store} from "../../App";
 import {ScrollView} from "react-native-gesture-handler";
 import {setBottomSheet} from "../../lib/Store/actions/components";
 import {connect} from "react-redux";
+import InputField from "../InputField";
+import {voucher} from "../../lib/setting";
 
 const dayItemOptions = (id: any, title: string, value?: any) => ({id, title, value})
 
@@ -34,6 +36,7 @@ class Index extends Component<any> {
 
     constructor(props:any) {
         super(props);
+        this.state = {customdate:false}
     }
 
     selectItem = (item:any) => {
@@ -42,11 +45,16 @@ class Index extends Component<any> {
         setBottomSheet({visible:false});
     }
 
+    customRange = () => {
+        this.setState({customdate:true})
+    }
+
 
 
     render() {
 
-        const {onSelect,setBottomSheet,list}:any = this.props;
+        const {onSelect,setBottomSheet,list,customrange}:any = this.props;
+        const {customdate}:any = this.state;
         const {colors}:any = this.props.theme;
         let dateformat = store.getState().appApiData.settings.general.date_format.toUpperCase()
 
@@ -55,7 +63,10 @@ class Index extends Component<any> {
 
             <View style={[styles.w_100,styles.h_100]}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
-                    <View>
+
+
+
+                    {!customdate && <View>
                         {
                             data.filter((item)=>{
                                 if(list){
@@ -63,6 +74,7 @@ class Index extends Component<any> {
                                 }
                                 return true
                             }).map((item: any) => {
+
                                 return <View><TouchableOpacity onPress={() => {
                                     this.selectItem(item)
                                 }} style={[styles.px_6,styles.p_5]}>
@@ -77,7 +89,18 @@ class Index extends Component<any> {
                                 </View>
                             })
                         }
-                    </View>
+
+                        <View>
+                            <TouchableOpacity onPress={() => {
+                                this.customRange()
+                            }} style={[styles.px_6,styles.p_5]}>
+                                <View>
+                                    <Paragraph style={[styles.paragraph,styles.bold]}>Custom Range</Paragraph>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View> }
                 </ScrollView>
             </View>
 

@@ -204,7 +204,6 @@ class Index extends React.Component<any> {
                     ref={(c) => {
                         this._carousel = c;
                     }}
-                    layout={'default'}
                     data={data}
                     activeSlideAlignment={'start'}
                     inactiveSlideScale={1}

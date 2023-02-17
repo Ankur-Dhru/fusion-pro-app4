@@ -16,13 +16,17 @@ class Index extends Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        const {companydetails} = this.props;
+        const {companydetails,all} = this.props;
         const {companies, currentuser} = companydetails;
         let locationsObject = companies[currentuser]?.locations;
         let locationList:any = Boolean(locationsObject) && Object.values(locationsObject)
             .map(({locationid, locationname}: any) => assignOption(locationname, locationid));
 
         let multilocation = Boolean(locationList?.length > 1)
+
+        if(all){
+            locationList.push({label:'All Locations',value:'all'})
+        }
 
         this.state = {
             locationsObject,
@@ -41,7 +45,6 @@ class Index extends Component<any, any> {
         let locationid = companies[currentuser]?.locationid;
         let locationname = Boolean(locationsObject) && locationsObject[locationid]?.locationname;
 
-
         return <View>
             <InputField
                 moreStyle={moreStyle}
@@ -52,7 +55,7 @@ class Index extends Component<any, any> {
                 displaytype={'bottomlist'}
                 inputtype={'dropdown'}
                 render={() => <View style={[styles.grid, styles.middle, styles.noWrap]}>
-                    <Title>{locationname} </Title>
+                    <Title>{locationname || 'All Locations'} </Title>
                     {multilocation && <ProIcon name={'chevron-down'} action_type={'text'} color={'#bbb'} size={14}/>}
                 </View>}
                 list={locationList}

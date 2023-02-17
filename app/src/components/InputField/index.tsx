@@ -95,6 +95,7 @@ class Index extends React.Component<any, any> {
         let {
             label,
             list,
+            customrange,
             navigation,
             listtype,
             showlabel = true,
@@ -365,7 +366,7 @@ class Index extends React.Component<any, any> {
                     onPress={() => editmode && setBottomSheet({
                         visible: true,
                         fullView: fullView,
-                        component: () => <DayPicker onSelect={this.onSelect} list={list}/>
+                        component: () => <DayPicker onSelect={this.onSelect} customrange={customrange} list={list}/>
                     })}>
                     {Boolean(render) ?
                         <Render/> : <ProIcon name={'calendar'}/>}

@@ -25,6 +25,7 @@ import {createNativeStackNavigator} from "react-native-screens/native-stack";
 import ClientareaLoader from "../../components/ContentLoader/ClientareaLoader";
 import ClientAvatar from "../../components/ClientAvatar";
 import {FILTERED_VOUCHER, vouchers} from "../../lib/static";
+import RestaurantDashboard from "../RestaurantDashboard";
 
 const Tab = createBottomTabNavigator();
 
@@ -199,7 +200,7 @@ class Index extends React.Component<any> {
                 }}>
 
 
-                    <Tab.Screen name="Dashboard"
+                    <Tab.Screen name="Finance"
                                 component={Dashboard}
                                 options={{
                                     tabBarIcon: ({focused, color, size}) => {
@@ -208,6 +209,17 @@ class Index extends React.Component<any> {
                                         )
                                     },
                                 }}/>
+
+                    <Tab.Screen name="Sales"
+                                component={RestaurantDashboard}
+                                options={{
+                                    tabBarIcon: ({focused, color, size}) => {
+                                        return (
+                                            <ProIcon name={'chart-bar'} color={color} type={'light'}/>
+                                        )
+                                    },
+                                }}/>
+
                     <Tab.Screen
                         name="Menu"
                         component={Menu}

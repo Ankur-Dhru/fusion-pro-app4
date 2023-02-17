@@ -173,6 +173,9 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
 
                             store.dispatch(setCompany({companydetails: companydetail}));
 
+
+
+
                             getAppType().then((type: any) => {
                                 if (type === "help") {
                                     navigation.navigate('DashboardStack', {
