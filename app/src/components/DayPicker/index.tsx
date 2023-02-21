@@ -9,8 +9,7 @@ import {store} from "../../App";
 import {ScrollView} from "react-native-gesture-handler";
 import {setBottomSheet} from "../../lib/Store/actions/components";
 import {connect} from "react-redux";
-import InputField from "../InputField";
-import {voucher} from "../../lib/setting";
+import RangeDatePicker from "../../components/DateTimePickerModal/RangeDatePicker"
 
 const dayItemOptions = (id: any, title: string, value?: any) => ({id, title, value})
 
@@ -46,14 +45,14 @@ class Index extends Component<any> {
     }
 
     customRange = () => {
-        this.setState({customdate:true})
+        this.setState({customdate:true});
     }
 
 
 
     render() {
 
-        const {onSelect,setBottomSheet,list,customrange}:any = this.props;
+        const {list}:any = this.props;
         const {customdate}:any = this.state;
         const {colors}:any = this.props.theme;
         let dateformat = store.getState().appApiData.settings.general.date_format.toUpperCase()
@@ -63,8 +62,6 @@ class Index extends Component<any> {
 
             <View style={[styles.w_100,styles.h_100]}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
-
-
 
                     {!customdate && <View>
                         {
@@ -101,6 +98,12 @@ class Index extends Component<any> {
                         </View>
 
                     </View> }
+
+
+                    {customdate && <>
+                        <RangeDatePicker selectItem={this.selectItem} />
+                    </>}
+
                 </ScrollView>
             </View>
 

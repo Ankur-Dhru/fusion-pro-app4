@@ -5,7 +5,7 @@ import {ProIcon} from "../components";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrls = "https://fusionpro-api.dhru.net/admin/v1/";
-const apiUrl = (company:string) =>  `https://${company}.api.dhru.com/admin/v1/`;
+const apiUrl = (company:string) =>  `https://${company}.api.dhru.io/admin/v1/`;
 const mainUrl = "https://api.dhru.com"
 const loginUrl: any = `${mainUrl}/client/api/v1/`;
 //const apiUrl = "https://fusionpro-api.dhru.net/admin/v1/";

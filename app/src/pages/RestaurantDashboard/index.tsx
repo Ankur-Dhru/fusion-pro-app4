@@ -4,12 +4,14 @@ import {styles} from "../../theme";
 
 import {Container, ProIcon} from "../../components";
 import {connect} from "react-redux";
-import {Card, Paragraph, withTheme,} from "react-native-paper";
+import {Caption, Card, Paragraph, withTheme,} from "react-native-paper";
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryTooltip} from 'victory-native';
-import {toCurrency} from "../../lib/functions";
+import {toCurrency, toDateFormat} from "../../lib/functions";
 import HeaderLocation from "../../components/HeaderLocation";
 import InputField from "../../components/InputField";
 import {DAY_OPTIONS, getStartDateTime} from "../../lib/dayoptions";
+import requestApi, {actions, methods, SUCCESS} from '../../lib/ServerRequest';
+import {current} from "../../lib/setting";
 
 
 const colors = ['#023047', '#ffb703', '#fb8500', '#2a9d8f', '#f4a261', '#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff', '#8ecae6', '#219ebc']
@@ -69,7 +71,7 @@ const TableRow = (props: any) => {
     return (
 
         <View style={{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}}>
-            <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.p_3, {paddingHorizontal: 7,}]}>
+            <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.py_3,]}>
                 <View style={[styles.flexGrow]}>
                     <Paragraph style={[styles.paragraph]}>{name}</Paragraph>
                 </View>
@@ -87,181 +89,47 @@ const TableRow = (props: any) => {
     )
 }
 
-const random = () => {
-    return Math.floor(Math.random() * 100)
+const Nodatafound = () => {
+    return  <Paragraph>No data found</Paragraph>
 }
 
 const Index = (props: any) => {
 
-    const loopTime = 30;
-    let sales: any = []
-    for (let i = 0; i < loopTime; i++) {
-        sales.push({date: i, amount: random(), label: random()})
-    }
+
 
     const {navigation, companydetails: {currentuser, companies}}: any = props;
     const locationid = companies[currentuser].locationid
+
+    const [data,setData]:any = useState({orderstatistics:[],
+        payments:[],
+        locations:[],
+        revenueleakage:[],
+        topsellingsales:[],
+        topsellingquantity:[],
+        lowsellingsales:[],
+        lowsellingquantity:[],
+        salesdata:[],
+        salesDetails:[]});
 
     const [filter, setFilter]: any = useState({...getStartDateTime(), locationid: locationid});
 
     useEffect(() => {
 
-        let queryString = {...filter, locationid: locationid};
+        let queryString = {...filter, locationid: locationid === 'all'?'':locationid,newdashboard:1};
 
-        /*requestApi({
+        requestApi({
             method: methods.get,
             action: actions.dashboard,
             queryString:queryString,
             companyname: current.company,
         }).then((response: any) => {
             if (response?.status === SUCCESS) {
-
+                setData(response.data)
             }
-        })*/
+        })
 
     }, [filter, locationid])
 
-    const data = {
-        locations: [{
-            name: 'Vidhyanagar',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Goa',
-                amount: random(),
-                percentage: random(),
-            }],
-        payments: [{
-            name: 'Cash',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Card',
-                amount: random(),
-                percentage: random(),
-            }],
-        orderstatistics: [{
-            name: 'Success Order',
-            amount: random(),
-        },
-            {
-                name: 'Cancelled',
-                amount: random(),
-            },
-            {
-                name: 'Complimentary',
-                amount: random(),
-            },
-            {
-                name: 'Table Turn Around Time',
-                amount: random(),
-            }],
-        revenueleakage: [{
-            name: 'Bills Modified',
-            amount: random(),
-        },
-            {
-                name: 'Bills Re-Printed',
-                amount: random(),
-            },
-            {
-                name: 'Waived Off',
-                amount: random(),
-            },
-            {
-                name: 'Cancelled KOTs',
-                amount: random(),
-            },
-            {
-                name: 'Modified KOTs',
-                amount: random(),
-            },
-            {
-                name: 'Not Used in Bills',
-                amount: random(),
-            }],
-        topsellingsales: [{
-            name: 'Exective Lunch',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Exective Dinner',
-                amount: random(),
-                percentage: random(),
-            }],
-        topsellingquantity: [{
-            name: 'Exective Lunch',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Exective Dinner',
-                amount: random(),
-                percentage: random(),
-            }],
-        lowsellingsales: [{
-            name: 'Exective Lunch',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Exective Dinner',
-                amount: random(),
-                percentage: random(),
-            }],
-        lowsellingquantity: [{
-            name: 'Exective Lunch',
-            amount: random(),
-            percentage: random(),
-        },
-            {
-                name: 'Exective Dinner',
-                amount: random(),
-                percentage: random(),
-            }],
-        salesdata: sales,
-        salesDetails: [
-            {
-                name: 'Gross Sales',
-                amount: random(),
-            },
-            {
-                name: 'Returns',
-                amount: random(),
-            },
-            {
-                name: 'Discount & Comps',
-                amount: random(),
-            },
-            {
-                name: 'Net Sales',
-                amount: random(),
-            },
-            {
-                name: 'Tax',
-                amount: random(),
-            },
-            {
-                name: 'Tips (Non-case)',
-                amount: random(),
-            },
-            {
-                name: 'Gift card sales',
-                amount: random(),
-            },
-            {
-                name: 'Rounding',
-                amount: random(),
-            },
-            {
-                name: 'Total',
-                amount: random(),
-            },
-        ]
-    }
 
 
     navigation.setOptions({headerShown: true, headerTitle: () => <HeaderLocation all={true}/>})
@@ -297,7 +165,7 @@ const Index = (props: any) => {
         lowsellingquantity,
         salesdata,
         salesDetails
-    } = data;
+    } = data || {};
 
     return (
         <Container>
@@ -312,11 +180,10 @@ const Index = (props: any) => {
                                 <Card.Content>
                                     <View>
                                         {/*<Paragraph>{filter.value.startdate} To {filter.value.enddate}</Paragraph>*/}
-                                        <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>All Locations
-                                            Sales</Paragraph>
+                                        <Paragraph style={[styles.paragraph,styles.mb_4]}><Paragraph style={[styles.bold]}>Location(s) Sales </Paragraph>  ({toDateFormat(filter.startdate)} to {toDateFormat(filter.enddate)})</Paragraph>
                                     </View>
                                     {
-                                        locations.map((item: any, index: any) => {
+                                        Boolean(locations) && Object.values(locations)?.map((item: any, index: any) => {
                                             return (
                                                 <LineGraph item={item} index={index}/>
                                             )
@@ -333,7 +200,7 @@ const Index = (props: any) => {
                                     <View>
                                         <Paragraph style={[styles.paragraph, styles.caption]}>Sales Report</Paragraph>
                                     </View>
-                                    <View style={{marginLeft: -30, marginTop: -30}}>
+                                    {Boolean(salesdata) &&  <View style={{marginLeft: -30, marginTop: -30}}>
                                         <VictoryChart domainPadding={10}>
                                             <VictoryBar
                                                 labelComponent={<VictoryTooltip/>}
@@ -341,15 +208,15 @@ const Index = (props: any) => {
                                                 style={{data: {fill: colors[0]}}}
                                                 x="date"
                                                 y="amount"
-                                                data={salesdata}
+                                                data={salesdata || []}
                                             />
                                             <VictoryAxis crossAxis={false}/>
                                         </VictoryChart>
-                                    </View>
+                                    </View>}
 
                                     <View>
                                         {
-                                            salesDetails.map((data: any, index: any) => {
+                                            salesDetails?.map((data: any, index: any) => {
                                                 return (
                                                     <TableRow item={data} index={index}/>
                                                 )
@@ -370,7 +237,7 @@ const Index = (props: any) => {
                                     </View>
 
                                     {
-                                        payments.map((item: any, index: any) => {
+                                        payments?.map((item: any, index: any) => {
                                             return (
                                                 <LineGraph item={item} index={index}/>
                                             )
@@ -391,7 +258,7 @@ const Index = (props: any) => {
                                     <View style={[styles.grid]}>
 
                                         {
-                                            orderstatistics.map((item: any, index: any) => {
+                                            orderstatistics?.map((item: any, index: any) => {
                                                 return (
                                                     <ItemBox item={item} index={index}/>
                                                 )
@@ -410,22 +277,21 @@ const Index = (props: any) => {
                                         <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Revenue
                                             Leakage</Paragraph>
                                     </View>
-                                    <View style={[styles.grid]}>
+                                    {<View style={[styles.grid]}>
                                         {
-                                            revenueleakage.map((item: any, index: any) => {
+                                            revenueleakage?.map((item: any, index: any) => {
                                                 return (
                                                     <ItemBox item={item} index={index + 6}/>
                                                 )
                                             })
                                         }
-
-                                    </View>
+                                    </View>}
                                 </Card.Content>
                             </Card>
                         </>
 
                         <>
-                            <Card style={[styles.card]}>
+                        {Boolean(topsellingsales?.length) && <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
                                         <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Top Selling
@@ -433,7 +299,7 @@ const Index = (props: any) => {
                                     </View>
 
                                     {
-                                        topsellingsales.map((item: any, index: any) => {
+                                        topsellingsales?.map((item: any, index: any) => {
                                             return (
                                                 <TableRow item={item} index={index}/>
                                             )
@@ -441,9 +307,9 @@ const Index = (props: any) => {
                                     }
 
                                 </Card.Content>
-                            </Card>
+                            </Card>}
 
-                            <Card style={[styles.card]}>
+                        {Boolean(topsellingquantity?.length) && <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
                                         <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Top Selling
@@ -451,7 +317,7 @@ const Index = (props: any) => {
                                     </View>
 
                                     {
-                                        topsellingquantity.map((item: any, index: any) => {
+                                        topsellingquantity?.map((item: any, index: any) => {
                                             return (
                                                 <TableRow item={item} index={index}/>
                                             )
@@ -459,9 +325,9 @@ const Index = (props: any) => {
                                     }
 
                                 </Card.Content>
-                            </Card>
+                            </Card>}
 
-                            <Card style={[styles.card]}>
+                        {Boolean(lowsellingsales?.length) && <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
                                         <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Low Selling
@@ -469,7 +335,7 @@ const Index = (props: any) => {
                                     </View>
 
                                     {
-                                        lowsellingsales.map((item: any, index: any) => {
+                                        lowsellingsales?.map((item: any, index: any) => {
                                             return (
                                                 <TableRow item={item} index={index}/>
                                             )
@@ -477,9 +343,9 @@ const Index = (props: any) => {
                                     }
 
                                 </Card.Content>
-                            </Card>
+                            </Card>}
 
-                            <Card style={[styles.card]}>
+                        {Boolean(lowsellingquantity?.length) && <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
                                         <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Low Selling
@@ -487,7 +353,7 @@ const Index = (props: any) => {
                                     </View>
 
                                     {
-                                        lowsellingquantity.map((item: any, index: any) => {
+                                        lowsellingquantity?.map((item: any, index: any) => {
                                             return (
                                                 <TableRow item={item} index={index}/>
                                             )
@@ -495,7 +361,7 @@ const Index = (props: any) => {
                                     }
 
                                 </Card.Content>
-                            </Card>
+                            </Card>}
                         </>
 
 

@@ -412,7 +412,6 @@ class Index extends React.Component<any, any> {
                             onSelect={this.onSelect}
                         />}
 
-
                     </View>
                 }
 

@@ -1277,7 +1277,7 @@ export const getVisibleNav = (listData: any) => {
         if (Boolean(navigationid) && Boolean(webNavigations) && webNavigations[navigationid]?.modulePermission) {
 
             if(data.label === 'Client') {
-                log('data', data)
+
             }
 
             const nav = webNavigations[navigationid];
