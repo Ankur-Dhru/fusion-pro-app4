@@ -42,26 +42,29 @@ const LineGraph = (props: any) => {
     const {name, amount, percentage}: any = props.item;
     const index = props.index;
     return (
-        <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]} >
-            <View style={[styles.grid, styles.noWrap, styles.justifyContent,styles.py_3]}>
-                <View style={{minWidth: 100}}>
+        <View style={[styles.py_5]}>
+
+            <View style={[styles.grid, styles.noWrap, styles.justifyContent,styles.mb_2]}>
+                <View>
                     <Paragraph style={[styles.paragraph]}>{name}</Paragraph>
                 </View>
-                <View style={[styles.flexGrow]}>
-                    <View style={[styles.bg_light, styles.w_100, {borderRadius: 10}]}>
-                        <View style={[{
-                            backgroundColor: `${colors[index]}`,
-                            width: `${percentage}%`,
-                            height: 5,
-                            borderRadius: 10
-                        }]}></View>
-                    </View>
-                </View>
-                <View style={{minWidth: 100}}>
+                <View>
                     <Paragraph
                         style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount)}</Paragraph>
                 </View>
             </View>
+
+            <View>
+                <View style={[styles.bg_light, styles.w_100, {borderRadius: 10}]}>
+                    <View style={[{
+                        backgroundColor: `${colors[index]}`,
+                        width: `${percentage}%`,
+                        height: 3,
+                        borderRadius: 10
+                    }]}></View>
+                </View>
+            </View>
+
         </View>
     )
 }
