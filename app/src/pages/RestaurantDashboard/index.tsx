@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View,} from 'react-native';
+import {RefreshControl, ScrollView, View,} from 'react-native';
 import {styles} from "../../theme";
 
 import {Container, ProIcon} from "../../components";
@@ -12,6 +12,7 @@ import InputField from "../../components/InputField";
 import {DAY_OPTIONS, getStartDateTime} from "../../lib/dayoptions";
 import requestApi, {actions, methods, SUCCESS} from '../../lib/ServerRequest';
 import {current} from "../../lib/setting";
+import {Divider} from "react-native-elements/dist/divider/Divider";
 
 
 const colors = ['#023047', '#ffb703', '#fb8500', '#2a9d8f', '#f4a261', '#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff', '#8ecae6', '#219ebc']
@@ -41,8 +42,8 @@ const LineGraph = (props: any) => {
     const {name, amount, percentage}: any = props.item;
     const index = props.index;
     return (
-        <View style={[styles.py_3]}>
-            <View style={[styles.grid, styles.noWrap, styles.justifyContent]}>
+        <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]} >
+            <View style={[styles.grid, styles.noWrap, styles.justifyContent,styles.py_3]}>
                 <View style={{minWidth: 100}}>
                     <Paragraph style={[styles.paragraph]}>{name}</Paragraph>
                 </View>
@@ -66,6 +67,7 @@ const LineGraph = (props: any) => {
 }
 
 const TableRow = (props: any) => {
+    const {typenumber} = props;
     const {name, amount, percentage}: any = props.item;
     const index = props.index;
     return (
@@ -78,6 +80,32 @@ const TableRow = (props: any) => {
                 <View style={{minWidth: 50}}>
                     <Paragraph
                         style={[styles.paragraph, styles.text_xs]}>{`${percentage ? percentage + '%' : ''}`}</Paragraph>
+                </View>
+                <View style={{minWidth: 80}}>
+                    <Paragraph
+                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{typenumber?parseInt(amount):toCurrency(amount)}</Paragraph>
+                </View>
+            </View>
+        </View>
+
+    )
+}
+
+
+
+const ItemList = (props: any) => {
+    const {name, amount, orders}: any = props.item;
+    const index = props.index;
+    return (
+
+        <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]}>
+            <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.py_3,]}>
+                <View style={[styles.bg_light,styles.mr_2,{borderRadius:50}]}>
+                   <ProIcon name={name === 'Dinein'?'utensils':name==='Pickup'?'basket-shopping':'truck-pickup'} size={18}/>
+                </View>
+                <View style={[styles.flexGrow]}>
+                    <Paragraph style={[styles.paragraph,styles.bold]}>{name}</Paragraph>
+                    <Paragraph style={[styles.paragraph,styles.muted,styles.text_xs]}>{orders} Orders</Paragraph>
                 </View>
                 <View style={{minWidth: 80}}>
                     <Paragraph
@@ -113,6 +141,10 @@ const Index = (props: any) => {
 
     const [filter, setFilter]: any = useState({...getStartDateTime(), locationid: locationid});
 
+    const [refreshing, setRefreshing] = React.useState(false);
+
+
+
     useEffect(() => {
 
         let queryString = {...filter, locationid: locationid === 'all'?'':locationid,newdashboard:1};
@@ -121,14 +153,14 @@ const Index = (props: any) => {
             method: methods.get,
             action: actions.dashboard,
             queryString:queryString,
+            loader:!refreshing,
             companyname: current.company,
         }).then((response: any) => {
             if (response?.status === SUCCESS) {
                 setData(response.data)
             }
         })
-
-    }, [filter, locationid])
+    }, [filter, locationid,refreshing])
 
 
 
@@ -144,7 +176,7 @@ const Index = (props: any) => {
                             <ProIcon name={'calendar'} align={'right'}/>
                         </Paragraph>
                     </View>}
-                    list={[DAY_OPTIONS.TODAY, DAY_OPTIONS.YESTERDAY, DAY_OPTIONS.THIS_MONTH, DAY_OPTIONS.THIS_QUARTER, DAY_OPTIONS.THIS_YEAR]}
+                    list={[DAY_OPTIONS.TODAY, DAY_OPTIONS.YESTERDAY, DAY_OPTIONS.LAST_7_DAY, DAY_OPTIONS.LAST_30_DAY, DAY_OPTIONS.THIS_MONTH,DAY_OPTIONS.LAST_MONTH, DAY_OPTIONS.THIS_QUARTER, DAY_OPTIONS.THIS_YEAR]}
                     customrange={true}
                     onChange={(value: any, obj: any) => {
                         setFilter(obj.value);
@@ -152,6 +184,7 @@ const Index = (props: any) => {
                 />
             </View>
     });
+
 
 
     const {
@@ -164,14 +197,24 @@ const Index = (props: any) => {
         lowsellingsales,
         lowsellingquantity,
         salesdata,
-        salesDetails
+        salesDetails,
+        ordertypewise
     } = data || {};
+
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000);
+    }, []);
 
     return (
         <Container>
             <View style={[styles.pageContent]}>
 
-                <ScrollView>
+                <ScrollView contentContainerStyle={styles.scrollView}
+                            refreshControl={  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
 
                     {<View>
 
@@ -201,7 +244,7 @@ const Index = (props: any) => {
                                         <Paragraph style={[styles.paragraph, styles.caption]}>Sales Report</Paragraph>
                                     </View>
                                     {Boolean(salesdata) &&  <View style={{marginLeft: -30, marginTop: -30}}>
-                                        <VictoryChart domainPadding={10}>
+                                        <VictoryChart domainPadding={0}>
                                             <VictoryBar
                                                 labelComponent={<VictoryTooltip/>}
                                                 singleQuadrantDomainPadding={{x: false}}
@@ -210,7 +253,7 @@ const Index = (props: any) => {
                                                 y="amount"
                                                 data={salesdata || []}
                                             />
-                                            <VictoryAxis crossAxis={false}/>
+                                            <VictoryAxis crossAxis={false} style={{ tickLabels: { angle: 0,fontSize:10 } }} fixLabelOverlap={true}/>
                                         </VictoryChart>
                                     </View>}
 
@@ -227,6 +270,22 @@ const Index = (props: any) => {
                                 </Card.Content>
                             </Card>
                         </>
+
+                        {Boolean(ordertypewise?.length) &&   <>
+                            <Card  style={[styles.card]}>
+                                <Card.Content>
+                                    <View>
+                                        {
+                                            ordertypewise?.map((data: any, index: any) => {
+                                                return (
+                                                    <ItemList item={data} index={index}/>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </Card.Content>
+                            </Card>
+                        </>}
 
                         <>
                             <Card style={[styles.card]}>
@@ -319,7 +378,7 @@ const Index = (props: any) => {
                                     {
                                         topsellingquantity?.map((item: any, index: any) => {
                                             return (
-                                                <TableRow item={item} index={index}/>
+                                                <TableRow item={item} index={index} typenumber={true} />
                                             )
                                         })
                                     }
@@ -355,7 +414,7 @@ const Index = (props: any) => {
                                     {
                                         lowsellingquantity?.map((item: any, index: any) => {
                                             return (
-                                                <TableRow item={item} index={index}/>
+                                                <TableRow item={item} index={index} typenumber={true}/>
                                             )
                                         })
                                     }
