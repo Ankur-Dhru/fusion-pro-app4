@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, View,} from 'react-native';
+import {RefreshControl, ScrollView, TouchableOpacity, View,} from 'react-native';
 import {styles} from "../../theme";
 
 import {Container, ProIcon} from "../../components";
@@ -16,6 +16,7 @@ import {Divider} from "react-native-elements/dist/divider/Divider";
 
 
 const colors = ['#023047', '#ffb703', '#fb8500', '#2a9d8f', '#f4a261', '#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff', '#8ecae6', '#219ebc']
+
 
 
 const ItemBox = (props: any) => {
@@ -78,26 +79,54 @@ const TableRow = (props: any) => {
 
     return (
 
-        <View style={{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}}>
-            <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.py_3,]}>
-                <View style={[styles.flexGrow]}>
-                    <Paragraph style={[styles.paragraph]}>{name}</Paragraph>
+        <View style={{borderTopColor:Boolean(percentage)?'#ffffff': '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}}>
+            <View style={[styles.grid,styles.flex, styles.noWrap, styles.justifyContent, styles.py_3,]}>
+                <View style={[styles.flexGrow,{maxWidth:200}]}>
+                    <Paragraph style={[styles.paragraph,styles.collapsable,{textTransform:'capitalize'}]}>{name}</Paragraph>
                 </View>
-                <View style={{minWidth: 50}}>
+                <View style={{minWidth: 50,maxWidth:60}}>
                     <Paragraph
                         style={[styles.paragraph, styles.text_xs]}>{`${percentage ? percentage + '%' : ''}`}</Paragraph>
                 </View>
-                <View style={{minWidth: 80}}>
+                <View style={{minWidth: 80,maxWidth:100}}>
                     <Paragraph
                         style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{typenumber?parseInt(amount):toCurrency(amount)}</Paragraph>
                 </View>
             </View>
+
+            {Boolean(percentage) &&  <View>
+                <View style={[styles.bg_light, styles.w_100]}>
+                    <View style={[{
+                        backgroundColor: `${colors[index]}`,
+                        width: `${percentage || 0}%`,
+                        height: 1,
+                    }]}></View>
+                </View>
+            </View>}
+
         </View>
 
     )
 }
 
+const HeaderList = (props: any) => {
 
+    const {typenumber,haslast} = props;
+    const {name, amount}: any = props.item;
+
+    return (
+
+        <Card style={[styles.card,styles.w_auto,{marginRight:haslast?0:10}]}>
+            <View style={[{padding:0}]}>
+                <View style={[styles.py_5,styles.flex]}>
+                    <Paragraph style={[styles.paragraph,styles.textCenter, styles.bold,styles.noWrap,]}>{amount === '-'?amount:typenumber?parseInt(amount || 0):toCurrency(amount || '0','','0')}</Paragraph>
+                    <Paragraph style={[styles.paragraph,styles.textCenter,styles.muted,styles.text_xs]}>{name}</Paragraph>
+                </View>
+            </View>
+        </Card>
+
+    )
+}
 
 const ItemList = (props: any) => {
     const {name, amount, orders}: any = props.item;
@@ -117,6 +146,8 @@ const ItemList = (props: any) => {
                 <View style={{minWidth: 80}}>
                     <Paragraph
                         style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount)}</Paragraph>
+                    <Paragraph
+                        style={[styles.paragraph, styles.muted,styles.text_xs,{textAlign: 'right'}]}>Avg. {toCurrency(amount/orders)}</Paragraph>
                 </View>
             </View>
         </View>
@@ -150,8 +181,6 @@ const Index = (props: any) => {
 
     const [refreshing, setRefreshing] = React.useState(false);
 
-
-
     useEffect(() => {
 
         let queryString = {...filter, locationid: locationid === 'all'?'':locationid,newdashboard:1};
@@ -169,26 +198,13 @@ const Index = (props: any) => {
         })
     }, [filter, locationid,refreshing])
 
-
-
     navigation.setOptions({headerShown: true, headerTitle: () => <HeaderLocation all={true}/>})
+
 
     navigation.setOptions({
         headerRight: (props: any) =>
-            <View style={[styles.mr_2]}>
-                <InputField
-                    inputtype={'daterange'}
-                    render={() => <View style={[styles.grid, styles.middle, styles.justifyContent]}>
-                        <Paragraph style={[styles.paragraph]}>
-                            <ProIcon name={'calendar'} align={'right'}/>
-                        </Paragraph>
-                    </View>}
-                    list={[DAY_OPTIONS.TODAY, DAY_OPTIONS.YESTERDAY, DAY_OPTIONS.LAST_7_DAY, DAY_OPTIONS.LAST_30_DAY, DAY_OPTIONS.THIS_MONTH,DAY_OPTIONS.LAST_MONTH, DAY_OPTIONS.THIS_QUARTER, DAY_OPTIONS.THIS_YEAR]}
-                    customrange={true}
-                    onChange={(value: any, obj: any) => {
-                        setFilter(obj.value);
-                    }}
-                />
+            <View>
+
             </View>
     });
 
@@ -205,7 +221,8 @@ const Index = (props: any) => {
         lowsellingquantity,
         salesdata,
         salesDetails,
-        ordertypewise
+        ordertypewise,
+        headers
     } = data || {};
 
 
@@ -218,29 +235,45 @@ const Index = (props: any) => {
 
     return (
         <Container>
-            <View style={[styles.pageContent]}>
+            <View style={[styles.pageContent,{padding:0}]}>
 
                 <ScrollView contentContainerStyle={styles.scrollView}
                             refreshControl={  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
 
+                    <View style={[styles.p_5]}>
+
+                    <>
+                        <View style={[styles.grid]}>
+                            {
+                                Boolean(headers) && Object.values(headers)?.map((item: any, index: any) => {
+                                    return (
+                                        <HeaderList item={item} index={index}  typenumber={item?.number} haslast={index === Object.values(headers).length - 1} />
+                                    )
+                                })
+                            }
+                        </View>
+                    </>
+
+
+
                     {<View>
 
                         <>
-                            <Card style={[styles.card]}>
+                            {Boolean(Object.values(locations).length > 1) && <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
                                         {/*<Paragraph>{filter.value.startdate} To {filter.value.enddate}</Paragraph>*/}
-                                        <Paragraph style={[styles.paragraph,styles.mb_4]}><Paragraph style={[styles.bold]}>Location(s) Sales </Paragraph>  ({toDateFormat(filter.startdate)} to {toDateFormat(filter.enddate)})</Paragraph>
+                                        <Paragraph style={[styles.paragraph,styles.mb_4]}><Paragraph style={[styles.bold]}>Location wise sales </Paragraph></Paragraph>
                                     </View>
                                     {
                                         Boolean(locations) && Object.values(locations)?.map((item: any, index: any) => {
                                             return (
-                                                <LineGraph item={item} index={index}/>
+                                                <LineGraph item={item} index={index} />
                                             )
                                         })
                                     }
                                 </Card.Content>
-                            </Card>
+                            </Card>}
                         </>
 
 
@@ -248,18 +281,23 @@ const Index = (props: any) => {
                             <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
-                                        <Paragraph style={[styles.paragraph, styles.caption]}>Sales Report</Paragraph>
+                                        <Paragraph style={[styles.paragraph, styles.caption]}>Sales Metrics</Paragraph>
                                     </View>
                                     {Boolean(salesdata) &&  <View style={{marginLeft: -30, marginTop: -30}}>
-                                        <VictoryChart domainPadding={0}>
+                                        <VictoryChart >
                                             <VictoryBar
-
+                                                labelComponent={<VictoryTooltip flyoutPadding={10} flyoutStyle={{
+                                                    stroke: '#000000',
+                                                    fill:'white',
+                                                    margin:100
+                                                }}  />}
                                                 singleQuadrantDomainPadding={{x: false}}
-                                                style={{data: {fill: colors[0]},labels:{ fontSize:8,fill:colors[0],  }}}
+                                                style={{data: {fill: '#016EFE'},labels:{ fontSize:12,fill:colors[0],  }}}
                                                 x="date"
                                                 y="amount"
-                                                labels={({ datum }) => datum.amount}
+                                                labels={({ datum }) => `Sales on ${datum.date} : ${datum.amount}`}
                                                 data={salesdata || []}
+
                                             />
                                             <VictoryAxis crossAxis={false} style={{ tickLabels: { angle: 0,fontSize:10 } }} fixLabelOverlap={true}/>
                                         </VictoryChart>
@@ -434,8 +472,25 @@ const Index = (props: any) => {
 
                     </View>}
 
+                    </View>
 
                 </ScrollView>
+
+
+                <InputField
+                    inputtype={'daterange'}
+                    render={() => <View style={[styles.bg_white,styles.p_5,styles.border,{borderTopWidth:3}]}>
+                        <Paragraph style={[styles.textCenter]}><Paragraph style={[styles.bold,styles.textCenter]}> {filter.label} </Paragraph> <ProIcon name={'chevron-up'} size={12} /> </Paragraph>
+                    </View>}
+                    list={[DAY_OPTIONS.TODAY, DAY_OPTIONS.YESTERDAY, DAY_OPTIONS.THIS_WEEK, DAY_OPTIONS.LAST_WEEK, DAY_OPTIONS.LAST_7_DAY, DAY_OPTIONS.LAST_30_DAY, DAY_OPTIONS.THIS_MONTH,DAY_OPTIONS.LAST_MONTH,DAY_OPTIONS.THIS_QUARTER,  DAY_OPTIONS.THIS_YEAR]}
+                    customrange={true}
+                    onChange={(value: any, obj: any) => {
+                        setFilter(obj.value);
+                    }}
+                />
+
+
+
 
 
             </View>

@@ -7,6 +7,7 @@ export enum DAY_OPTIONS {
     LAST_7_DAY = "Last 7 Days",
     LAST_30_DAY = "Last 30 Days",
     THIS_WEEK = "This Week",
+    LAST_WEEK = "Last Week",
     THIS_MONTH = "This Month",
     THIS_QUARTER = "This Quarter",
     LAST_MONTH = "Last Month",
@@ -98,62 +99,81 @@ export const getStartDateTime = (dayOption?: DAY_OPTIONS) => {
     // let financialfirstmonth = 4;
 
     let startdate: any = date.startOf("day"),
-        enddate: any = date.endOf("day"), thisQuarterMonths, previousQuarterMonths;
+        enddate: any = date.endOf("day"), thisQuarterMonths, previousQuarterMonths,
+        label: any = date.startOf("day").format('DD MMMM, YYYY');
+
 
     // YESTERDAY
     if (dayOption === DAY_OPTIONS.YESTERDAY) {
         startdate = moment().subtract(1, 'day');
         enddate = moment().subtract(1, 'day')
+        label = moment().subtract(1, 'day').format('DD MMMM, YYYY')
     } else
         // LAST 7 DAYS
     if (dayOption === DAY_OPTIONS.LAST_7_DAY) {
         startdate = moment().subtract(6, 'day');
         enddate = moment();
+        label = startdate.format('DD') +' - '+ enddate.format('DD') + ' ' + enddate.format('MMMM, YYYY')
     } else
         // LAST 30 DAYS
     if (dayOption === DAY_OPTIONS.LAST_30_DAY) {
         startdate = moment().subtract(29, 'day');
         enddate = moment();
+        label = startdate.format('DD MMMM') +' - '+ enddate.format('DD MMMM, YYYY')
     } else
         // THIS WEEK
     if (dayOption === DAY_OPTIONS.THIS_WEEK) {
         startdate = moment().startOf('week');
         enddate = moment().endOf('week');
+        label = 'Week of '+ startdate.format('DD') + ' ' + enddate.format('MMMM, YYYY')
+    } else
+        // THIS WEEK
+    if (dayOption === DAY_OPTIONS.LAST_WEEK) {
+        startdate = moment().startOf('week').subtract(7, 'day');
+        enddate = moment().endOf('week').subtract(7, 'day');
+        label = 'Week of '+ startdate.format('DD') + ' ' + enddate.format('MMMM, YYYY')
     } else
         // THIS MONTH
     if (dayOption === DAY_OPTIONS.THIS_MONTH) {
         startdate = moment().startOf('month');
         enddate = moment().endOf('month');
+        label =   startdate.format('MMMM, YYYY')
     } else
         // THIS QUARTER
     if (dayOption === DAY_OPTIONS.THIS_QUARTER) {
         thisQuarterMonths = getQStartAndEnd(financialfirstmonth, false);
         startdate = moment({M: thisQuarterMonths.startMonth}).year(thisQuarterMonths.startYear).startOf('month');
         enddate = moment({M: thisQuarterMonths.endMonth}).year(thisQuarterMonths.endYear).endOf('month')
+        label =   startdate.format('MMMM') + ' - ' + enddate.format('MMMM, YYYY')
     } else
         // LAST MONTH
     if (dayOption === DAY_OPTIONS.LAST_MONTH) {
         startdate = moment().subtract(1, 'month').startOf('month');
         enddate = moment().subtract(1, 'month').endOf('month');
+        label =   startdate.format('MMMM, YYYY')
     } else
         // LAST 6 MONTH
     if (dayOption === DAY_OPTIONS.LAST_6_MONTH) {
         startdate = moment().subtract(5, 'month').startOf('month');
         enddate = moment().endOf('month');
+        label =   startdate.format('MMMM') + ' - ' + enddate.format('MMMM, YYYY')
     } else
         // LAST 12 MONTH
     if (dayOption === DAY_OPTIONS.LAST_12_MONTH) {
         startdate = moment().subtract(11, 'month').startOf('month');
         enddate = moment().endOf('month');
+        label =   startdate.format('MMMM') + ' - ' + enddate.format('MMMM, YYYY')
     } else
         // THIS YEAR
     if (dayOption === DAY_OPTIONS.THIS_YEAR) {
         startdate = moment({M: financialfirstmonth - 1}).subtract(12, 'month').startOf('month');
         enddate = moment({M: financialfirstmonth - 1}).subtract(1, 'month').endOf('month');
+        label =   enddate.format('YYYY')
         // THIS YEAR SET USING FINANCIAL MONTH
         if (moment().get("month") + 1 >= financialfirstmonth) {
             startdate = moment({M: financialfirstmonth - 1}).startOf('month');
             enddate = moment({M: financialfirstmonth - 1, y: moment().year() + 1}).subtract(1, 'month').endOf('month');
+            label =   enddate.format('YYYY')
         }
     } else
         // PREVIOUS QUARTER
@@ -161,15 +181,18 @@ export const getStartDateTime = (dayOption?: DAY_OPTIONS) => {
         previousQuarterMonths = getQStartAndEnd(financialfirstmonth, true);
         startdate = moment({M: previousQuarterMonths.startMonth}).year(previousQuarterMonths.startYear).startOf('month');
         enddate = moment({M: previousQuarterMonths.endMonth}).year(previousQuarterMonths.startYear).endOf('month');
+        label =   startdate.format('MMMM') + ' - ' + enddate.format('MMMM, YYYY')
     } else
         // PREVIOUS YEAR
     if (dayOption === DAY_OPTIONS.PREVIOUS_YEAR) {
         startdate = moment({M: financialfirstmonth - 1}).subtract(24, 'month').startOf('month');
         enddate = moment({M: financialfirstmonth - 1}).subtract(1, 'month').subtract(12, 'month').endOf('month');
+        label =   enddate.format('YYYY')
         // PREVIOUS YEAR SET USING FINANCIAL MONTH
         if (moment().get("month") + 1 >= financialfirstmonth) {
             startdate = moment({M: financialfirstmonth - 1}).subtract(12, 'month').startOf('month');
             enddate = moment({M: financialfirstmonth - 1}).subtract(1, 'month').endOf('month');
+            label =   enddate.format('YYYY')
         }
     }
 
@@ -178,6 +201,7 @@ export const getStartDateTime = (dayOption?: DAY_OPTIONS) => {
         enddate: enddate.format(dateFormat),
         datefrom: enddate.format(dateFormat),
         dateto: startdate.format(dateFormat),
+        label:label,
         starttime: date.startOf("day").format(timeFormat),
         endtime: date.endOf("day").format(timeFormat)
     };

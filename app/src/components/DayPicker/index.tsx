@@ -19,13 +19,14 @@ const data = [
     dayItemOptions(DAY_OPTIONS.LAST_7_DAY, DAY_OPTIONS.LAST_7_DAY, getStartDateTime(DAY_OPTIONS.LAST_7_DAY)),
     dayItemOptions(DAY_OPTIONS.LAST_30_DAY, DAY_OPTIONS.LAST_30_DAY, getStartDateTime(DAY_OPTIONS.LAST_30_DAY)),
     dayItemOptions(DAY_OPTIONS.THIS_WEEK, DAY_OPTIONS.THIS_WEEK, getStartDateTime(DAY_OPTIONS.THIS_WEEK)),
+    dayItemOptions(DAY_OPTIONS.LAST_WEEK, DAY_OPTIONS.LAST_WEEK, getStartDateTime(DAY_OPTIONS.LAST_WEEK)),
     dayItemOptions(DAY_OPTIONS.THIS_MONTH, DAY_OPTIONS.THIS_MONTH, getStartDateTime(DAY_OPTIONS.THIS_MONTH)),
-    dayItemOptions(DAY_OPTIONS.THIS_QUARTER, DAY_OPTIONS.THIS_QUARTER, getStartDateTime(DAY_OPTIONS.THIS_QUARTER)),
     dayItemOptions(DAY_OPTIONS.LAST_MONTH, DAY_OPTIONS.LAST_MONTH, getStartDateTime(DAY_OPTIONS.LAST_MONTH)),
+    dayItemOptions(DAY_OPTIONS.THIS_QUARTER, DAY_OPTIONS.THIS_QUARTER, getStartDateTime(DAY_OPTIONS.THIS_QUARTER)),
+    dayItemOptions(DAY_OPTIONS.PREVIOUS_QUARTER, DAY_OPTIONS.PREVIOUS_QUARTER, getStartDateTime(DAY_OPTIONS.PREVIOUS_QUARTER)),
     dayItemOptions(DAY_OPTIONS.LAST_6_MONTH, DAY_OPTIONS.LAST_6_MONTH, getStartDateTime(DAY_OPTIONS.LAST_6_MONTH)),
     dayItemOptions(DAY_OPTIONS.LAST_12_MONTH, DAY_OPTIONS.LAST_12_MONTH, getStartDateTime(DAY_OPTIONS.LAST_12_MONTH)),
     dayItemOptions(DAY_OPTIONS.THIS_YEAR, DAY_OPTIONS.THIS_YEAR, getStartDateTime(DAY_OPTIONS.THIS_YEAR)),
-    dayItemOptions(DAY_OPTIONS.PREVIOUS_QUARTER, DAY_OPTIONS.PREVIOUS_QUARTER, getStartDateTime(DAY_OPTIONS.PREVIOUS_QUARTER)),
     dayItemOptions(DAY_OPTIONS.PREVIOUS_YEAR, DAY_OPTIONS.PREVIOUS_YEAR, getStartDateTime(DAY_OPTIONS.PREVIOUS_YEAR)),
 ]
 
@@ -40,6 +41,9 @@ class Index extends Component<any> {
 
     selectItem = (item:any) => {
         const {onSelect,setBottomSheet}:any = this.props;
+
+        console.log('selectItem',item)
+
         onSelect(item);
         setBottomSheet({visible:false});
     }
@@ -63,7 +67,7 @@ class Index extends Component<any> {
             <View style={[styles.w_100,styles.h_100]}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
 
-                    {!customdate && <View>
+                    {!customdate && <View style={[styles.grid,styles.p_5]}>
                         {
                             data.filter((item)=>{
                                 if(list){
@@ -72,28 +76,26 @@ class Index extends Component<any> {
                                 return true
                             }).map((item: any) => {
 
-                                return <View><TouchableOpacity onPress={() => {
+                                return <View style={[{width:'50%'}]}>
+                                    <TouchableOpacity onPress={() => {
                                     this.selectItem(item)
-                                }} style={[styles.px_6,styles.p_5]}>
+                                }} style={[styles.px_6,styles.p_5,styles.m_2,styles.bg_light,{borderRadius:5}]}>
                                     <View>
-                                        <Paragraph style={[styles.paragraph,styles.bold]}>{item.title}</Paragraph>
-                                        <Paragraph>{moment(item?.value?.startdate).format(dateformat)} To {moment(item?.value?.enddate).format(dateformat)}</Paragraph>
+                                        <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>{item.title}</Paragraph>
+                                        {/*<Paragraph>{moment(item?.value?.startdate).format(dateformat)} To {moment(item?.value?.enddate).format(dateformat)}</Paragraph>*/}
                                     </View>
                                 </TouchableOpacity>
 
-                                    <Divider style={[styles.divider,{borderBottomColor:colors.divider}]}/>
 
                                 </View>
                             })
                         }
 
-                        <View>
+                        <View style={[styles.mb_5,styles.w_100]}>
                             <TouchableOpacity onPress={() => {
                                 this.customRange()
-                            }} style={[styles.px_6,styles.p_5]}>
-                                <View>
-                                    <Paragraph style={[styles.paragraph,styles.bold]}>Custom Range</Paragraph>
-                                </View>
+                            }} style={[styles.px_6,styles.p_5,styles.m_2,styles.bg_light,{borderRadius:5}]}>
+                                <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>Custom Range</Paragraph>
                             </TouchableOpacity>
                         </View>
 
