@@ -5,7 +5,7 @@ import {styles} from "../../theme";
 import {Container, ProIcon} from "../../components";
 import {connect} from "react-redux";
 import {Caption, Card, Paragraph, withTheme,} from "react-native-paper";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryTooltip} from 'victory-native';
+import {VictoryAxis, VictoryBar, VictoryChart, VictoryTooltip,VictoryLabel} from 'victory-native';
 import {toCurrency, toDateFormat} from "../../lib/functions";
 import HeaderLocation from "../../components/HeaderLocation";
 import InputField from "../../components/InputField";
@@ -21,6 +21,7 @@ const colors = ['#023047', '#ffb703', '#fb8500', '#2a9d8f', '#f4a261', '#cdb4db'
 const ItemBox = (props: any) => {
     const {name, amount}: any = props.item;
     const index = props.index;
+
     return (
         <Card style={[styles.card, {width: '50%', marginBottom: 0}]}>
             <View
@@ -41,6 +42,7 @@ const ItemBox = (props: any) => {
 const LineGraph = (props: any) => {
     const {name, amount, percentage}: any = props.item;
     const index = props.index;
+
     return (
         <View style={[styles.py_5]}>
 
@@ -58,7 +60,7 @@ const LineGraph = (props: any) => {
                 <View style={[styles.bg_light, styles.w_100, {borderRadius: 10}]}>
                     <View style={[{
                         backgroundColor: `${colors[index]}`,
-                        width: `${percentage}%`,
+                        width: `${percentage || 0}%`,
                         height: 3,
                         borderRadius: 10
                     }]}></View>
@@ -73,6 +75,7 @@ const TableRow = (props: any) => {
     const {typenumber} = props;
     const {name, amount, percentage}: any = props.item;
     const index = props.index;
+
     return (
 
         <View style={{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}}>
@@ -99,6 +102,7 @@ const TableRow = (props: any) => {
 const ItemList = (props: any) => {
     const {name, amount, orders}: any = props.item;
     const index = props.index;
+
     return (
 
         <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]}>
@@ -249,11 +253,12 @@ const Index = (props: any) => {
                                     {Boolean(salesdata) &&  <View style={{marginLeft: -30, marginTop: -30}}>
                                         <VictoryChart domainPadding={0}>
                                             <VictoryBar
-                                                labelComponent={<VictoryTooltip/>}
+
                                                 singleQuadrantDomainPadding={{x: false}}
-                                                style={{data: {fill: colors[0]}}}
+                                                style={{data: {fill: colors[0]},labels:{ fontSize:8,fill:colors[0],  }}}
                                                 x="date"
                                                 y="amount"
+                                                labels={({ datum }) => datum.amount}
                                                 data={salesdata || []}
                                             />
                                             <VictoryAxis crossAxis={false} style={{ tickLabels: { angle: 0,fontSize:10 } }} fixLabelOverlap={true}/>
@@ -264,7 +269,7 @@ const Index = (props: any) => {
                                         {
                                             salesDetails?.map((data: any, index: any) => {
                                                 return (
-                                                    <TableRow item={data} index={index}/>
+                                                    <TableRow item={data} index={index}  typenumber={data?.number} />
                                                 )
                                             })
                                         }
@@ -363,7 +368,7 @@ const Index = (props: any) => {
                                     {
                                         topsellingsales?.map((item: any, index: any) => {
                                             return (
-                                                <TableRow item={item} index={index}/>
+                                                <TableRow item={item} index={index}   />
                                             )
                                         })
                                     }
