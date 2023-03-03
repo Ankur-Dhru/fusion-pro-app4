@@ -9,16 +9,21 @@ const LeftIcon = ({item, size, ...props}: any) => {
     if (!size) {
         size = 36
     }
-    return <View style={[styles.middle, styles.center, styles.px_4]}>
-        <View style={[styles.middle, styles.center, {
-            backgroundColor: `#${item.color}`,
-            borderRadius: 50,
-            height: size,
-            width: size
-        }]}>
-            <ProIcon name={item.icon} type={'light'} color={"#fff"} size={size / 2}/>
+    try {
+        return <View style={[styles.middle, styles.center, styles.px_4]}>
+            <View style={[styles.middle, styles.center, {
+                backgroundColor: `#${item.color}`,
+                borderRadius: 50,
+                height: size,
+                width: size
+            }]}>
+                <ProIcon name={item.icon} type={'light'} color={"#fff"} size={size / 2}/>
+            </View>
         </View>
-    </View>
+    }
+    catch (e){
+
+    }
 }
 
 const mapStateToProps = (state: any) => ({})

@@ -139,20 +139,50 @@ const Index = (props: any) => {
                 renderItem={_renderItem}
                 initialNumToRender={20}
             />
-            <View style={[{justifyContent: 'center', alignItems: 'center',marginTop:20}]}>
 
+
+
+            <View style={[styles.m_5,{borderColor: styles.red.color,
+                borderWidth: 1,
+                 marginTop:20,
+                borderStyle: 'dashed',
+                borderRadius: 5}]}>
                 <DeleteButton
+                    options={['Delete Account', 'Cancel']}
                     title={'Close & Delete Account'}
                     buttonTitle={'Close & Delete Account'}
+                    morestyle = {{borderWidth:0}}
                     message={`Are you sure want to delete "${email}" account?`}
                     onPress={(index: any) => {
                         if (index === 0) {
                             closeAccount()
                         }
                     }}
-                />
+                    render={() => {
+                        return (
+                            <View>
+                                <Paragraph style={[styles.paragraph,{color:styles.red.color}]}>Close & Delete Account</Paragraph>
+                                <Paragraph style={[styles.paragraph]}>
+                                    Permanently delete DHRU account and remove workspace with all data and settings.
+                                </Paragraph>
+                            </View>
 
+                        )
+                    }}
+
+                />
             </View>
+
+
+
+
+
+
+
+
+
+
+
         </View>
     </Container>
 }

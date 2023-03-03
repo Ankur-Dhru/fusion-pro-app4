@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Provider from "./Provider";
 import {connect, Provider as StoreProvider} from 'react-redux';
 import configureStore from './lib/Store/configureStore';
-import {AppState, Linking, LogBox, Platform, ScrollView, Text, View} from "react-native";
+import {Alert, AppState, Linking, LogBox, Platform, ScrollView, Text, View} from "react-native";
 import {firebase} from "@react-native-firebase/messaging";
 import {auth} from "./lib/setting";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,6 +27,9 @@ enableScreens(true);
 
 LogBox.ignoreAllLogs();
 
+import messaging from '@react-native-firebase/messaging';
+
+
 
 export default class App extends Component<any, any> {
 
@@ -50,20 +53,28 @@ export default class App extends Component<any, any> {
         }
     }
 
+
+
     //Get Device Registration Token
     async getToken() {
 
+
+
+        await firebase.messaging().registerDeviceForRemoteMessages()
         auth.device_token = await AsyncStorage.getItem('fcmToken');
 
         // if (!Boolean(auth.device_token)) {
         try {
             if (Platform.OS === 'ios') {
-                auth.device_token = await firebase.messaging().getAPNSToken();
+
+             //   const apnsToken = await firebase.messaging().getToken();
+                auth.device_token = await firebase.messaging().getToken();
+
             } else {
                 auth.device_token = await firebase.messaging().getToken();
             }
         } catch (e) {
-            log('token registration failed?', e);
+            log('device_token token registration failed?', e);
         }
         if (auth.device_token) {
             await AsyncStorage.setItem('fcmToken', auth.device_token);

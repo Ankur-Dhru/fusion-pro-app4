@@ -62,6 +62,8 @@ class SupportTicketForm extends Component<any, any> {
         const {initialValues, priorityOption} = this.state;
 
         setNavigationOptions(navigation, "Support Request",colors, route)
+
+
         return (
             <Container>
                 <Form

@@ -141,7 +141,7 @@ class ViewTickets extends Component<any, any> {
             statusIconColor = "rgba(230,131,57,1)";
         } else if (data?.status?.toString().toLowerCase() === "resolved") {
             isResolved = true;
-            statusIcon = "check-circle";
+            statusIcon = "circle-check";
             statusIconColor = "rgba(118,183,78,1)";
         }
 
@@ -159,6 +159,9 @@ class ViewTickets extends Component<any, any> {
                 {label: "Close Case", value: "close"},
             ]
         }
+
+
+
         navigation.setOptions({
             headerLargeTitleStyle:{color:colors.inputbox},
             headerTitleStyle:{color:colors.inputbox},
@@ -188,6 +191,8 @@ class ViewTickets extends Component<any, any> {
                                                                      type={"light"}/></View>
                 </Menu>,
         });
+
+
         return (
             <Container>
 
@@ -214,7 +219,7 @@ class ViewTickets extends Component<any, any> {
                                                 size={12}
                                                 align={"left"}
                                             />
-                                            <Paragraph style={[styles.paragraph, {marginLeft:-15}]}>{data.status}</Paragraph>
+                                            <Paragraph style={[styles.paragraph, {marginLeft:-15}]}>{statusIcon} {data.status}</Paragraph>
                                         </View>
 
                                         <Paragraph style={[styles.paragraph]}>Created on {data.created_date}</Paragraph>

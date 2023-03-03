@@ -91,6 +91,8 @@ export const getInit = (companydetail?: any, navigation?: any, locationid?: any,
                 locationid = current?.locationid
             }
 
+
+
             if (Boolean(company) && companydetail.token !== 'logout') {
                 requestApi({
                     method: methods.get,

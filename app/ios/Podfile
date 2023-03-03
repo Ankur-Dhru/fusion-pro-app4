@@ -30,6 +30,7 @@ target 'app' do
   pod 'FirebaseCore', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   $RNFirebaseAsStaticFramework = true
+  $FirebaseSDKVersion = '10.5.0'
 
 
   permissions_path = '../node_modules/react-native-permissions/ios'

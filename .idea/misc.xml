@@ -13,6 +13,7 @@
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-camera/android" />
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-contacts/android" />
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-device-country/android" />
+    <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-device-info/android" />
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-document-picker/android" />
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-extra-dimensions-android/android" />
     <file type="web" url="file://$PROJECT_DIR$/app/node_modules/react-native-fs/android" />

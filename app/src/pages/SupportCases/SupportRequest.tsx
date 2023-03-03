@@ -67,6 +67,7 @@ class SupportRequest extends Component<any, any> {
         const {navigation,theme:{colors}} = this.props;
         const {data} = this.state;
         setNavigationOptions(navigation, "Support Request",colors)
+
         return (
             <Container surface={true}>
                 <FlatListItems
@@ -75,7 +76,7 @@ class SupportRequest extends Component<any, any> {
                     renderItem={(props: any) => <SupportItem
                         {...props}
                         onPress={(item: any) => this._navigate(item)}
-                        left={(leftProps: any) => <LeftIcon {...leftProps} {...props}/>}
+                        /*left={(leftProps: any) => <LeftIcon {...leftProps} {...props}/>}*/
                     />}
                     disableSearchbar={true}
                 />

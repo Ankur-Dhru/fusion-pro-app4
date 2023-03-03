@@ -29,6 +29,7 @@ import {store} from "../../App";
 import {composeValidators, isEmail, required} from "../../lib/static";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import {login} from "../../lib/Store/actions/authentication";
+import { getUniqueId, getManufacturer } from 'react-native-device-info';
 
 export const loginProcess = async (values: any, navigation: any, callback: any) => {
 
@@ -54,6 +55,7 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
 
             values.email = values.email.trim();
             values.deviceid = 'asdfadsf';
+            values.t = getUniqueId; /// unique device id for notification
 
 
             requestApi({

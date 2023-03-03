@@ -53,7 +53,7 @@ const LineGraph = (props: any) => {
                 </View>
                 <View>
                     <Paragraph
-                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount)}</Paragraph>
+                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount,'','0')}</Paragraph>
                 </View>
             </View>
 
@@ -90,7 +90,7 @@ const TableRow = (props: any) => {
                 </View>
                 <View style={{minWidth: 80,maxWidth:100}}>
                     <Paragraph
-                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{typenumber?parseInt(amount):toCurrency(amount)}</Paragraph>
+                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{typenumber?parseInt(amount):toCurrency(amount || '0','','0')}</Paragraph>
                 </View>
             </View>
 
@@ -137,7 +137,7 @@ const ItemList = (props: any) => {
         <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]}>
             <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.py_3,]}>
                 <View style={[styles.bg_light,styles.mr_2,{borderRadius:50}]}>
-                   <ProIcon name={name === 'Dinein'?'utensils':name==='Pickup'?'basket-shopping':'truck-pickup'} size={18}/>
+                   <ProIcon name={name === 'Dinein'?'utensils':name==='Pickup'?'basket-shopping':name==='Delivery'?'truck-pickup':'truck'} size={18}/>
                 </View>
                 <View style={[styles.flexGrow]}>
                     <Paragraph style={[styles.paragraph,styles.bold]}>{name}</Paragraph>
@@ -145,9 +145,9 @@ const ItemList = (props: any) => {
                 </View>
                 <View style={{minWidth: 80}}>
                     <Paragraph
-                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount)}</Paragraph>
+                        style={[styles.paragraph, styles.bold, {textAlign: 'right'}]}>{toCurrency(amount,'','0')}</Paragraph>
                     <Paragraph
-                        style={[styles.paragraph, styles.muted,styles.text_xs,{textAlign: 'right'}]}>Avg. {toCurrency(amount/orders)}</Paragraph>
+                        style={[styles.paragraph, styles.muted,styles.text_xs,{textAlign: 'right'}]}>Avg. {toCurrency(amount/orders,'','0')}</Paragraph>
                 </View>
             </View>
         </View>
@@ -222,8 +222,10 @@ const Index = (props: any) => {
         salesdata,
         salesDetails,
         ordertypewise,
+        sourcewise,
         headers
     } = data || {};
+
 
 
     const onRefresh = React.useCallback(() => {
@@ -333,12 +335,28 @@ const Index = (props: any) => {
                             </Card>
                         </>}
 
+
+                        {Boolean(sourcewise?.length) &&   <>
+                            <Card  style={[styles.card]}>
+                                <Card.Content>
+                                    <View>
+                                        {
+                                            sourcewise?.map((data: any, index: any) => {
+                                                return (
+                                                    <ItemList item={data} index={index}/>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </Card.Content>
+                            </Card>
+                        </>}
+
                         <>
                             <Card style={[styles.card]}>
                                 <Card.Content>
                                     <View>
-                                        <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Payment
-                                            Details</Paragraph>
+                                        <Paragraph style={[styles.paragraph, styles.caption, styles.mb_4]}>Payment gateway wise</Paragraph>
                                     </View>
 
                                     {

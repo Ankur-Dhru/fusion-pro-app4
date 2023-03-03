@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/app/node_modules/react-native-camera/android" />
             <option value="$PROJECT_DIR$/app/node_modules/react-native-contacts/android" />
             <option value="$PROJECT_DIR$/app/node_modules/react-native-device-country/android" />
+            <option value="$PROJECT_DIR$/app/node_modules/react-native-device-info/android" />
             <option value="$PROJECT_DIR$/app/node_modules/react-native-document-picker/android" />
             <option value="$PROJECT_DIR$/app/node_modules/react-native-extra-dimensions-android/android" />
             <option value="$PROJECT_DIR$/app/node_modules/react-native-fs/android" />
