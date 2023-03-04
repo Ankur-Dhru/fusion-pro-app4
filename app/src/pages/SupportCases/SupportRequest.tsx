@@ -86,7 +86,7 @@ class SupportRequest extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-    support_category: state.rootAppData.static.support_category
+    support_category: state.rootAppData.static.support_category,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({});

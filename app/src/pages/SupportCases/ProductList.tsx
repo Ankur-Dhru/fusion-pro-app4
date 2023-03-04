@@ -14,7 +14,7 @@ class ProductList extends Component<any, any> {
         super(props);
         const {products, staticProducts} = this.props;
         this.state = {
-            products: products.map((p: any) => {
+            products: products?.map((p: any) => {
                 let description = "";
                 if (p.prodcut) {
                     description += p.prodcut
@@ -35,7 +35,7 @@ class ProductList extends Component<any, any> {
                     icon,
                     color
                 }
-            })
+            }) || []
         };
     }
 
@@ -79,7 +79,7 @@ class ProductList extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-    products: state.rootAppData.products,
+    products: state.rootAppData?.products,
     staticProducts: state.rootAppData.static?.products
 })
 

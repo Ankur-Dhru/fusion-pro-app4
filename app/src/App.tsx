@@ -27,9 +27,6 @@ enableScreens(true);
 
 LogBox.ignoreAllLogs();
 
-import messaging from '@react-native-firebase/messaging';
-
-
 
 export default class App extends Component<any, any> {
 
@@ -68,7 +65,7 @@ export default class App extends Component<any, any> {
             if (Platform.OS === 'ios') {
 
              //   const apnsToken = await firebase.messaging().getToken();
-                auth.device_token = await firebase.messaging().getToken();
+                auth.device_token = await firebase.messaging().getAPNSToken();
 
             } else {
                 auth.device_token = await firebase.messaging().getToken();

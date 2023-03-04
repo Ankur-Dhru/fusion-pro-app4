@@ -21,7 +21,7 @@ class SupportItem extends Component<any, any> {
                     description={description}
                     descriptionNumberOfLines={descriptionNumberOfLines || 5}
                     right={props => <ListNavRightIcon {...props}/>}
-                    left={left}
+
                 />
                 <Divider style={[styles.divider, {borderBottomColor: colors.divider}]}/>
             </>
