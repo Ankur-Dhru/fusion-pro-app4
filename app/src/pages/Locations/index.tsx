@@ -71,7 +71,9 @@ const Index = (props: any) => {
         <FlatList
             keyboardShouldPersistTaps={'handled'}
             scrollIndicatorInsets={{right: 1}}
-            data={Object.values(locations)}
+            data={Object.values(locations).filter((location:any)=>{
+                return location.allowed === 1
+            })}
             accessible={true}
             renderItem={_renderItem}
             initialNumToRender={20}

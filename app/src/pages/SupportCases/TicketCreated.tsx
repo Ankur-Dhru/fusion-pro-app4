@@ -36,15 +36,17 @@ const TicketCreated = ({route, navigation, ...props}: any) => {
             <Button
                 secondbutton={true}
                 onPress={() => {
+
                     navigation.dispatch(
                         CommonActions.reset({
-                            index: 1,
+                            index: 0,
                             routes: [
-                                {name: 'DashboardStack'},
                                 {name: 'SupportNavigator'},
                             ],
                         })
                     );
+
+                   
                 }}>Back</Button>
         </View>
 

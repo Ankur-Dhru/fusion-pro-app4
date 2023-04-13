@@ -207,7 +207,9 @@ class drawerContentComponents extends Component<any> {
 
                                         let cmp = companydetails.companies[currentuser];
 
+
                                         let companylocations: any = objToArray(cmp.locations);
+
 
                                         let cw = Boolean(companydetails['currentuser'] === currentuser);
 
@@ -233,7 +235,9 @@ class drawerContentComponents extends Component<any> {
                                                 {Boolean(companylocations) && currentuser === currentworkspace &&
                                                     <View style={[styles.mb_4]}>
                                                         {
-                                                            companylocations.map((location: any) => {
+                                                            companylocations.filter((location:any)=>{
+                                                                return location.allowed === 1
+                                                            }).map((location: any) => {
                                                                 let checked = Boolean((cmp.locationid === location.locationid) && companydetails['currentuser'] === currentuser);
                                                                 return (
                                                                     <>

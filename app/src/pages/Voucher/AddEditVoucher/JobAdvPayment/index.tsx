@@ -76,7 +76,7 @@ class Index extends Component<any, any> {
             let paymentgateways: any = [];
             const systemc = getDefaultCurrency();
 
-            this.payments.map((payment: any) => {
+            this.payments?.map((payment: any) => {
 
                 const gatewayname: any = Object.keys(settings.paymentgateway[payment.paymentgateway])
                     .filter((key) => key !== "settings");
@@ -125,7 +125,7 @@ class Index extends Component<any, any> {
         this.payments.push(clone({...this.initdata, name: name.value}));
 
         let total = 0;
-        this.payments.map((payment: any) => {
+        this.payments?.map((payment: any) => {
             total += +payment.paymentamount
         });
 

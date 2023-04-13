@@ -48,6 +48,7 @@ class SupportTicketForm extends Component<any, any> {
                 text: base64Encode(values?.text)
             },
             showlog: true ,
+            alert:false,
             doNotReplaceProtocol:true
         }).then((response: any) => {
             if (response.status == SUCCESS) {

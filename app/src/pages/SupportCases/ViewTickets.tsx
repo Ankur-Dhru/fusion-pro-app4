@@ -59,6 +59,7 @@ class ViewTickets extends Component<any, any> {
             action: actions.support,
             other: {url: loginUrl},
             loader: !refreshing,
+            alert:false,
             queryString: {id: route?.params?.item?.ticket_id},
             showlog: true
         }).then((response: any) => {
@@ -309,7 +310,7 @@ class ViewTickets extends Component<any, any> {
                                             }}
 
                                             placeholderTextColor={colors.inputLabel}
-                                            style={[styles.py_5,{paddingLeft:5,color:colors.inputbox,maxHeight:200,/*backgroundColor:colors.screenbg,borderRadius:30*/}]}
+                                            style={[styles.py_5,{paddingLeft:5,color:colors.inputbox,minHeight:70,maxHeight:200,/*backgroundColor:colors.screenbg,borderRadius:30*/}]}
                                             {...this.props}
                                         />
 
@@ -335,7 +336,7 @@ class ViewTickets extends Component<any, any> {
                                     </View>
 
 
-                                    <View style={[styles.center,{width:50,height:40}]}>
+                                    <View style={[styles.center,{width:50,height:80}]}>
                                         {<View>
                                             <InputField
                                                 removeSpace={true}
@@ -356,7 +357,7 @@ class ViewTickets extends Component<any, any> {
 
                                     <View>
                                         <TouchableOpacity onPress={() => this.conversation()}>
-                                            <View style={[{backgroundColor:  colors.secondary , borderRadius: 50,height:40,width:40,paddingRight:5},styles.center]}>
+                                            <View style={[{backgroundColor:  colors.secondary , borderRadius: 50,height:40,width:40,paddingRight:5,marginBottom:20},styles.center]}>
                                                 <ProIcon name="paper-plane"  size={16} color={'white'}    />
                                             </View>
                                         </TouchableOpacity>

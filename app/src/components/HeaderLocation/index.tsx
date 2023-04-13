@@ -19,7 +19,10 @@ class Index extends Component<any, any> {
         const {companydetails,all} = this.props;
         const {companies, currentuser} = companydetails;
         let locationsObject = companies[currentuser]?.locations;
-        let locationList:any = Boolean(locationsObject) && Object.values(locationsObject)
+
+        let locationList:any = Boolean(locationsObject) && Object.values(locationsObject).filter((location:any)=>{
+            return location.allowed === 1
+        })
             .map(({locationid, locationname}: any) => assignOption(locationname, locationid));
 
         let multilocation = Boolean(locationList?.length > 1)
@@ -44,6 +47,7 @@ class Index extends Component<any, any> {
         const {currentuser, companies} = companydetails;
         let locationid = companies[currentuser]?.locationid;
         let locationname = Boolean(locationsObject) && locationsObject[locationid]?.locationname;
+
 
         return <View>
             <InputField

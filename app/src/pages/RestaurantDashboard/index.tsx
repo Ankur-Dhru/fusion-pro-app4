@@ -192,6 +192,7 @@ const Index = (props: any) => {
             loader:!refreshing,
             companyname: current.company,
         }).then((response: any) => {
+
             if (response?.status === SUCCESS) {
                 setData(response.data)
             }
@@ -225,7 +226,6 @@ const Index = (props: any) => {
         sourcewise,
         headers
     } = data || {};
-
 
 
     const onRefresh = React.useCallback(() => {

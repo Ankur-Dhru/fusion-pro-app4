@@ -117,6 +117,8 @@ export const getInit = (companydetail?: any, navigation?: any, locationid?: any,
 
                     if (result.status === SUCCESS) {
 
+                        //console.log(JSON.stringify(result.data))
+
                         let defaultlocation = Boolean(locationid) ? locationid : result.data?.user?.settings?.defaultlocation;
                         let defaultcurrency = findObject(objectToArray(result.data?.currency), 'rate', '1');
 

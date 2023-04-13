@@ -99,7 +99,7 @@ class Payment extends Component<any> {
             let paymentgateways: any = [];
             const systemc = getDefaultCurrency();
 
-            this.payments.map((payment: any) => {
+            this.payments?.map((payment: any) => {
 
                 const gatewayname: any = Object.keys(settings.paymentgateway[payment.paymentgateway]).filter((key) => key !== "settings");
 
@@ -151,7 +151,7 @@ class Payment extends Component<any> {
 
 
         let total = 0;
-        this.payments.map((payment: any) => {
+        this.payments?.map((payment: any) => {
             total += +payment.paymentamount
         });
         total = this.vouchertotaldisplay - this.paidamount - total;
@@ -426,7 +426,7 @@ class Payment extends Component<any> {
 
 
                                                 <View>
-                                                    {this.payments.map((payment: any) => {
+                                                    {this.payments?.map((payment: any) => {
                                                         return (
                                                             <View style={[styles.grid, styles.justifyContent]}>
                                                                 <View>
