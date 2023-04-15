@@ -4,15 +4,30 @@ import {SafeAreaView, StyleSheet, View, Text, TouchableOpacity} from "react-nati
 import DateRangePicker from "rn-select-date-range";
 import {styles} from "../../theme";
 import {Paragraph} from "react-native-paper";
-import {toDateFormat} from "../../lib/functions";
+import {errorAlert, toDateFormat} from "../../lib/functions";
 
 
 const App = ({selectItem}:any) => {
     const [selectedRange, setRange]:any = useState({});
 
     const onConfirm =() => {
-        const dates = {dateto:selectedRange.firstDate,datefrom:selectedRange.secondDate,startdate:selectedRange.firstDate,enddate:selectedRange.secondDate,label: toDateFormat(selectedRange.firstDate)  + ' To ' + toDateFormat(selectedRange.secondDate)  }
-        selectItem({"id": "Custom Range", "title": "Custom Range", "value": { "endtime": "11:59 PM", "starttime": "12:00 AM",...dates}})
+        if(Boolean(selectedRange?.firstDate)) {
+            const dates = {
+                dateto: selectedRange.firstDate,
+                datefrom: selectedRange.secondDate,
+                startdate: selectedRange.firstDate,
+                enddate: selectedRange.secondDate,
+                label: toDateFormat(selectedRange.firstDate) + ' To ' + toDateFormat(selectedRange.secondDate)
+            }
+            selectItem({
+                "id": "Custom Range",
+                "title": "Custom Range",
+                "value": {"endtime": "11:59 PM", "starttime": "12:00 AM", ...dates}
+            })
+        }
+        else{
+            errorAlert('please select secound date or press 2 times on same date for single date selection')
+        }
     }
 
     return (
@@ -22,7 +37,7 @@ const App = ({selectItem}:any) => {
                     onSelectDateRange={(range) => {
                         setRange(range);
                     }}
-                    blockSingleDateSelection={true}
+                    blockSingleDateSelection={false}
                     responseFormat="YYYY-MM-DD"
                     confirmBtnTitle={''}
                     clearBtnTitle={''}
