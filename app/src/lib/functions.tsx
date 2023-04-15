@@ -133,6 +133,7 @@ export const getInit = (companydetail?: any, navigation?: any, locationid?: any,
                                 adminid: companydetail.adminid,
                                 locations: result.data.location,
                                 defaultcurrency: defaultcurrency[0],
+
                                 firstname: companydetail.firstname,
                                 lastname: companydetail.lastname,
                                 init: result.data

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {withTheme} from 'react-native-paper';
+import {Paragraph, withTheme} from 'react-native-paper';
 import {styles} from "../../theme";
 import Dashboard from "../Dashboard";
 import Menu from "../Menu";
@@ -124,10 +124,11 @@ class Index extends React.Component<any> {
 
         const {navigation} = this.props;
         const {colors}: any = this.props.theme;
-        const {username, adminid}: any = getCurrentCompanyDetails();
+        const {username, adminid,init}: any = getCurrentCompanyDetails();
+        const role = init?.user.role || ''
+
         const {workspace, isLoading, organization,taskaccess}: any = this.state;
 
-        log('taskaccess',taskaccess)
 
         const screenOptions: any = {
             ...screenOptionStyle,
@@ -143,13 +144,13 @@ class Index extends React.Component<any> {
                 }
 
 
-                <TouchableOpacity onPress={() => {
+                {role === 'admin' && <TouchableOpacity onPress={() => {
                     navigation.navigate('SettingsNavigator');
                 }}>
                     <View style={[styles.px_5]}>
                         <ProIcon name={"gear"}/>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         };
 

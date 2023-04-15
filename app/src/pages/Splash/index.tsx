@@ -174,8 +174,6 @@ class Index extends Component<any, any> {
                 });
             } else if (Boolean(companydetails) && Boolean(companydetails.token)) {
 
-                console.log('companydetails',companydetails)
-
                 const {token, license_token, currentuser, email, password}: any = companydetails;
 
                 if (email && password) {

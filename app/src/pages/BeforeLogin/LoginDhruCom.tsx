@@ -68,6 +68,7 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
             }).then(async (result) => {
                 if (result.status === SUCCESS) {
 
+
                     const {
                         token,
                         license_token,
