@@ -91,6 +91,8 @@ import RemoveSerialStock from "../Voucher/AddEditVoucher/Inventory/RemoveSerialS
 import {log} from "../../lib/functions";
 import Sample from "../Sample";
 import PatternScreen from "../PatternScreen";
+import WhatsappVerification from "../BeforeLogin/WhatsappVerification";
+import VerifyOTP from "../BeforeLogin/VerifyOTP";
 
 //let screenOptions = {...screenOptionStyle,headerLargeTitleStyle:{color:defaultvalues.theme.colors.inputbox},headerTitleStyle:{color:defaultvalues.theme.colors.inputbox}}
 
@@ -273,6 +275,13 @@ const LoginStackNavigator = () => {
 
             <LoginStack.Screen name="Verification" component={Verification}
                                options={{headerTitle: 'Verify Your Email', headerLargeTitle: true}}/>
+
+            <LoginStack.Screen name="WhatsappVerification" component={WhatsappVerification}
+                               options={{headerTitle: 'Verify Your Whatsapp', headerLargeTitle: true}}/>
+
+            <LoginStack.Screen name="VerifyOTP" component={VerifyOTP}
+                               options={{headerTitle: 'Verify OTP', headerLargeTitle: true}}/>
+
             <LoginStack.Screen name="ChangeEmail" component={ChangeEmail}
                                options={{headerTitle: 'Change Email', headerLargeTitle: true}}/>
             <LoginStack.Screen name="DropdownList" component={DropdownList} options={{headerLargeTitle: false}}/>

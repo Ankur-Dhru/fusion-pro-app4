@@ -13,7 +13,7 @@ import {
     retrieveData,
     storeData
 } from "../../lib/functions";
-import requestApi, {actions, methods, SUCCESS} from "../../lib/ServerRequest";
+import requestApi, {actions, ERROR, methods, SUCCESS} from "../../lib/ServerRequest";
 import {Button, Container, InputBox} from "../../components";
 import {setCompany, setSettings} from "../../lib/Store/actions/appApiData";
 import {connect} from "react-redux";
@@ -30,6 +30,139 @@ import {composeValidators, isEmail, required} from "../../lib/static";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import {login} from "../../lib/Store/actions/authentication";
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
+
+
+export const checkLogin = (result:any,navigation:any,values:any,companydetail:any,storecurrentuser:any,storecurrentname:any) => {
+    const {
+        token,
+        license_token,
+        data: {clientid, firstname, lastname, email, workspaces, email_verified, password}
+    } = result;
+
+    console.log('result',result)
+
+    auth.token = token;
+
+    store.dispatch(login(result));
+
+    CheckConnectivity()
+
+    if (!email_verified) {
+        navigation.replace('Verification', {
+            screen: 'Verification',
+            userdetail: {...result.data, email: values.email, password: values.password},
+            email: values.email,
+            password: values.password,
+        });
+    } else {
+
+        let companies: any = {};
+
+        if (!isEmpty(companydetail.companies) && !isEmpty(workspaces)) {
+            Object.keys(clone(companydetail.companies)).forEach((key: any) => {
+                let cData = companydetail.companies[key];
+                if (workspaces.some(({name}: any) => name === cData.company)) {
+                    companies[key] = cData;
+                }
+            })
+        }
+
+
+        companydetail = {
+            ...companydetail,
+            token: token,
+            firstname: firstname,
+            lastname: lastname,
+            email: values.email,
+            password: values.password,
+            companies
+        };
+
+        if (Boolean(workspaces.length)) {
+
+            let activeworkspaces: any = findObject(workspaces, 'status', 'Active');
+
+            let {name, status}: any = activeworkspaces[0];
+
+            if (companydetail.current) {
+                name = companydetail.current
+            }
+
+            let currentuser = name + '-' + clientid;
+
+            current.user = currentuser;
+            current.company = name;
+            current.clientid = clientid;
+
+            companydetail = {
+                ...companydetail,
+                currentuser: storecurrentuser || currentuser,
+                current: storecurrentname || name,
+                userid: clientid
+            };
+
+
+            activeworkspaces.map((workspace: any) => {
+                const {name, status}: any = workspace;
+                let currentcompany = name + '-' + clientid;
+
+                if (!Object.keys(companydetail.companies).includes(currentcompany)) {
+                    companydetail.companies[currentcompany] = {
+                        company: name,
+                        status: status,
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                        password: values.password,
+                        locationid: '',
+                        defaultcurrency: '',
+                        locations: '',
+                        'services': [],
+                        'clients': [],
+                        vendors: [],
+                    }
+                }
+            });
+        }
+
+
+        if (Boolean(companydetail.companies[companydetail.currentuser])) {
+            if (Boolean(companydetail.companies[companydetail.currentuser].init)) {
+                store.dispatch(setSettings(companydetail.companies[companydetail.currentuser].init));
+            }
+        }
+
+        storeData('fusion-pro-app', companydetail).then(async (r: any) => {
+
+            await getInit(companydetail)
+
+            if (!Boolean(companydetail.companies[companydetail.currentuser]?.init)) {
+                await getInit(companydetail)
+            }
+
+            store.dispatch(setCompany({companydetails: companydetail}));
+
+
+            getAppType().then((type: any) => {
+                if (type === "help") {
+                    navigation.navigate('DashboardStack', {
+                        screen: "SupportNavigator"
+                    });
+                } else {
+                    navigation.navigate('DashboardStack', {
+                        screen: 'DashboardStack',
+                        params: {
+                            disableAddWorkspace: true,
+                            index: defaultvalues.ticketdisplayid ? 2 : 0
+                        }
+                    });
+                }
+            })
+
+        });
+    }
+}
+
 
 export const loginProcess = async (values: any, navigation: any, callback: any) => {
 
@@ -57,153 +190,30 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
             values.deviceid = 'asdfadsf';
             values.t = getUniqueId; /// unique device id for notification
 
-
             requestApi({
                 method: methods.post,
                 action: actions.login,
                 successalert: false,
                 other: {url: loginUrl, fromlogin: true},
                 body: values,
+                //body: {token:values.token},
                 showlog: false
             }).then(async (result) => {
                 if (result.status === SUCCESS) {
-
-
-                    const {
-                        token,
-                        license_token,
-                        data: {clientid, firstname, lastname, email, workspaces, email_verified, password}
-                    } = result;
-
-                    auth.token = token;
-
-                    store.dispatch(login(result));
-
-                    CheckConnectivity()
-
-                    if (!email_verified) {
-                        navigation.replace('Verification', {
-                            screen: 'Verification',
-                            userdetail: {...result.data, email: values.email, password: values.password},
-                            email: values.email,
-                            password: values.password,
-                        });
-                    } else {
-
-                        let companies: any = {};
-
-                        if (!isEmpty(companydetail.companies) && !isEmpty(workspaces)) {
-                            Object.keys(clone(companydetail.companies)).forEach((key: any) => {
-                                let cData = companydetail.companies[key];
-                                if (workspaces.some(({name}: any) => name === cData.company)) {
-                                    companies[key] = cData;
-                                }
-                            })
-                        }
-
-
-                        companydetail = {
-                            ...companydetail,
-                            token: token,
-                            firstname: firstname,
-                            lastname: lastname,
-                            email: values.email,
-                            password: values.password,
-                            companies
-                        };
-
-                        if (Boolean(workspaces.length)) {
-
-                            let activeworkspaces: any = findObject(workspaces, 'status', 'Active');
-
-                            let {name, status}: any = activeworkspaces[0];
-
-                            if (companydetail.current) {
-                                name = companydetail.current
-                            }
-
-                            let currentuser = name + '-' + clientid;
-
-                            current.user = currentuser;
-                            current.company = name;
-                            current.clientid = clientid;
-
-                            companydetail = {
-                                ...companydetail,
-                                currentuser: storecurrentuser || currentuser,
-                                current: storecurrentname || name,
-                                userid: clientid
-                            };
-
-
-                            activeworkspaces.map((workspace: any) => {
-                                const {name, status}: any = workspace;
-                                let currentcompany = name + '-' + clientid;
-
-                                if (!Object.keys(companydetail.companies).includes(currentcompany)) {
-                                    companydetail.companies[currentcompany] = {
-                                        company: name,
-                                        status: status,
-                                        firstname: firstname,
-                                        lastname: lastname,
-                                        email: email,
-                                        password: values.password,
-                                        locationid: '',
-                                        defaultcurrency: '',
-                                        locations: '',
-                                        'services': [],
-                                        'clients': [],
-                                        vendors: [],
-                                    }
-                                }
-                            });
-                        }
-
-
-                        if (Boolean(companydetail.companies[companydetail.currentuser])) {
-                            if (Boolean(companydetail.companies[companydetail.currentuser].init)) {
-                                store.dispatch(setSettings(companydetail.companies[companydetail.currentuser].init));
-                            }
-                        }
-
-                        storeData('fusion-pro-app', companydetail).then(async (r: any) => {
-
-                            await getInit(companydetail)
-
-                            if (!Boolean(companydetail.companies[companydetail.currentuser]?.init)) {
-                                await getInit(companydetail)
-                            }
-
-                            store.dispatch(setCompany({companydetails: companydetail}));
-
-
-
-
-                            getAppType().then((type: any) => {
-                                if (type === "help") {
-                                    navigation.navigate('DashboardStack', {
-                                        screen: "SupportNavigator"
-                                    });
-                                } else {
-                                    navigation.navigate('DashboardStack', {
-                                        screen: 'DashboardStack',
-                                        params: {
-                                            disableAddWorkspace: true,
-                                            index: defaultvalues.ticketdisplayid ? 2 : 0
-                                        }
-                                    });
-                                }
-                            })
-
-                        });
-                    }
-
-
-                } else {
-                    callback()
-                    // this.setState({recaptcha: false})
-                    //this.forceUpdate()
+                    checkLogin(result,navigation,values,companydetail,storecurrentuser,storecurrentname)
                 }
+                else if(result.code === 201){
+
+                    navigation.replace('VerifyOTP', {
+                        screen: 'VerifyOTP',
+                        userdetail: {...result.data,email: values.email,password: values.password},
+                    });
+                }
+                else {
+                    callback()
+
+                }
+
             });
 
         } catch (e) {

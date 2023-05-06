@@ -246,6 +246,30 @@ export const logoutUser = () => {
     }
 }
 
+
+
+export const refreshToken = () => {
+
+    return new Promise(((resolve, reject) => {
+        requestApi({
+            method: methods.get,
+            action: 'refresh',
+            loader: false,
+            showlog: true,
+        }).then(async (result: any) => {
+            if (result.status === SUCCESS) {
+                const {newtoken}: any = result?.data
+                if (Boolean(newtoken)) {
+                    updateToken(newtoken).then()
+                }
+            }
+            resolve(true)
+        });
+    }))
+
+}
+
+
 export const loginUser = async (email?: string, password?: string, gcaptcha?: string) => {
 
     return new Promise<any>(((resolve, reject) => {

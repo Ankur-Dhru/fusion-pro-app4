@@ -168,6 +168,8 @@ class Index extends Component<any, any> {
             const {navigation}: any = this.props;
             nav.navigation = navigation;
 
+            console.log('companydetails',companydetails)
+
             if (companydetails?.token === 'logout') {
                 navigation.navigate('LoginStack', {
                     screen: 'LoginStack',

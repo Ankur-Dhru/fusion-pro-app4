@@ -7,7 +7,7 @@ import {Card, Paragraph, Text, TextInput as TI, Title, withTheme} from "react-na
 import {clone, getCountryDialCode, log} from "../../lib/functions";
 import {auth, backButton, loginUrl} from "../../lib/setting";
 import {Field, Form} from "react-final-form";
-import requestApi, {methods, SUCCESS} from "../../lib/ServerRequest";
+import requestApi, {ERROR, methods, SUCCESS} from "../../lib/ServerRequest";
 import InputField from "../../components/InputField";
 import {composeValidators, countrylist, mustBeNumber, required} from "../../lib/static";
 import KeyboardScroll from "../../components/KeyboardScroll";
@@ -51,12 +51,15 @@ class Index extends Component<any> {
             other: {url: loginUrl},
             body: values,
             showlog: true
-        }).then((result) => {
-            if (result.status === SUCCESS && result.token) {
-                auth.token = result.token;
+        }).then((response) => {
+
+            console.log('result',response)
+
+            if (response.status === SUCCESS && response.token) {
+                auth.token = response.token;
                 this.props.navigation.replace('Verification', {
                     screen: 'Verification',
-                    userdetail: {...result.data,password:this.initdata.password},
+                    userdetail: {...response.data,password:this.initdata.password},
                 });
             }
         });

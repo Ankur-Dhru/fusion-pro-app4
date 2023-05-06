@@ -10,6 +10,7 @@ import {ScrollView} from "react-native-gesture-handler";
 import {setBottomSheet} from "../../lib/Store/actions/components";
 import {connect} from "react-redux";
 import RangeDatePicker from "../../components/DateTimePickerModal/RangeDatePicker"
+import DateTimePicker from "../InputField/DateTimePicker";
 
 const dayItemOptions = (id: any, title: string, value?: any) => ({id, title, value})
 
@@ -36,19 +37,29 @@ class Index extends Component<any> {
 
     constructor(props:any) {
         super(props);
-        this.state = {customdate:false}
+        this.state = {customrange:false,customdate:false}
     }
 
-    selectItem = (item:any) => {
+    selectDateRange = (item:any) => {
+
         const {onSelect,setBottomSheet}:any = this.props;
-
-        console.log('selectItem',item)
-
         onSelect(item);
         setBottomSheet({visible:false});
     }
 
+    selectDate = (item:any) => {
+
+        const {onSelect,setBottomSheet}:any = this.props;
+        let date = {"id":"Custom Date","title":"Custom Date","value":{"startdate":item.value,"enddate":item.value,"datefrom":item.value,"dateto":item.value,"label":moment(item.value).format('DD MMMM, YYYY'),"starttime":"12:00 AM","endtime":"11:59 PM"}}
+        onSelect(date);
+        setBottomSheet({visible:false});
+    }
+
     customRange = () => {
+        this.setState({customrange:true});
+    }
+
+    customDate = () => {
         this.setState({customdate:true});
     }
 
@@ -57,7 +68,8 @@ class Index extends Component<any> {
     render() {
 
         const {list}:any = this.props;
-        const {customdate}:any = this.state;
+
+        const {customdate,customrange}:any = this.state;
         const {colors}:any = this.props.theme;
         let dateformat = store.getState().appApiData.settings.general.date_format.toUpperCase()
 
@@ -67,7 +79,7 @@ class Index extends Component<any> {
             <View style={[styles.w_100,styles.h_100]}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
 
-                    {!customdate && <View style={[styles.grid,styles.p_5]}>
+                    {(!customdate && !customrange) && <View style={[styles.grid,styles.p_5]}>
                         {
                             data.filter((item)=>{
                                 if(list){
@@ -78,7 +90,7 @@ class Index extends Component<any> {
 
                                 return <View style={[{width:'50%'}]}>
                                     <TouchableOpacity onPress={() => {
-                                    this.selectItem(item)
+                                    this.selectDateRange(item)
                                 }} style={[styles.px_6,styles.p_5,styles.m_2,styles.bg_light,{borderRadius:5}]}>
                                     <View>
                                         <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>{item.title}</Paragraph>
@@ -91,19 +103,31 @@ class Index extends Component<any> {
                             })
                         }
 
+                        <View style={[styles.w_100]}>
+                            <TouchableOpacity onPress={() => {
+                                this.customDate()
+                            }} style={[styles.px_6,styles.p_5,styles.m_2,styles.bg_light,{borderRadius:5}]}>
+                                <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>Custom Date</Paragraph>
+                            </TouchableOpacity>
+                        </View>
+
                         <View style={[styles.mb_5,styles.w_100]}>
                             <TouchableOpacity onPress={() => {
                                 this.customRange()
                             }} style={[styles.px_6,styles.p_5,styles.m_2,styles.bg_light,{borderRadius:5}]}>
-                                <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>Custom Range</Paragraph>
+                                <Paragraph style={[styles.paragraph,styles.textCenter,styles.bold]}>Custom Date Range</Paragraph>
                             </TouchableOpacity>
                         </View>
 
                     </View> }
 
 
+                    {customrange && <>
+                        <RangeDatePicker selectItem={this.selectDateRange} />
+                    </>}
+
                     {customdate && <>
-                        <RangeDatePicker selectItem={this.selectItem} />
+                        <DateTimePicker onSelect={this.selectDate} />
                     </>}
 
                 </ScrollView>

@@ -65,6 +65,7 @@ class Index extends Component<any> {
                 };
                 store.dispatch(setCompany({companydetails: companydetail}));
                 storeData('fusion-pro-app', companydetail).then((r: any) => {
+
                     nav.navigation.dispatch(
                         CommonActions.reset({
                             index: 0,

@@ -5,7 +5,7 @@ import {DEFAULT_MESSAGE, ERROR, SUCCESS} from "./status";
 import {apiUrl, auth, current, defaultvalues, isDevelopment} from "../setting";
 import {setAlert, setLoader} from "../Store/actions/components";
 import {logout} from "../Store/actions/authentication";
-import {errorAlert, log, loginUser, logoutUser, notifyMe, setAppType} from "../functions";
+import {errorAlert, log, loginUser, logoutUser, notifyMe, refreshToken, setAppType} from "../functions";
 import React from "react";
 import {Alert} from "react-native";
 
@@ -168,14 +168,24 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
 
                 if (data.code === 401) {
                     auth.token = '';
-                    await loginUser().then(async (loginstatus: any) => {
+
+                    await refreshToken().then((loginstatus)=>{
                         if (loginstatus) {
                             notifyMe(true).then();
                             return requestApi(requestparams).then((data: any) => {
                                 resolve(data)
                             })
                         }
-                    });
+                    })
+
+                    /*await loginUser().then(async (loginstatus: any) => {
+                        if (loginstatus) {
+                            notifyMe(true).then();
+                            return requestApi(requestparams).then((data: any) => {
+                                resolve(data)
+                            })
+                        }
+                    });*/
                 }
                 // STATUS 401 AND 402 NOT SHOW ALERT
                 if (data.status === ERROR && data.code !== 401 && data.code !== 402) {
