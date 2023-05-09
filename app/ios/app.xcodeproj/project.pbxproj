@@ -504,7 +504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.1.75;
+				CURRENT_PROJECT_VERSION = 1.1.76;
 				DEVELOPMENT_TEAM = D48ET3359Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = app/Info.plist;
@@ -513,7 +513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.75;
+				MARKETING_VERSION = 1.1.76;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -538,7 +538,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1.1.75;
+				CURRENT_PROJECT_VERSION = 1.1.76;
 				DEVELOPMENT_TEAM = D48ET3359Z;
 				INFOPLIST_FILE = app/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Dhru;
@@ -546,7 +546,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.75;
+				MARKETING_VERSION = 1.1.76;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

@@ -23,7 +23,7 @@ import {Paragraph, Text, TextInput as TI, Title, withTheme} from "react-native-p
 
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 
-import {auth, backButton, captchakey, current, defaultvalues, isDevelopment, loginUrl} from "../../lib/setting";
+import {auth, backButton, captchakey, current, defaultvalues, isDevelopment, loginUrl, nav} from "../../lib/setting";
 import {setAlert} from "../../lib/Store/actions/components";
 import {store} from "../../App";
 import {composeValidators, isEmail, required} from "../../lib/static";
@@ -33,13 +33,15 @@ import { getUniqueId, getManufacturer } from 'react-native-device-info';
 
 
 export const checkLogin = (result:any,navigation:any,values:any,companydetail:any,storecurrentuser:any,storecurrentname:any) => {
+
+    console.log('result',result)
+
     const {
         token,
         license_token,
-        data: {clientid, firstname, lastname, email, workspaces, email_verified, password}
+        data: {clientid, firstname, lastname, email, workspaces, email_verified,whatsapp_verified,whatsapp_number, password}
     } = result;
 
-    console.log('result',result)
 
     auth.token = token;
 
@@ -48,11 +50,23 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
     CheckConnectivity()
 
     if (!email_verified) {
-        navigation.replace('Verification', {
+        navigation.replace('LoginStack', {
             screen: 'Verification',
-            userdetail: {...result.data, email: values.email, password: values.password},
-            email: values.email,
-            password: values.password,
+            params: {
+                userdetail: {...result.data, email: values.email, password: values.password},
+                email: values.email,
+                password: values.password,
+            }
+        });
+    }
+    else if (!whatsapp_verified && Boolean(whatsapp_number)) {
+        navigation.replace('LoginStack', {
+            screen: 'WhatsappVerification',
+            params: {
+                userdetail: {...result.data, email: values.email, password: values.password},
+                email: values.email,
+                password: values.password,
+            }
         });
     } else {
 
@@ -199,19 +213,27 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                 //body: {token:values.token},
                 showlog: false
             }).then(async (result) => {
+
                 if (result.status === SUCCESS) {
                     checkLogin(result,navigation,values,companydetail,storecurrentuser,storecurrentname)
                 }
+                else if(result.code === 403){
+                    navigation.navigate('LoginStack', {
+                        screen: 'LoginDhruCom',
+                    });
+                }
                 else if(result.code === 201){
-
-                    navigation.replace('VerifyOTP', {
+                    navigation.navigate('LoginStack', {
                         screen: 'VerifyOTP',
-                        userdetail: {...result.data,email: values.email,password: values.password},
+                        params: {
+                            userdetail: {...result.data, email: values.email, password: values.password},
+                            email: values.email,
+                            password: values.password,
+                        }
                     });
                 }
                 else {
                     callback()
-
                 }
 
             });
@@ -230,8 +252,8 @@ class LoginView extends Component<any> {
 
     _captchaRef: any;
     initdata: any = isDevelopment ? {
-        email: 'dhruerp@dhrusoft.com',
-        password: 'asdf@9090',
+        email: 'ankur9090_1026@dhrusoft.com',
+        password: 'Dhrunet1@',
     } : {
         email: '',
         password: ''

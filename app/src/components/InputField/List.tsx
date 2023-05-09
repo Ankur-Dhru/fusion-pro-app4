@@ -207,8 +207,6 @@ class ListView extends Component<any> {
     _onAdd = () => {
         let {onAdd}: any = this.props;
 
-
-
         if (Boolean(this.searchText?.trim())) {
             this.originalList = [...this.originalList, assignOption(this.searchText, this.searchText,'','','','',true)];
             this.handleSearch(this.searchText);

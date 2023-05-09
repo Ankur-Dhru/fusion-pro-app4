@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import {View, Image, Alert, Dimensions, Keyboard, Platform, KeyboardAvoidingView, Linking} from "react-native";
 import {setDialog, setLoader} from "../../lib/Store/actions/components";
 import {connect} from "react-redux";
@@ -18,6 +18,8 @@ import {CommonActions} from "@react-navigation/native";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import KAccessoryView from "../../components/KAccessoryView";
 import {checkLogin, loginProcess} from "./LoginDhruCom";
+import {CodeField, Cursor, isLastFilledCell, MaskSymbol, useBlurOnFulfill, useClearByFocusCell} from "react-native-confirmation-code-field";
+import ResendCounting from "../../components/ResendCounting";
 
 
 const Index = (props: any) => {
@@ -26,31 +28,32 @@ const Index = (props: any) => {
 
     const initdata = {
         "otp": "",
-        "g-recaptcha-response": "g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj",
-        ...route.params.userdetail
+        "g-recaptcha-response": 'g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj',
+        ...route?.params?.userdetail
     }
 
     const [channel, setChannel] = React.useState('email');
 
-    const {email,whatsapp,temp_token} = route.params.userdetail;
-
-
+    const {email,whatsapp,temp_token} = initdata;
 
 
     const handleSubmit = (values:any) => {
+
         Keyboard.dismiss();
 
         requestApi({
             method: methods.post,
             action: 'login',
             other:{url:loginUrl},
-            body:values,
+            body:{
+                'deviceid':"asdfadsf",
+                'email':initdata.email,
+                'g-recaptcha-response':"g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj",
+                'otp':values.otp,
+                'password':initdata.password
+            },
             showlog:true
         }).then((result) => {
-
-
-
-
 
             if (result.status === SUCCESS) {
 
@@ -130,10 +133,11 @@ const Index = (props: any) => {
 
 
     props.navigation.setOptions({
+        headerShown:true,
         headerTitle:`Verify OTP`,
         headerLargeTitleStyle:{color:colors.inputbox},
         headerTitleStyle:{color:colors.inputbox},
-        headerLeft:()=><Title onPress={()=>navigation.goBack()}>{backButton}</Title>
+        headerLeft:()=><></>
     });
 
     if(Platform.OS === "android") {
@@ -142,9 +146,52 @@ const Index = (props: any) => {
         })
     }
 
+    const [value, setValue]:any = useState("")
+    const ref = useBlurOnFulfill({value, cellCount: 6});
+    const [props1, getCellOnLayoutHandler] = useClearByFocusCell({
+        value,
+        setValue,
+    });
+
+
+    useEffect(() => {
+        setTimeout(async () => {
+            if (value.length === 6) {
+                console.log('value',value)
+            }
+        }, 200)
+    }, [value]);
+
+
+    const renderCell = ({index, symbol, isFocused}:any) => {
+        let textChild = null;
+
+        if (symbol) {
+            textChild = (
+                <MaskSymbol
+                    maskSymbol="*️"
+                    isLastFilledCell={isLastFilledCell({index, value})}>
+                    {symbol}
+                </MaskSymbol>
+            );
+        } else if (isFocused) {
+            textChild = <Cursor />;
+        }
+
+        return (
+            <Text
+                key={index}
+                style={[styles.cellBox, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}>
+                {textChild}
+            </Text>
+        );
+    };
+
+
 
     return (
-        <Container>
+        <Container  surface={true}>
 
             <Form
                 onSubmit={handleSubmit}
@@ -171,32 +218,27 @@ const Index = (props: any) => {
                                     </View>
 
 
-                                    <View style={[styles.py_5,styles.middle,styles.mt_5]}>
-                                        <TouchableOpacity onPress={()=>{
-                                            resendCode()
-                                        }}>
-                                            <Text style={[{color:colors.secondary}]}> Resend Code</Text>
-                                        </TouchableOpacity>
+
+
+                                    <View style={[styles.flex,styles.middle]}>
+                                        <CodeField
+                                            ref={ref}
+                                            {...props1}
+                                            value={value}
+                                            onChangeText={setValue}
+                                            cellCount={6}
+                                            autoFocus={true}
+                                            rootStyle={styles.codeFieldRoot}
+                                            keyboardType="number-pad"
+                                            textContentType="oneTimeCode"
+                                            renderCell={renderCell}
+                                        />
                                     </View>
 
+                                    <View>
+                                        <ResendCounting onResendOTP={resendCode}/>
+                                    </View>
 
-                                    <Field name="otp">
-                                        {props => (
-                                            <InputField
-                                                value={props.input.value}
-                                                label={'Code'}
-                                                autoFocus={true}
-                                                keyboardType='numeric'
-                                                inputtype={'textbox'}
-                                                autoCapitalize='none'
-                                                onSubmitEditing={(e:any) => {
-                                                    handleSubmit(props.values)
-                                                }}
-                                                returnKeyType={'go'}
-                                                onChange={props.input.onChange}
-                                            />
-                                        )}
-                                    </Field>
 
 
 
@@ -210,8 +252,13 @@ const Index = (props: any) => {
 
                         <KAccessoryView>
                             <View style={[styles.submitbutton]}>
-                                <Button      disabled={props.submitting || props.pristine}
-                                             onPress={() => { handleSubmit(props.values) }}> Next  </Button>
+                                <Button
+                                     onPress={() => {
+                                         if(Boolean(value.length == 6)) {
+                                             props.values.otp = value
+                                             handleSubmit(props.values)
+                                         }
+                                     }}> Verify  </Button>
 
                             </View>
                         </KAccessoryView>

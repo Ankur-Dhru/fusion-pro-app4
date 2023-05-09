@@ -584,13 +584,15 @@ export const styles: any = StyleSheet.create({
     title: {textAlign: 'center', fontSize: 30},
     codeFieldRoot: {marginTop: 20},
     cellBox: {
-        width: 40,
-        height: 40,
-        lineHeight: 38,
+        width: 50,
+        height: 50,
+        borderRadius:5,
+        lineHeight: 45,
         fontSize: 24,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#00000030',
         textAlign: 'center',
+        margin:5
     },
     focusCell: {
         borderColor: '#000',

@@ -27,6 +27,7 @@ import {styles} from "../../theme";
 import Avatar from "../../components/Avatar";
 import GettingStarted from "../BeforeLogin/GettingStarted";
 import {nav} from "../../lib/setting";
+import VerifyOTP from "../BeforeLogin/VerifyOTP";
 
 
 
@@ -65,23 +66,16 @@ class DrawerView extends Component<any> {
         };
 
         return (
-
             <Drawer.Navigator
                 screenOptions={{...screenOptions}}
                 drawerContent={(props) => <DrawerNavigatorContent  {...props} />}
-                initialRouteName={'Splash'}
-            >
+                initialRouteName={'Splash'}>
                 <Drawer.Screen name={'Splash'}   component={Splash}   />
                 <Drawer.Screen name={'GettingStarted'}   component={GettingStarted}    />
                 <Drawer.Screen name={'LoginStack'}  component={LoginStackNavigator}  options={({ route }:any) => ({ title: route.params && route.params.title })} />
-
-
-                    <Drawer.Screen name={'DashboardStack'} options={{title:'Client Area'}} component={DashboardStackNavigator}  />
-                    <Drawer.Screen name={'Settings'} options={{title:'Settings'}} component={Settings}  />
-
-
-                </Drawer.Navigator>
-
+                <Drawer.Screen name={'DashboardStack'} options={{title:'Client Area'}} component={DashboardStackNavigator}  />
+                <Drawer.Screen name={'Settings'} options={{title:'Settings'}} component={Settings}  />
+            </Drawer.Navigator>
         )
     }
 }

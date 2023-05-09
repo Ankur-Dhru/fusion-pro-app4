@@ -168,8 +168,6 @@ class Index extends Component<any, any> {
             const {navigation}: any = this.props;
             nav.navigation = navigation;
 
-            console.log('companydetails',companydetails)
-
             if (companydetails?.token === 'logout') {
                 navigation.navigate('LoginStack', {
                     screen: 'LoginStack',
@@ -180,10 +178,8 @@ class Index extends Component<any, any> {
 
                 if (email && password) {
 
-                    loginProcess({"g-recaptcha-response": "g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj", email, password}, navigation, () => {
 
-                    })
-
+                    loginProcess({"g-recaptcha-response": "g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj", email, password}, navigation, () => {})
                     // this.setState({
                     //     recaptcha: true,
                     //     email, password
@@ -221,10 +217,7 @@ class Index extends Component<any, any> {
                             siteKey={captchakey}
                             onReceiveToken={async (token: string) => {
                                 if (Boolean(email) && Boolean(password)) {
-
-                                    await loginProcess({"g-recaptcha-response": "g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj", email, password}, navigation, () => {
-
-                                    })
+                                    await loginProcess({"g-recaptcha-response": "g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj", email, password}, navigation, () => {})
                                 }
                             }}
                             action={""}

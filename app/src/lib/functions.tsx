@@ -228,8 +228,6 @@ export const logoutUser = () => {
             companydetail.token = 'logout';
             storeData('fusion-pro-app', companydetail).then((r: any) => {
                 store.dispatch(setCompany({companydetails: companydetail}));
-
-
                 Boolean(nav) && nav.navigation.dispatch(
                     CommonActions.reset({
                         index: 0,
@@ -255,15 +253,22 @@ export const refreshToken = () => {
             method: methods.get,
             action: 'refresh',
             loader: false,
+            other: {url: loginUrl},
             showlog: true,
         }).then(async (result: any) => {
             if (result.status === SUCCESS) {
                 const {newtoken}: any = result?.data
                 if (Boolean(newtoken)) {
                     updateToken(newtoken).then()
+                    resolve(true)
                 }
             }
-            resolve(true)
+            else{
+                nav.navigation.navigate('LoginStack', {
+                    screen: 'LoginDhruCom',
+                });
+                resolve(false)
+            }
         });
     }))
 

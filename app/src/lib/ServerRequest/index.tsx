@@ -169,14 +169,19 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                 if (data.code === 401) {
                     auth.token = '';
 
-                    await refreshToken().then((loginstatus)=>{
-                        if (loginstatus) {
+                  await  refreshToken().then((flag)=>{
+                        if(flag) {
                             notifyMe(true).then();
                             return requestApi(requestparams).then((data: any) => {
                                 resolve(data)
                             })
                         }
-                    })
+                        else{
+                            store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please login again!'}))
+                        }
+                    });
+
+
 
                     /*await loginUser().then(async (loginstatus: any) => {
                         if (loginstatus) {

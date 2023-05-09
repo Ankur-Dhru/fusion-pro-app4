@@ -1,217 +1,255 @@
-import React, {Component} from "react";
-import {View, Image, Alert, Dimensions, Keyboard, Platform, KeyboardAvoidingView, Linking} from "react-native";
-import {setDialog, setLoader} from "../../lib/Store/actions/components";
+import React, {Component, useEffect, useState} from "react";
+import {Keyboard, Platform, View} from "react-native";
 import {connect} from "react-redux";
 import {styles} from "../../theme";
-import {Button, Container, InputBox} from "../../components";
-import {Appbar, Paragraph, Surface, TextInput, Title, Text, withTheme, Card} from "react-native-paper";
-import AppBar from "../../components/AppBar";
-import {CheckConnectivity, log, loginUser, retrieveData, storeData} from "../../lib/functions";
-import {setCompany, setPreferences, setSettings} from "../../lib/Store/actions/appApiData";
-import {backButton, captchakey, defaultvalues, auth, loginUrl, nav, current} from "../../lib/setting";
+import {Button, Container} from "../../components";
+import {Card, Paragraph, Text, Title, withTheme} from "react-native-paper";
+import {getAppType, retrieveData, storeData} from "../../lib/functions";
+import {setCompany} from "../../lib/Store/actions/appApiData";
+import {auth, backButton, current, defaultvalues, loginUrl, nav} from "../../lib/setting";
 import {store} from "../../App";
-import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
+import {TouchableOpacity} from "react-native-gesture-handler";
 import {Field, Form} from "react-final-form";
-import requestApi, {actions, methods, SUCCESS} from "../../lib/ServerRequest";
-import InputField from "../../components/InputField";
+import requestApi, {methods, SUCCESS} from "../../lib/ServerRequest";
+
 import {CommonActions} from "@react-navigation/native";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import KAccessoryView from "../../components/KAccessoryView";
+import {
+    CodeField, Cursor,
+    isLastFilledCell,
+    MaskSymbol,
+    useBlurOnFulfill,
+    useClearByFocusCell
+} from "react-native-confirmation-code-field";
+import ResendCounting from "../../components/ResendCounting";
+import {setAlert} from "../../lib/Store/actions/components";
+import {checkLogin} from "./LoginDhruCom";
 
 
-class Index extends Component<any> {
+const Index = (props: any) => {
 
-    _captchaRef:any;
-    initdata:any;
-    constructor(props:any) {
-        super(props);
-        this._captchaRef = React.createRef();
-        const {route}:any = this.props;
+    const {route}: any = props;
 
-        this.initdata = {
-            "code": "",
-            ...route.params.userdetail
-        }
+    const initdata = {
+        "code": "",
+        ...route.params?.userdetail
     }
 
-    componentDidMount() {
+    const [number,setNumber] = useState(initdata.whatsapp_number)
 
-    }
+    useEffect(()=>{
 
-    handleSubmit = (values:any) => {
+        requestApi({
+            method: methods.get,
+            action: 'verifywhatsapp',
+            other: {url: loginUrl},
+
+            showlog: true
+        }).then((result) => {
+            if (result.status === SUCCESS) {
+                store.dispatch(setAlert({visible: true, message: result.message}))
+            }
+        });
+
+
+    },[])
+
+    const handleSubmit = (values: any) => {
         Keyboard.dismiss();
 
         requestApi({
             method: methods.post,
-            action: 'verifyemail',
-            other:{url:loginUrl},
-            body:values,
-            showlog:true
-        }).then((result) => {
+            action: 'verifywhatsapp',
+            other: {url: loginUrl},
+            body: values,
+            showlog: true
+        }).then(async (result) => {
             if (result.status === SUCCESS) {
-                current.user = '';
-                current.company = '';
-                current.clientid = this.initdata.clientid;
-                let companydetail = {
-                    token: auth.token,
-                    firstname: this.initdata.firstname,
-                    lastname: this.initdata.lastname,
-                    username: this.initdata.firstname +' '+this.initdata.lastname,
-                    email: this.initdata.email,
-                    password: this.initdata.password,
-                    companies:{},
-                    gridview: true,
-                    adminid: this.initdata.clientid,
-                };
-                store.dispatch(setCompany({companydetails: companydetail}));
-                storeData('fusion-pro-app', companydetail).then((r: any) => {
-                    nav.navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [
-                                { name: 'DashboardStack' },
-                            ],
-                        })
-                    );
+
+                getAppType().then((type: any) => {
+                    if (type === "help") {
+                        navigation.navigate('DashboardStack', {
+                            screen: "SupportNavigator"
+                        });
+                    } else {
+                        navigation.navigate('DashboardStack', {
+                            screen: 'DashboardStack',
+                            params: {
+                                disableAddWorkspace: true,
+                                index: defaultvalues.ticketdisplayid ? 2 : 0
+                            }
+                        });
+                    }
                 })
+
             }
         });
     }
 
-    resendCode = () => {
+    const resendCode = () => {
         Keyboard.dismiss();
 
         requestApi({
             method: methods.get,
-            action: 'verifyemail',
-            other:{url:loginUrl},
+            action: 'verifywhatsapp',
+            other: {url: loginUrl},
         }).then((result) => {
             if (result.status === SUCCESS) {
-
+                store.dispatch(setAlert({visible: true, message: result.message}))
             }
         });
     }
 
+    const updateWhatsapp = (values: any) => {
+        initdata.whatsapp_number =  values.whatsapp_number;
+        setNumber(initdata.whatsapp_number)
+    }
 
-    updateEmail = (email:any) => {
-        this.initdata.email = email;
-        this.forceUpdate()
+    const {navigation, theme: {colors}} = props;
+
+
+    props.navigation.setOptions({
+        headerTitle: `Verify Your Whatsapp Number`,
+        headerLargeTitleStyle: {color: colors.inputbox},
+        headerTitleStyle: {color: colors.inputbox},
+        headerLeft: () => <Title onPress={() => navigation.goBack()}>{backButton}</Title>
+    });
+
+    if (Platform.OS === "android") {
+        navigation.setOptions({
+            headerCenter: () => <Title style={[styles.headertitle]}>{'Verify Your Whatsapp'}</Title>,
+        })
     }
 
 
-    render() {
 
-        const {navigation,theme:{colors}} = this.props;
+    const [value, setValue]:any = useState("")
+    const ref = useBlurOnFulfill({value, cellCount: 6});
+    const [props1, getCellOnLayoutHandler] = useClearByFocusCell({
+        value,
+        setValue,
+    });
 
 
-        this.props.navigation.setOptions({
-            headerTitle:`Verify Your Email`,
-            headerLargeTitleStyle:{color:colors.inputbox},
-            headerTitleStyle:{color:colors.inputbox},
-            headerLeft:()=><Title onPress={()=>navigation.goBack()}>{backButton}</Title>
-        });
+    useEffect(() => {
+        setTimeout(async () => {
+            if (value.length === 6) {
+                console.log('value',value)
+            }
+        }, 200)
+    }, [value]);
 
-        if(Platform.OS === "android") {
-            navigation.setOptions({
-                headerCenter: () => <Title style={[styles.headertitle]}>{'Verify Your Email'}</Title>,
-            })
+
+    const renderCell = ({index, symbol, isFocused}:any) => {
+        let textChild = null;
+
+        if (symbol) {
+            textChild = (
+                <MaskSymbol
+                    maskSymbol="*️"
+                    isLastFilledCell={isLastFilledCell({index, value})}>
+                    {symbol}
+                </MaskSymbol>
+            );
+        } else if (isFocused) {
+            textChild = <Cursor />;
         }
 
-
-
         return (
-            <Container>
+            <Text
+                key={index}
+                style={[styles.cellBox, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}>
+                {textChild}
+            </Text>
+        );
+    };
 
-                <Form
-                    onSubmit={this.handleSubmit}
-                    initialValues={{ code:''}}>
-                    {props => (
 
-                        <View style={[styles.pageContent]}>
+    return (
+        <Container>
 
-                            <KeyboardScroll>
+            <Form
+                onSubmit={handleSubmit}
+                initialValues={{code: ''}}>
+                {props => (
 
-                                <Card style={[styles.card]}>
-                                    <Card.Content>
+                    <View style={[styles.pageContent]}>
+
+                        <KeyboardScroll>
+
+                            <Card style={[styles.card]}>
+                                <Card.Content>
 
                                     <View>
-                                        <Paragraph style={[styles.paragraph]}>Your Registered Email </Paragraph>
-                                        <View style={[styles.grid,styles.middle]}>
+                                        <Paragraph style={[styles.paragraph]}>Your Registered Whatsapp Number </Paragraph>
+                                        <View style={[styles.grid, styles.middle]}>
                                             <Paragraph>
-                                                {this.initdata.email} -
+                                                {number} -
                                             </Paragraph>
-                                            <TouchableOpacity onPress={()=>{
-                                                this.props.navigation.navigate('ChangeEmail', {
-                                                    screen: 'ChangeEmail',
-                                                    updateEmail:this.updateEmail
-                                                });
+                                            <TouchableOpacity onPress={() => {
+                                                navigation.navigate('ChangeWhatsapp',{initdata:initdata,updateWhatsapp:updateWhatsapp});
+
                                             }}>
-                                                <Text style={[{color:colors.secondary}]}> Change Email </Text>
+                                                <Text style={[{color: colors.secondary}]}> Change Whatsapp Number </Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
 
 
-                                    <Field name="code">
-                                        {props => (
-                                            <InputField
-                                                value={props.input.value}
-                                                label={'Code'}
-                                                autoFocus={true}
-                                                keyboardType='numeric'
-                                                inputtype={'textbox'}
-                                                autoCapitalize='none'
-                                                onSubmitEditing={(e:any) => {
-                                                    this.handleSubmit(props.values)
-                                                }}
-                                                returnKeyType={'go'}
-                                                onChange={props.input.onChange}
-                                            />
-                                        )}
-                                    </Field>
+                                    <View style={[styles.flex,styles.middle]}>
+                                        <CodeField
+                                            ref={ref}
+                                            {...props1}
+                                            value={value}
+                                            onChangeText={setValue}
+                                            cellCount={6}
+                                            autoFocus={true}
+                                            rootStyle={styles.codeFieldRoot}
+                                            keyboardType="number-pad"
+                                            textContentType="oneTimeCode"
+                                            renderCell={renderCell}
+                                        />
+                                    </View>
 
-
-                                    <View style={[styles.py_5,styles.middle,styles.mt_5]}>
-                                        <TouchableOpacity onPress={()=>{
-                                            this.resendCode()
-                                        }}>
-                                            <Text style={[{color:colors.secondary}]}> Resend Code</Text>
-                                        </TouchableOpacity>
+                                    <View>
+                                        <ResendCounting onResendOTP={resendCode}/>
                                     </View>
 
 
+                                </Card.Content>
+                            </Card>
 
-                                    </Card.Content>
-                                </Card>
+                        </KeyboardScroll>
 
-                            </KeyboardScroll>
+                        <KAccessoryView>
+                            <View style={[styles.submitbutton]}>
+                                <Button
+                                    onPress={() => {
+                                        if(Boolean(value.length === 6)) {
+                                            props.values.code = value
+                                            handleSubmit(props.values)
+                                        }
+                                    }}> Verify </Button>
 
-                            <KAccessoryView>
-                                <View style={[styles.submitbutton]}>
-                                    <Button      disabled={props.submitting || props.pristine}
-                                                 onPress={() => { this.handleSubmit(props.values) }}> Verify  </Button>
-
-                                </View>
-                            </KAccessoryView>
+                            </View>
+                        </KAccessoryView>
 
 
-                        </View>
+                    </View>
 
-                    )}
-                </Form>
+                )}
+            </Form>
 
-            </Container>
-        );
-    }
+        </Container>
+    );
+
 }
 
 
-const mapStateToProps = (state:any) => ({
-
-})
-const mapDispatchToProps = (dispatch:any) => ({
-
-});
+const mapStateToProps = (state: any) => ({})
+const mapDispatchToProps = (dispatch: any) => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Index));
 
 

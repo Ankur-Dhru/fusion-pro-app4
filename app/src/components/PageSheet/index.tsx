@@ -45,7 +45,7 @@ class Index extends React.Component<any> {
                     presentationStyle="formSheet"
                     transparent={false}
                     statusBarTranslucent={false}
-                    visible={Boolean(pagesheet.visible)}
+                    visible={Boolean(pagesheet?.visible)}
                     onRequestClose={() => {
                         Keyboard.dismiss();
                         setTimeout(()=>{
@@ -53,7 +53,7 @@ class Index extends React.Component<any> {
                         },100)
                     }}>
                     <Surface style={{height: '100%',borderRadius: 20,}}>
-                        {Boolean(pagesheet.visible) && <Content/>}
+                        {Boolean(pagesheet?.visible) && <Content/>}
                     </Surface>
 
                 </ReactNativeModal>

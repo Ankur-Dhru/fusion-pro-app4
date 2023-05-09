@@ -9,7 +9,7 @@ import {auth, backButton, loginUrl} from "../../lib/setting";
 import {Field, Form} from "react-final-form";
 import requestApi, {ERROR, methods, SUCCESS} from "../../lib/ServerRequest";
 import InputField from "../../components/InputField";
-import {composeValidators, countrylist, mustBeNumber, required} from "../../lib/static";
+import {callingcode, composeValidators, countrylist, mustBeNumber, required} from "../../lib/static";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import KAccessoryView from "../../components/KAccessoryView";
 
@@ -44,16 +44,19 @@ class Index extends Component<any> {
 
     handleSubmit = (values: any) => {
 
+        const country: any = callingcode.find((item: any) => {
+            return item.code === values.country
+        })
+
+
         Keyboard.dismiss();
         requestApi({
             method: methods.post,
             action: 'register',
             other: {url: loginUrl},
-            body: values,
+            body: {...values,'g-recaptcha-response':"g-recaptcha-response-gjgjh-kjkljkl-mjbkjhkj-bbkj",code: country?.dial_code,countrycode: country?.dial_code,mobile_number:+(country?.dial_code.replace('+','') +''+values.mobile_number),whatsapp_number:country?.dial_code+''+values.mobile_number},
             showlog: true
         }).then((response) => {
-
-            console.log('result',response)
 
             if (response.status === SUCCESS && response.token) {
                 auth.token = response.token;

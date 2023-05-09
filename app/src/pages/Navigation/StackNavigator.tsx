@@ -92,6 +92,7 @@ import {log} from "../../lib/functions";
 import Sample from "../Sample";
 import PatternScreen from "../PatternScreen";
 import WhatsappVerification from "../BeforeLogin/WhatsappVerification";
+import ChangeWhatsapp from "../BeforeLogin/ChangeWhatsapp";
 import VerifyOTP from "../BeforeLogin/VerifyOTP";
 
 //let screenOptions = {...screenOptionStyle,headerLargeTitleStyle:{color:defaultvalues.theme.colors.inputbox},headerTitleStyle:{color:defaultvalues.theme.colors.inputbox}}
@@ -276,11 +277,11 @@ const LoginStackNavigator = () => {
             <LoginStack.Screen name="Verification" component={Verification}
                                options={{headerTitle: 'Verify Your Email', headerLargeTitle: true}}/>
 
-            <LoginStack.Screen name="WhatsappVerification" component={WhatsappVerification}
-                               options={{headerTitle: 'Verify Your Whatsapp', headerLargeTitle: true}}/>
+            <LoginStack.Screen name="WhatsappVerification" component={WhatsappVerification}  options={({ route }:any) => ({ title: 'Verify Your Whatsapp', headerLargeTitle: true ,params:route })}/>
 
-            <LoginStack.Screen name="VerifyOTP" component={VerifyOTP}
-                               options={{headerTitle: 'Verify OTP', headerLargeTitle: true}}/>
+            <LoginStack.Screen name="ChangeWhatsapp" component={ChangeWhatsapp}  options={{headerShown:true,headerTitle: 'Change Whatsapp Number', headerLargeTitle: true}}/>
+
+            <LoginStack.Screen name="VerifyOTP" component={VerifyOTP}  options={{headerShown:true,headerTitle: 'Verify OTP', headerLargeTitle: true}}/>
 
             <LoginStack.Screen name="ChangeEmail" component={ChangeEmail}
                                options={{headerTitle: 'Change Email', headerLargeTitle: true}}/>
@@ -296,6 +297,7 @@ const SplashStackNavigator = () => {
         <SplashStack.Navigator screenOptions={{...screenOptions}} initialRouteName={'Splash'}>
             <SplashStack.Screen name="Splash" component={Splash}/>
             <SplashStack.Screen name="GettingStarted" component={GettingStarted} options={{headerTitle: 'Dhru', headerLargeTitle: true}}/>
+
         </SplashStack.Navigator>
     );
 };
