@@ -50,7 +50,7 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
     CheckConnectivity()
 
     if (!email_verified) {
-        navigation.replace('LoginStack', {
+        navigation.navigate('LoginStack', {
             screen: 'Verification',
             params: {
                 userdetail: {...result.data, email: values.email, password: values.password},
@@ -60,7 +60,7 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
         });
     }
     else if (!whatsapp_verified && Boolean(whatsapp_number)) {
-        navigation.replace('LoginStack', {
+        navigation.navigate('LoginStack', {
             screen: 'WhatsappVerification',
             params: {
                 userdetail: {...result.data, email: values.email, password: values.password},

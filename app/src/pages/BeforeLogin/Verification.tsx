@@ -71,19 +71,7 @@ const Index = (props: any) => {
                 current.user = '';
                 current.company = '';
                 current.clientid = initdata.clientid;
-                let companydetail = {
-                    token: auth.token,
-                    firstname: initdata.firstname,
-                    lastname: initdata.lastname,
-                    username: initdata.firstname + ' ' + initdata.lastname,
-                    email: initdata.email,
-                    password: initdata.password,
-                    companies: {},
-                    gridview: true,
-                    adminid: initdata.clientid,
-                };
-                await store.dispatch(setCompany({companydetails: companydetail}));
-                await storeData('fusion-pro-app', companydetail).then((r: any) => {})
+
 
                 const {email_verified, mobile_verified,whatsapp_number, whatsapp_verified, phone_number_verified,workspaces} = initdata;
                 if (!whatsapp_verified  && Boolean(whatsapp_number)) {
