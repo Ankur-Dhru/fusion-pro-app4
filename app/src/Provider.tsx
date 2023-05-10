@@ -6,7 +6,7 @@ import {ActivityIndicator, BottomSheet, Dialog, Modal, PageSheet, SnackBar} from
 import {setSettings} from "./lib/Store/actions/appApiData";
 import {Appearance, AppState, Linking, StatusBar, View} from "react-native";
 import DrawerNavigator from "./pages/Navigation/DrawerNavigator";
-import {CheckConnectivity, getInit, log, retrieveData} from "./lib/functions";
+import {CheckConnectivity, getInit, log, navigationRef, retrieveData} from "./lib/functions";
 // @ts-ignore
 import Contacts from "react-native-contacts";
 
@@ -23,6 +23,7 @@ import {
 } from 'react-native-paper';
 import {auth, current, defaultvalues, isDevelopment} from "./lib/setting";
 import {LoginStackNavigator} from "./pages/Navigation/StackNavigator";
+
 
 configureFontAwesomePro();
 
@@ -257,7 +258,7 @@ class Index extends Component<any> {
                         showHideTransition={'fade'}
                         hidden={false}/>
 
-                    <NavigationContainer linking={this.linking} theme={themeis}>
+                    <NavigationContainer ref={navigationRef} linking={this.linking} theme={themeis}>
                         <DrawerNavigator/>
                     </NavigationContainer>
 

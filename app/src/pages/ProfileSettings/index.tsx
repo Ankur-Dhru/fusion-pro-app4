@@ -41,6 +41,10 @@ const profileList: any = [
     option("code", "Sample", "Sample", "", true, "", "", isDevelopment),
 ]
 
+export const LogoutUser = () => {
+
+}
+
 const Index = (props: any) => {
     const {navigation, theme: {colors}, setModal, toggleWalkThrough}: any = props;
 
@@ -52,7 +56,7 @@ const Index = (props: any) => {
 
         if (params.type == "logout") {
 
-            setAppType("account").then(() => {
+            /*setAppType("account").then(() => {
             })
 
             navigation.dispatch(
@@ -62,7 +66,7 @@ const Index = (props: any) => {
                         {name: 'LoginStack'},
                     ],
                 })
-            );
+            );*/
 
             logoutUser()
         } else if (params.type == "reset-spotlight") {

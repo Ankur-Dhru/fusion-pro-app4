@@ -154,6 +154,7 @@ class Index extends Component<any, any> {
 
 
         const {setPreferences}: any = this.props;
+
         await retrieveData('fusion-pro-app-preferences').then((data: any) => {
             data = {
                 printpreviewdisable:false,
@@ -162,11 +163,13 @@ class Index extends Component<any, any> {
             setPreferences(data);
         });
 
+        const {navigation}: any = this.props;
+        nav.navigation = navigation;
 
         await retrieveData('fusion-pro-app').then((companydetails: any) => {
 
-            const {navigation}: any = this.props;
-            nav.navigation = navigation;
+
+
 
             if (companydetails?.token === 'logout') {
                 navigation.navigate('LoginStack', {

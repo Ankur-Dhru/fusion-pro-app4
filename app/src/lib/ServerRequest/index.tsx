@@ -169,6 +169,7 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                 if (data.code === 401) {
                     auth.token = '';
 
+
                   await  refreshToken().then((flag)=>{
                         if(flag) {
                             notifyMe(true).then();
@@ -181,8 +182,6 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                         }
                     });
 
-
-
                     /*await loginUser().then(async (loginstatus: any) => {
                         if (loginstatus) {
                             notifyMe(true).then();
@@ -191,6 +190,7 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                             })
                         }
                     });*/
+
                 }
                 // STATUS 401 AND 402 NOT SHOW ALERT
                 if (data.status === ERROR && data.code !== 401 && data.code !== 402) {
@@ -218,7 +218,7 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                         logoutUser()
                     }
                 }
-                log("data", data)
+
                 resolve(data);
 
             })

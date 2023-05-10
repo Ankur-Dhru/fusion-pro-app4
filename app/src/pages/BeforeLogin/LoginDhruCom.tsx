@@ -157,6 +157,7 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
             store.dispatch(setCompany({companydetails: companydetail}));
 
 
+
             getAppType().then((type: any) => {
                 if (type === "help") {
                     navigation.navigate('DashboardStack', {

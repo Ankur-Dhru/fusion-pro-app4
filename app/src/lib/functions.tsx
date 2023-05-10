@@ -35,6 +35,10 @@ import {regExpJson2} from "./validation";
 import {decode} from 'html-entities';
 
 import { NumericFormat  } from 'react-number-format';
+
+
+import { createNavigationContainerRef } from '@react-navigation/native';
+
 const getSymbolFromCurrency = require('currency-symbol-map')
 let base64 = require('base-64');
 let utf8 = require('utf8');
@@ -221,21 +225,42 @@ export const updateToken = async (token: any) => {
     }))
 }
 
+export const navigationRef = createNavigationContainerRef()
+
+export function navigate(name:any, params:any) {
+
+    if (navigationRef.isReady()) {
+        navigationRef.navigate(name, params);
+    }
+}
+
+export function navigateReset() {
+    if (navigationRef.isReady()) {
+        navigationRef.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [
+                    {name: 'LoginStack'},
+                ],
+            })
+        );
+    }
+}
+
 export const logoutUser = () => {
+
     try{
-        store.dispatch(logout());
+
+        setAppType("account").then(() => { })
+
         retrieveData('fusion-pro-app').then((companydetail) => {
             companydetail.token = 'logout';
             storeData('fusion-pro-app', companydetail).then((r: any) => {
+                store.dispatch(logout());
                 store.dispatch(setCompany({companydetails: companydetail}));
-                Boolean(nav) && nav.navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            {name: 'LoginStack'},
-                        ],
-                    })
-                );
+
+                navigateReset()
+
             });
         })
     }
@@ -253,6 +278,7 @@ export const refreshToken = () => {
             method: methods.get,
             action: 'refresh',
             loader: false,
+
             other: {url: loginUrl},
             showlog: true,
         }).then(async (result: any) => {
@@ -264,9 +290,8 @@ export const refreshToken = () => {
                 }
             }
             else{
-                nav.navigation.navigate('LoginStack', {
-                    screen: 'LoginDhruCom',
-                });
+                console.log('Expire token refresh token')
+                logoutUser()
                 resolve(false)
             }
         });

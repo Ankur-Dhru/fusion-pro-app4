@@ -129,6 +129,7 @@ const HeaderList = (props: any) => {
 }
 
 const ItemList = (props: any) => {
+
     const {name, amount, orders}: any = props.item;
     const index = props.index;
 
@@ -136,7 +137,7 @@ const ItemList = (props: any) => {
 
         <View style={[styles.py_3,{borderTopColor: '#f4f4f4', borderTopWidth: index === 0 ? 0 : 1}]}>
             <View style={[styles.grid, styles.noWrap, styles.justifyContent, styles.py_3,]}>
-                <View style={[styles.bg_light,styles.mr_2,{borderRadius:50}]}>
+                <View style={[styles.mr_2,{borderRadius:50}]}>
                    <ProIcon name={name === 'Dinein'?'utensils':name==='Pickup'?'basket-shopping':name==='Delivery'?'truck-pickup':'truck'} size={18}/>
                 </View>
                 <View style={[styles.flexGrow]}>
@@ -497,7 +498,7 @@ const Index = (props: any) => {
 
                 <InputField
                     inputtype={'daterange'}
-                    render={() => <View style={[styles.bg_white,styles.p_5,styles.border,{borderTopWidth:3}]}>
+                    render={() => <View style={[styles.p_5]}>
                         <Paragraph style={[styles.textCenter]}><Paragraph style={[styles.bold,styles.textCenter]}> {filter.label} </Paragraph> <ProIcon name={'chevron-up'} size={12} /> </Paragraph>
                     </View>}
                     list={[DAY_OPTIONS.TODAY, DAY_OPTIONS.YESTERDAY, DAY_OPTIONS.THIS_WEEK, DAY_OPTIONS.LAST_WEEK, DAY_OPTIONS.LAST_7_DAY, DAY_OPTIONS.LAST_30_DAY, DAY_OPTIONS.THIS_MONTH,DAY_OPTIONS.LAST_MONTH,DAY_OPTIONS.THIS_QUARTER,  DAY_OPTIONS.THIS_YEAR]}
