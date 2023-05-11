@@ -158,19 +158,23 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
 
                 let message = data.message;
 
+                console.log('data.code',data.code)
                 if (data.code === 401) {
+                    await refreshToken().then((flag) => {
 
-                  await  refreshToken().then((flag)=>{
+                        console.log('flag', flag)
 
-                        if(flag) {
+                        if (flag) {
                             notifyMe(true).then();
 
                             return requestApi(requestparams).then((data: any) => {
                                 resolve(data)
                             })
-                        }
-                        else{
-                            store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please login again!'}))
+                        } else {
+                            store.dispatch(setAlert({
+                                visible: true,
+                                message: 'Something went wrong, Please login again!'
+                            }))
                         }
                     });
                 }

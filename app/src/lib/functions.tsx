@@ -1,5 +1,5 @@
 import {store} from '../App';
-import {setDialog, setLoader} from './Store/actions/components';
+import {setAlert, setDialog, setLoader} from './Store/actions/components';
 import {
     setClients,
     setCompany,
@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // @ts-ignore
 import {render} from 'react-dom';
 import moment from 'moment';
-import requestApi, {actions, methods, SUCCESS} from "./ServerRequest";
+import requestApi, {actions, ERROR, methods, SUCCESS} from "./ServerRequest";
 import {callingcode, currencylist, FILTERED_VOUCHER, STATUS} from "./static";
 import {logout} from "./Store/actions/authentication";
 
@@ -25,7 +25,7 @@ import {Alert, PermissionsAndroid, Platform, Text} from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import React from "react";
 import Contacts from "react-native-contacts";
-import {auth, current, defaultvalues, loginUrl, nav, spotlight, voucher} from "./setting";
+import {auth, current, defaultvalues, isDevelopment, loginUrl, nav, spotlight, voucher} from "./setting";
 import {CommonActions} from "@react-navigation/native";
 import RNFetchBlob from "rn-fetch-blob";
 import RNHTMLtoPDF from "react-native-html-to-pdf";
@@ -274,20 +274,31 @@ export const logoutUser = () => {
 
 export const refreshToken = () => {
 
-    console.log('refreshToken')
 
     return new Promise(((resolve, reject) => {
-        requestApi({
-            method: methods.get,
-            action: 'refresh',
-            loader: false,
-            other: {url: loginUrl},
-            showlog: true,
-        }).then(async (result: any) => {
-            if (result.status === SUCCESS) {
+
+        let headers: any = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + auth.token,
+        };
+
+
+        const init: any = {
+            method:'GET',
+            headers: new Headers(headers),
+        };
+
+        fetch('https://api.dhru.com/client/api/v1/refresh', init)
+            .then((result) => {
+            return result.json()
+        })
+           .then(async (result: any) => {
+
+            if (result?.status === SUCCESS) {
                 const {newtoken}: any = result?.data
                 if (Boolean(newtoken)) {
-                    console.log('newtoken')
+
                     updateToken(newtoken).then(()=>{
                         resolve(true)
                     })
@@ -299,6 +310,8 @@ export const refreshToken = () => {
                 resolve(false)
             }
         });
+
+
     }))
 
 }

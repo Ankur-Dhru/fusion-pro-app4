@@ -206,6 +206,8 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
             values.deviceid = 'asdfadsf';
             values.t = getUniqueId; /// unique device id for notification
 
+
+
             requestApi({
                 method: methods.post,
                 action: actions.login,
@@ -216,10 +218,13 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                 showlog: false
             }).then(async (result) => {
 
+                console.log('result')
                 if (result.status === SUCCESS) {
+                    console.log('1')
                     checkLogin(result,navigation,values,companydetail,storecurrentuser,storecurrentname)
                 }
                 else if(result.code === 403){
+                    console.log('2')
                     companydetail.currentuser = '';
                     companydetail.token = 'logout';
 
@@ -230,6 +235,7 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                     })
                 }
                 else if(result.code === 201){
+                    console.log('3')
                     navigation.navigate('LoginStack', {
                         screen: 'VerifyOTP',
                         params: {

@@ -573,6 +573,8 @@ class Index extends Component<any, any> {
         const {dashboardData, filterTitle}: any = this.state;
         const {colors}: any = this.props.theme;
 
+
+
         return (
             <View>
 

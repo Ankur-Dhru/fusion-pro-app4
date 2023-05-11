@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Dimensions, Platform, TouchableOpacity, View} from 'react-native'
 import {setCompany, setPreferences, setSettings} from "../../lib/Store/actions/appApiData";
 import {connect} from "react-redux";
@@ -133,6 +133,8 @@ class drawerContentComponents extends Component<any> {
 
         const {username, adminid, email}: any = getCurrentCompanyDetails();
 
+
+
         // @ts-ignore
         return (
             <View style={[styles.h_100, styles.px_5,{backgroundColor:colors.screenbg}]}>
@@ -216,7 +218,7 @@ class drawerContentComponents extends Component<any> {
 
                                         return (
 
-                                            <>
+                                            <Fragment key={id}>
                                                 <List.Item
                                                     style={[styles.listitem]}
                                                     titleStyle={[cw && styles.bold]}
@@ -288,7 +290,7 @@ class drawerContentComponents extends Component<any> {
                                                 </View>
 
 
-                                            </>
+                                            </Fragment>
                                         )
                                     })
                                 }
