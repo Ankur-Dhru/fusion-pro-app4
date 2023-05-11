@@ -51,6 +51,7 @@ const requestApi = async ({
 
     let token = auth.token && auth.token;
 
+
     if (!defaultvalues.internetconnection) {
         store.dispatch(setAlert({
             message: 'No internet connections are available',
@@ -106,8 +107,6 @@ const requestApi = async ({
         };
     }
 
-    log('headers',headers)
-
     const init: any = {
         method,
         headers: new Headers(headers),
@@ -115,7 +114,7 @@ const requestApi = async ({
     };
 
     if (body) {
-        log('init.body',body)
+
         if (doNotReplaceProtocol){
             init.body = JSON.stringify(body);
         }   else {
@@ -159,20 +158,13 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
 
                 let message = data.message;
 
-                /////// update new token
-                /*if(data?.token && auth.token !== data.token){
-                    await updateToken(data.token).then( async (data:any)=>{
-                        log('3')
-                    });
-                }*/
-
                 if (data.code === 401) {
-                    auth.token = '';
-
 
                   await  refreshToken().then((flag)=>{
+
                         if(flag) {
                             notifyMe(true).then();
+
                             return requestApi(requestparams).then((data: any) => {
                                 resolve(data)
                             })
@@ -181,16 +173,6 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                             store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please login again!'}))
                         }
                     });
-
-                    /*await loginUser().then(async (loginstatus: any) => {
-                        if (loginstatus) {
-                            notifyMe(true).then();
-                            return requestApi(requestparams).then((data: any) => {
-                                resolve(data)
-                            })
-                        }
-                    });*/
-
                 }
                 // STATUS 401 AND 402 NOT SHOW ALERT
                 if (data.status === ERROR && data.code !== 401 && data.code !== 402) {

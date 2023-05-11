@@ -213,6 +213,7 @@ export const getInit = (companydetail?: any, navigation?: any, locationid?: any,
 }
 
 export const updateToken = async (token: any) => {
+    console.log('updateToken')
     return new Promise<any>(((resolve, reject) => {
         retrieveData('fusion-pro-app').then((companydetail) => {
             companydetail.token = token;
@@ -273,20 +274,23 @@ export const logoutUser = () => {
 
 export const refreshToken = () => {
 
+    console.log('refreshToken')
+
     return new Promise(((resolve, reject) => {
         requestApi({
             method: methods.get,
             action: 'refresh',
             loader: false,
-
             other: {url: loginUrl},
             showlog: true,
         }).then(async (result: any) => {
             if (result.status === SUCCESS) {
                 const {newtoken}: any = result?.data
                 if (Boolean(newtoken)) {
-                    updateToken(newtoken).then()
-                    resolve(true)
+                    console.log('newtoken')
+                    updateToken(newtoken).then(()=>{
+                        resolve(true)
+                    })
                 }
             }
             else{

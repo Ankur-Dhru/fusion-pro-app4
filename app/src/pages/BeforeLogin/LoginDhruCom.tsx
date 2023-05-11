@@ -34,7 +34,6 @@ import { getUniqueId, getManufacturer } from 'react-native-device-info';
 
 export const checkLogin = (result:any,navigation:any,values:any,companydetail:any,storecurrentuser:any,storecurrentname:any) => {
 
-    console.log('result',result)
 
     const {
         token,
@@ -146,6 +145,8 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
             }
         }
 
+        console.log('companydetail',companydetail)
+
         storeData('fusion-pro-app', companydetail).then(async (r: any) => {
 
             await getInit(companydetail)
@@ -219,9 +220,14 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                     checkLogin(result,navigation,values,companydetail,storecurrentuser,storecurrentname)
                 }
                 else if(result.code === 403){
-                    navigation.navigate('LoginStack', {
-                        screen: 'LoginDhruCom',
-                    });
+                    companydetail.currentuser = '';
+                    companydetail.token = 'logout';
+
+                    storeData('fusion-pro-app',companydetail).then(async (r: any) => {
+                        navigation.navigate('LoginStack', {
+                            screen: 'LoginDhruCom',
+                        });
+                    })
                 }
                 else if(result.code === 201){
                     navigation.navigate('LoginStack', {
