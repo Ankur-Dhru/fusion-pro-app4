@@ -14,8 +14,60 @@ import {auth, backButton, current, loginUrl, nav} from "../../lib/setting";
 import {CheckConnectivity, getInit, log, retrieveData, storeData} from "../../lib/functions";
 import KeyboardScroll from "../../components/KeyboardScroll";
 import {composeValidators, required, startWithString} from "../../lib/static";
-import {CommonActions} from "@react-navigation/native";
 
+export const  afterAddWorkspace = (values:any,navigation?:any) =>  {
+
+
+    retrieveData('fusion-pro-app').then((companydetails: any) => {
+
+        const {adminid}: any = companydetails;
+
+        current.user = values.companyname + '-' + current.clientid;
+        current.company = values.companyname;
+
+        companydetails.token = auth.token;
+
+        companydetails.adminid = adminid;
+
+        companydetails.current = current.company;
+        companydetails.currentuser = current.user;
+
+
+
+        companydetails.companies[current.user] = {
+            firstname: companydetails.firstname,
+            lastname: companydetails.lastname,
+            email: companydetails.email,
+            password: companydetails.password,
+            adminid: companydetails.adminid,
+            username:companydetails.firstname + ' ' + companydetails.lastname,
+            locationid: '',
+            company:current.company,
+            defaultcurrency: '',
+            locations: '',
+            'services': [],
+            'clients': [],
+            vendors: [],
+        }
+
+
+
+        storeData('fusion-pro-app', companydetails).then(async (r: any) => {
+            setCompany({companydetails})
+            getInit(companydetails, navigation, '', () => {
+                if(Boolean(navigation)) {
+                    navigation.replace('OrganizationProfile', {
+                        screen: 'OrganizationProfile',
+                    });
+                }
+            }, "activity")
+        });
+
+
+
+    })
+
+}
 
 class CompanyName extends Component<any> {
 
@@ -32,7 +84,6 @@ class CompanyName extends Component<any> {
 
         values.companyname = values?.companyname?.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
 
-
         requestApi({
             method: methods.post,
             action: 'order',
@@ -42,64 +93,12 @@ class CompanyName extends Component<any> {
         }).then((result) => {
             if (result.status === SUCCESS) {
 
-
                 let workspacelogin = result?.data[0]?.workspace_login;
 
-                log('workspacelogin',workspacelogin)
-
                 const params = queryStringToJSON(workspacelogin);
-
-                log('params',params)
-
                 auth.token = params['t'];
 
-                retrieveData('fusion-pro-app').then((companydetails: any) => {
-
-                    const {adminid}: any = companydetails;
-
-                    current.user = values.companyname + '-' + current.clientid;
-                    current.company = values.companyname;
-
-                    companydetails.token = auth.token;
-
-                    companydetails.adminid = adminid;
-
-                    companydetails.current = current.company;
-                    companydetails.currentuser = current.user;
-
-
-
-                    companydetails.companies[current.user] = {
-                        firstname: companydetails.firstname,
-                        lastname: companydetails.lastname,
-                        email: companydetails.email,
-                        password: companydetails.password,
-                        adminid: companydetails.adminid,
-                        username:companydetails.firstname + ' ' + companydetails.lastname,
-                        locationid: '',
-                        company:current.company,
-                        defaultcurrency: '',
-                        locations: '',
-                        'services': [],
-                        'clients': [],
-                        vendors: [],
-                    }
-
-
-
-                    storeData('fusion-pro-app', companydetails).then(async (r: any) => {
-                        setCompany({companydetails})
-
-                        getInit(companydetails, navigation, '', () => {
-                            navigation.replace('OrganizationProfile', {
-                                screen: 'OrganizationProfile',
-                            });
-                        }, "activity")
-                    });
-
-
-
-                })
+                afterAddWorkspace(values,navigation)
 
             }
         });

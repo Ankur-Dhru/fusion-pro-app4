@@ -1132,6 +1132,8 @@ class VoucherView extends Component<any> {
 
     handleSubmit = () => {
 
+        console.log('handle sumbit')
+
         if (this.isOutsourcing) {
             this.updateOutsourcing();
         } else {
@@ -1174,8 +1176,14 @@ class VoucherView extends Component<any> {
                 });
             }
 
+            if (Boolean(voucher.data?.voucherdisplayid)) {
+                voucher.data.voucherdisplayid = voucher.data.voucherdisplayid.toString();
+            }
 
             try {
+
+                console.log('voucher.data',JSON.stringify(voucher.data))
+
                 requestApi({
                     method: Boolean(voucher?.data?.voucherid) ? methods.put : methods.post,
                     action: voucher.settings.api,
@@ -2143,8 +2151,10 @@ class VoucherView extends Component<any> {
                                                         onPress={() => {
                                                             this.submitbuttonclick = true;
                                                             if (voucher.data.isPaymentReceived == '1') {
-                                                                this.child.addPayment();
+                                                                console.log('id')
+                                                                this.child?.addPayment();
                                                             } else {
+                                                                console.log('else')
                                                                 voucher.data.payments = '';
                                                                 this._submit(handleSubmit, values, more);
                                                             }

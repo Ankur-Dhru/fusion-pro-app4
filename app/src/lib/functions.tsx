@@ -45,6 +45,8 @@ let utf8 = require('utf8');
 
 export const STORE_KEY_SPOTLIGHT = "spotlight";
 
+export const isDebug = (process.env.NODE_ENV === "development");
+
 export const log = (text: any, text2?: any, text3?: any) => {
     console.log('mylog', text, text2 ? text2 : '', text3 ? text3 : '');
 }
@@ -1619,3 +1621,28 @@ export const getRoleModuleAccess = (permissionName:PERMISSION_NAME)=>{
     let accessList:any  = getRoleModuleList();
     return accessList[permissionName]
 }
+
+export const queryStringToJSON = (qs: any) => {
+    qs = qs || location.search.slice(1);
+
+    var pairs = qs.split(/[&?]+/);
+
+    var result: any = {};
+    pairs.forEach(function (p: any) {
+        var pair = p.split('=');
+        var key = pair[0];
+        var value = decodeURIComponent(pair[1] || '');
+
+        if (result[key]) {
+            if (Object.prototype.toString.call(result[key]) === '[object Array]') {
+                result[key].push(value);
+            } else {
+                result[key] = [result[key], value];
+            }
+        } else {
+            result[key] = value;
+        }
+    });
+
+    return JSON.parse(JSON.stringify(result));
+};

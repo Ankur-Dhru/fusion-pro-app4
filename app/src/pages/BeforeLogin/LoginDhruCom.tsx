@@ -265,8 +265,8 @@ class LoginView extends Component<any> {
 
     _captchaRef: any;
     initdata: any = isDevelopment ? {
-        email: 'ankur9090_1026@dhrusoft.com',
-        password: 'Dhrunet1@',
+        email: 'ankur@dhrusoft.com',
+        password: 'Dhrunet1#',
     } : {
         email: '',
         password: ''

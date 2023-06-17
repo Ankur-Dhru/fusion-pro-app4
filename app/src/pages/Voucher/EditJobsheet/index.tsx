@@ -148,7 +148,7 @@ class EditJobsheet extends Component<any, any> {
             discountaccunt: defaultdiscountaccount,
             discounttype: "%",
             accountid: voucher.type.paymentreceiptaccountid || 4,
-            isPaymentReceived: false,
+            isPaymentReceived: '0',
             sendmail: isDefaultMail,
             vouchertypeid: voucher.type.vouchertypeid,
             vouchertype: vouchert,
@@ -597,7 +597,13 @@ class EditJobsheet extends Component<any, any> {
         }
 
         try {
+
+
+
             const {outstanding, ...body} = voucher.data;
+            if (Boolean(body?.voucherdisplayid)) {
+                body.voucherdisplayid = body.voucherdisplayid.toString();
+            }
 
             requestApi({
                 method: Boolean(voucher.data.voucherid) ? methods.put : methods.post,
@@ -717,7 +723,8 @@ class EditJobsheet extends Component<any, any> {
             convertedto: voucher.data.voucherid,
             fromanothervoucher: true,
             voucherstatus: 'Unpaid',
-            isPaymentReceived: true,
+            //isPaymentReceived: true, change for go to payment page
+            isPaymentReceived: '0',
         };
 
         const {defaultcurrency}: any = getCurrentCompanyDetails();
@@ -872,8 +879,7 @@ class EditJobsheet extends Component<any, any> {
 
         setNavigationOptions(navigation, title, colors);
 
-
-        const isDone = voucher.data.voucherstatus === '11a7d9ae-48aa-4f85-b766-33403636dc07';
+        const isDone = voucher.data?.voucherstatus === '11a7d9ae-48aa-4f85-b766-33403636dc07';
         const isConverted = Boolean(voucher.data.convertedid) && isDone
 
 

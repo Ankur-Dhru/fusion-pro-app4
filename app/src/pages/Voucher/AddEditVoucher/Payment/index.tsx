@@ -72,6 +72,8 @@ class Payment extends Component<any> {
     }
 
     validatePayment = () => {
+
+
         const {handleSubmit}: any = this.params;
         const {settings, route} = this.props;
 

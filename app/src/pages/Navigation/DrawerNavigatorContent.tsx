@@ -2,25 +2,31 @@ import React, {Component, Fragment} from 'react';
 import {Dimensions, Platform, TouchableOpacity, View} from 'react-native'
 import {setCompany, setPreferences, setSettings} from "../../lib/Store/actions/appApiData";
 import {connect} from "react-redux";
-import {Card, Divider, List, Text, withTheme} from 'react-native-paper';
+import {Card, Divider, List, Paragraph, Text, withTheme} from 'react-native-paper';
 
 import {styles} from "../../theme";
 import {
+    clone,
     getAppType,
-    getCurrentCompanyDetails,
+    getCurrentCompanyDetails, getInit, isDebug,
     log,
     logoutUser,
-    objToArray,
+    objToArray, queryStringToJSON, retrieveData,
     setAppType,
     storeData,
 } from "../../lib/functions";
 import {setModal} from "../../lib/Store/actions/components";
 import Settings from "../Settings";
 import {ScrollView} from "react-native-gesture-handler";
-import {ProIcon} from "../../components";
-import {chevronRight, current, nav} from "../../lib/setting";
+import {Button, InputBox, ProIcon} from "../../components";
+import {auth, chevronRight, current, loginUrl, nav} from "../../lib/setting";
 import {CommonActions} from "@react-navigation/native";
 import Avatar from "../../components/Avatar";
+import KeyboardScroll from "../../components/KeyboardScroll";
+import {Field, Form} from "react-final-form";
+import {composeValidators, required, startWithString} from "../../lib/static";
+import requestApi, {actions, methods, SUCCESS} from "../../lib/ServerRequest";
+import {afterAddWorkspace} from "../SetupWorkspace/AddWorkspace";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -43,7 +49,8 @@ class drawerContentComponents extends Component<any> {
             locations: [],
             currentuser: props.companydetails.currentuser,
             other: false,
-            currentworkspace: props.companydetails.currentuser
+            currentworkspace: props.companydetails.currentuser,
+            companydetails:props.companydetails
         }
         this._captchaRef2 = React.createRef();
     }
@@ -53,6 +60,8 @@ class drawerContentComponents extends Component<any> {
     }
 
     componentWillReceiveProps(nextProps: Readonly<any>, nextContext: any) {
+
+        this.setState({...this.state,companydetails:nextProps.companydetails})
 
         if (Boolean(this.oldCompany !== nextProps?.companydetails?.current)) {
             // log("componentWillReceivePropsTest", "this.oldCompany", this.oldCompany);
@@ -119,20 +128,34 @@ class drawerContentComponents extends Component<any> {
         }
     }
 
+    handleSubmit = (values:any) => {
+        requestApi({
+            method: methods.get,
+            action: 'workspace',
+            queryString:{workspace:values.companyname},
+            other: {url: loginUrl},
+        }).then((result) => {
+
+
+            /*let workspacelogin = result.data[0]?.workspace_login;
+            const params = queryStringToJSON(workspacelogin);
+            auth.token = params['t'];*/
+
+            afterAddWorkspace(values)
+        });
+    }
+
 
     render() {
 
 
-        const {companydetails, navigation, setCompany}: any = this.props;
+        const {navigation, setCompany}: any = this.props;
 
         const {colors}: any = this.props.theme;
 
-        const {other, currentworkspace}: any = this.state;
-
-
+        const {other, currentworkspace,companydetails}: any = this.state;
 
         const {username, adminid, email}: any = getCurrentCompanyDetails();
-
 
 
         // @ts-ignore
@@ -206,15 +229,9 @@ class drawerContentComponents extends Component<any> {
 
                                 {
                                     Boolean(companydetails?.companies) && Object.keys(companydetails?.companies).map((currentuser, id) => {
-
                                         let cmp = companydetails.companies[currentuser];
-
-
                                         let companylocations: any = objToArray(cmp.locations);
-
-
                                         let cw = Boolean(companydetails['currentuser'] === currentuser);
-
 
                                         return (
 
@@ -298,9 +315,44 @@ class drawerContentComponents extends Component<any> {
 
                             </List.Section>
 
+                            {isDebug &&  <Form
+                                onSubmit={this.handleSubmit}
+                                render={({handleSubmit, submitting, values, ...more}: any) => (
+                                    <View style={[styles.grid,{paddingHorizontal:10}]}>
+                                        <View style={[styles.w_auto]}>
+                                            <Field name="companyname"
+                                                   validate={composeValidators(required, startWithString)}>
+                                                {props => (
+                                                    <InputBox
+                                                        {...props}
+                                                        value={props.input.value}
+                                                        label={'Workspace'}
+                                                        autoFocus={false}
+                                                        autoCapitalize='none'
+                                                        onChange={props.input.onChange}
+                                                    />
+                                                )}
+                                            </Field>
+                                        </View>
+
+                                        <View style={[styles.submitbutton]}>
+                                            <Button disable={more.invalid} secondbutton={more.invalid} onPress={() => {
+                                                handleSubmit(values)
+                                            }}>Add</Button>
+                                        </View>
+
+                                    </View>
+
+                                )}
+                            >
+                            </Form>}
+
                         </ScrollView>
                     </Card.Content>
                 </Card>
+
+
+
 
                 <Card style={[styles.card]}>
                     <Card.Content style={[styles.cardContent, {paddingHorizontal: 0}]}>

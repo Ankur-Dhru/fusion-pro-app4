@@ -14,7 +14,7 @@ const MyComponent = (props:any) => {
             <RadioButton.Group onValueChange={value => {
                 setValue(value);
                 props.onChange(value);
-            }} value={value}  >
+            }} value={value}>
                 {
                     props.list.map((item:any)=>{
                         return (

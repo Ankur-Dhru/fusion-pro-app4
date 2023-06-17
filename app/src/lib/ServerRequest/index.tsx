@@ -51,7 +51,6 @@ const requestApi = async ({
 
     let token = auth.token && auth.token;
 
-
     if (!defaultvalues.internetconnection) {
         store.dispatch(setAlert({
             message: 'No internet connections are available',
@@ -101,6 +100,7 @@ const requestApi = async ({
     }
 
     if (token) {
+       // console.log('token',token)
         headers = {
             ...headers,
             'Authorization': 'Bearer ' + token,

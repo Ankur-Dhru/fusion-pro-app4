@@ -198,7 +198,7 @@ class Attachment extends Component<any> {
         ImagePicker.openCamera({
             cropping: cropping,
             freeStyleCropEnabled: true,
-            compressImageQuality:0.3,
+            compressImageQuality:Platform.OS === 'ios'?1:0.6,
             includeExif: true,
             mediaType,
         })
@@ -217,7 +217,7 @@ class Attachment extends Component<any> {
             freeStyleCropEnabled: true,
             compressImageMaxWidth: 1000,
             compressImageMaxHeight: 1000,
-            compressImageQuality: 0.3,
+            compressImageQuality:Platform.OS === 'ios'?1:0.6,
             compressVideoPreset: 'MediumQuality',
             includeExif: true,
             cropperStatusBarColor: 'white',
@@ -240,7 +240,7 @@ class Attachment extends Component<any> {
             maxFiles:10,
             waitAnimationEnd: false,
             freeStyleCropEnabled: true,
-            compressImageQuality:0.3,
+            compressImageQuality:Platform.OS === 'ios'?1:0.6,
             sortOrder: 'desc',
             includeExif: true,
             forceJpg: true,
