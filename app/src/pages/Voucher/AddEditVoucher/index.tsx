@@ -1137,6 +1137,7 @@ class VoucherView extends Component<any> {
         if (this.isOutsourcing) {
             this.updateOutsourcing();
         } else {
+
             const {navigation, companydetails, setCompany, preferences: {printpreviewdisable}} = this.props;
 
             voucher.data.date = moment(voucher.data.date).format('YYYY-MM-DD');
@@ -1153,17 +1154,21 @@ class VoucherView extends Component<any> {
                 }
             }
 
-
             /////// remove extra json ///////
             delete voucher.data?.clientdetail;
+            //delete voucher.data?.invoiceitems;
             voucher.data?.invoiceitems.map((item: any) => {
-                delete item.itemdetail
+                delete item.itemdetail;
+                delete item.settings;
             })
+
+
             if (Boolean(voucher.data?.voucheritems)) {
                 Object.keys(voucher.data?.voucheritems).map((key: any) => {
                     delete voucher.data?.voucheritems[key].itemdetail
                 })
             }
+
             if (!voucher.data?.assettype) {
                 delete voucher.data.assetdata;
             }
@@ -1182,7 +1187,6 @@ class VoucherView extends Component<any> {
 
             try {
 
-                console.log('voucher.data',JSON.stringify(voucher.data))
 
                 requestApi({
                     method: Boolean(voucher?.data?.voucherid) ? methods.put : methods.post,

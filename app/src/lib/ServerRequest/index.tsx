@@ -100,7 +100,7 @@ const requestApi = async ({
     }
 
     if (token) {
-       // console.log('token',token)
+        console.log('token',token)
         headers = {
             ...headers,
             'Authorization': 'Bearer ' + token,
