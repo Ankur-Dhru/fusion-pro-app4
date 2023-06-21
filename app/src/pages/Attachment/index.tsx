@@ -16,6 +16,7 @@ import {ProIcon} from "../../components";
 import ActionSheet from '../../components/ActionSheet';
 import ImagePicker from "react-native-image-crop-picker";
 import ThumbView from "./ThumbView";
+import {Dimensions} from 'react-native';
 
 import Confirm from "react-native-actionsheet";
 
@@ -24,8 +25,10 @@ class Attachment extends Component<any> {
 
     camera: any;
     ActionSheet2: any;
+    attachmentindex: any;
 
-    attachmentindex: any
+    windowWidth = Dimensions.get('window').width;
+    windowHeight = Dimensions.get('window').height;
 
     constructor(props: any) {
         super(props);
@@ -197,9 +200,9 @@ class Attachment extends Component<any> {
     pickSingleWithCamera(cropping: any, mediaType: any = 'photo') {
         ImagePicker.openCamera({
             cropping: cropping,
-            freeStyleCropEnabled: true,
-            compressImageQuality:Platform.OS === 'ios'?1:0.6,
-            includeExif: true,
+            width: 450,
+            height: 600,
+            compressImageQuality: 1,
             mediaType,
         })
             .then((image) => {

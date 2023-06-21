@@ -139,8 +139,8 @@ android {
         applicationId "com.dhru.account"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 148
-        versionName "1.4.8"
+        versionCode 149
+        versionName "1.4.9"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         missingDimensionStrategy 'react-native-camera', 'general'
 

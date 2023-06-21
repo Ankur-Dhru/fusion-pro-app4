@@ -191,7 +191,7 @@ class VoucherView extends Component<any> {
             istcs,
             isadjustment,
             paymentreceiptaccountid,
-        } = vouchers[voucher.type.vouchertypeid];
+        } = vouchers[voucher?.type?.vouchertypeid];
 
 
         let currentdate = moment().format("YYYY-MM-DD");
@@ -248,7 +248,7 @@ class VoucherView extends Component<any> {
             accountid: paymentreceiptaccountid || 4,
             isPaymentReceived: false,
             sendmail: isDefaultMail,
-            vouchertypeid: voucher.type.vouchertypeid,
+            vouchertypeid: voucher.type?.vouchertypeid,
             vouchertype: vouchert,
             vouchernotes: defaultcustomernotes || '',
             toc: defaultterms,
@@ -274,7 +274,7 @@ class VoucherView extends Component<any> {
             voucher.data.selectedtemplate = printtemplate;
         }
 
-        this.state = {isloading: !Boolean(voucher.type.voucherdisplayid)}
+        this.state = {isloading: !Boolean(voucher.type?.voucherdisplayid)}
 
         this.title = voucher.type.label;
         this.subtitle = voucher.type.rightvouchertypename;

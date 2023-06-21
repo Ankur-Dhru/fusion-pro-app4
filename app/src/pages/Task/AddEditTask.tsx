@@ -466,7 +466,6 @@ class AddEditTask extends Component<any> {
                 screen = edit_screen;
             }
             this.formfields = this.taskscreens[screen].tabs;
-
             this.forceUpdate()
         }
     }
