@@ -394,7 +394,7 @@ class SearchItem extends Component<any> {
 
         let voucheritemid = findinVoucher[0]?.voucheritemid || item.itemid;
 
-        if (Boolean(voucheritems[voucheritemid])) {
+        if (Boolean(voucheritems) && Boolean(voucheritems[voucheritemid])) {
             voucheritems[voucheritemid].itemunique = voucheritemid;
         }
 

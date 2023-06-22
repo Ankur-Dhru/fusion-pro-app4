@@ -1,12 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {styles} from "../../theme";
 import {Card, Paragraph, withTheme} from "react-native-paper";
 import {View} from "react-native";
 import {chevronRight, voucher} from "../../lib/setting";
 import {getVoucherTypeData} from "../../lib/functions";
+import {v4 as uuidv4} from "uuid";
+import CopyToInvoice from "../Voucher/EditJobsheet/CopyToInvoice";
 
 const JobDetailCard = (props: any) => {
-    const {jobdisplayid, navigation, jobnumber, theme, warranty, priority, assetdata} = props;
+
+
+    const {jobdisplayid, navigation, jobnumber, theme,ticketstatus,invoicestatus,converteddisplayid,convertedto,outdisplayid,outprefix,jobstatus, warranty, priority, assetdata} = props;
 
     const {colors} = theme;
     return <Card style={[styles.card]} onPress={() => {
@@ -28,6 +32,13 @@ const JobDetailCard = (props: any) => {
                         {assetdata?.assetname}
                         {(Boolean(assetdata?.basefield) && Boolean(assetdata?.basefield != assetdata?.assetname)) && ` (${assetdata?.basefield})`}
                     </Paragraph>
+
+                    {
+                        Boolean(jobstatus) && <>
+                            <Paragraph style={[styles.mt_2]}><CopyToInvoice navigation={navigation} outprefix={outprefix} jobstatus={jobstatus}  outdisplayid={outdisplayid}    key={uuidv4()} /></Paragraph>
+                        </>
+                    }
+
 
                 </View>
                 <View style={[styles.grid, styles.justifyContent]}>

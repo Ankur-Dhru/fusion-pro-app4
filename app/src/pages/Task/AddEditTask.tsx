@@ -756,6 +756,7 @@ class AddEditTask extends Component<any> {
             return b.sort - a.sort
         });
 
+        console.log('this.initdata',this.initdata)
 
         return (
             <Container>
@@ -853,7 +854,7 @@ class AddEditTask extends Component<any> {
                                     Boolean(this.initdata?.jobnumber) &&
                                     Boolean(this.initdata?.jobdisplayid !== null) &&
                                     Boolean(this.initdata?.jobnumber !== null)) &&
-                                <JobDetailCard {...this.initdata} navigation={navigation}/>
+                                <JobDetailCard {...this.initdata} navigation={navigation}  />
                             }
 
                             <Card style={[styles.card]}>
