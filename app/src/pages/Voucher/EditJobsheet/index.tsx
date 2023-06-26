@@ -3,7 +3,7 @@ import {Button, Container, Menu, ProIcon} from "../../../components";
 import {setNavigationOptions} from "../../../lib/navigation_options";
 import {Card, Paragraph, Title, withTheme} from "react-native-paper";
 import {apiUrl, backupVoucher, current, update, voucher} from "../../../lib/setting";
-import {TouchableOpacity, View} from "react-native";
+import {View} from "react-native";
 import {styles} from "../../../theme";
 import InputField from "../../../components/InputField";
 import {ACCESS_TYPE, taxTypes} from "../../../lib/static";
@@ -18,7 +18,6 @@ import {
     getAssetData,
     getCurrentCompanyDetails,
     getRoleModuleList,
-    getVoucherTypeData,
     isEmpty,
     log,
     setDecimal
@@ -30,7 +29,7 @@ import {
     setVoucherItems,
     updateVoucherItems
 } from "../../../lib/Store/actions/appApiData";
-import {setAlert, setDialog, setLoader, setModal, setPageSheet} from "../../../lib/Store/actions/components";
+import {setAlert, setDialog, setLoader, setModal} from "../../../lib/Store/actions/components";
 import {connect} from "react-redux";
 import requestApi, {actions, jsonToQueryString, methods, SUCCESS} from "../../../lib/ServerRequest";
 import ClientCard from "./ClientCard";
@@ -42,8 +41,6 @@ import EstimateCard from "./EstimateCard";
 import KeyboardScroll from "../../../components/KeyboardScroll";
 import DeleteButton from "../../../components/Button/DeleteButton";
 import {v4 as uuidv4} from 'uuid';
-import {getProductData} from "../../../lib/voucher_calc";
-import QRCode from "../AddEditVoucher/Payment/QRCode";
 import Signature from "./Signature";
 import CopyToInvoice from "./CopyToInvoice";
 
@@ -600,7 +597,6 @@ class EditJobsheet extends Component<any, any> {
         try {
 
 
-
             const {outstanding, ...body} = voucher.data;
             if (Boolean(body?.voucherdisplayid)) {
                 body.voucherdisplayid = body.voucherdisplayid.toString();
@@ -744,7 +740,7 @@ class EditJobsheet extends Component<any, any> {
 
     render() {
 
-        const {navigation, settings, theme: {colors}, vouchers,setModal}: any = this.props;
+        const {navigation, settings, theme: {colors}, vouchers, setModal}: any = this.props;
         const {isloading, editmode}: any = this.state;
 
 
@@ -772,11 +768,11 @@ class EditJobsheet extends Component<any, any> {
                             }}>
                                 <ProIcon name={editmode ? 'eye' : 'pen-to-square'} size={16}/>
                             </Title>}
-                            <Menu menulist={this.menuitems} onPress={(value: any) => {
-                                this.clickMenu(value)
-                            }}>
-                                <ProIcon name={'ellipsis-vertical'} align={'right'}/>
-                            </Menu>
+                        <Menu menulist={this.menuitems} onPress={(value: any) => {
+                            this.clickMenu(value)
+                        }}>
+                            <ProIcon name={'ellipsis-vertical'} align={'right'}/>
+                        </Menu>
                     </>}
                 </View>
             </>
@@ -789,7 +785,7 @@ class EditJobsheet extends Component<any, any> {
                 render={({handleSubmit, submitting, values, ...more}: any) => {
 
 
-                    console.log('voucher.data',voucher.data)
+                    console.log('voucher.data', voucher.data)
 
                     let status = "";
                     let color = "";
@@ -805,13 +801,13 @@ class EditJobsheet extends Component<any, any> {
                             return status.ticketstatusdisplay ? {
                                 label: status.ticketstatusname,
                                 value: key,
-                                color: status.ticketstatuscolor
+                                color: status.ticketstatuscolor,
+                                ...status
                             } : false
                         }).filter((value: any) => {
                             return Boolean(value)
                         });
                     }
-
 
                     return <View style={[styles.h_100]}>
                         <KeyboardScroll>
@@ -842,15 +838,24 @@ class EditJobsheet extends Component<any, any> {
                                                 key={uuidv4()}
                                                 listtype={'task_status'}
                                                 selectedValue={values.voucherstatus}
-                                                onChange={(v: any) => {
+                                                onChange={(v: any,more:any) => {
+
                                                     if (!isConverted) {
+
+
+
                                                         voucher.data.voucherstatus = v;
                                                         voucher.data.taskstatus = v;
 
-                                                        if(voucher.data.signaturerequired && v === '11a7d9ae-48aa-4f85-b766-33403636dc07'){ // status is done
-                                                            setModal({title: 'Signature', visible: true, component: () => <Signature setVoucherData={this.setVoucherData} values={values} handleSubmit={this.handleSubmit} />})
-                                                        }
-                                                        else {
+                                                        if (voucher.data.signaturerequired && (more.taskstatus === 'done')) { // status is done //v === '11a7d9ae-48aa-4f85-b766-33403636dc07' ||
+                                                            setModal({
+                                                                title: 'Signature',
+                                                                visible: true,
+                                                                component: () => <Signature
+                                                                    setVoucherData={this.setVoucherData} values={values}
+                                                                    handleSubmit={this.handleSubmit}/>
+                                                            })
+                                                        } else {
                                                             this.setVoucherData(values);
                                                             this.handleSubmit();
                                                             this.forceUpdate();
@@ -862,7 +867,10 @@ class EditJobsheet extends Component<any, any> {
                                     </View>
 
 
-                                     <CopyToInvoice navigation={navigation} key={uuidv4()} jobstatus={voucher.data.voucherstatus} outprefix={'#INV-'}   outdisplayid={voucher.data.converteddisplayid} convertedto={voucher.data.convertedto}  />
+                                    <CopyToInvoice navigation={navigation} key={uuidv4()}
+                                                   jobstatus={voucher.data.voucherstatus} outprefix={'#INV-'}
+                                                   outdisplayid={voucher.data.converteddisplayid}
+                                                   convertedto={voucher.data.convertedto}/>
 
 
                                     <View>
@@ -1059,7 +1067,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     setAlert: (alert: any) => dispatch(setAlert(alert)),
     setDialog: (dialog: any) => dispatch(setDialog(dialog)),
     setLoader: (loader: any) => dispatch(setLoader(loader)),
-    setModal:(page:any) => dispatch(setModal(page)),
+    setModal: (page: any) => dispatch(setModal(page)),
     resetVoucherItems: () => dispatch(resetVoucherItems()),
 });
 
