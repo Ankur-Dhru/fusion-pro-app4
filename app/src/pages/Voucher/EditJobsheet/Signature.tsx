@@ -45,10 +45,11 @@ class Index extends React.Component<any> {
             if (response?.download_url)
             {
                 voucher.data.signature = response?.download_url;
+
                 setModal({visible:false})
-                setVoucherData(values);
+                Boolean(setVoucherData) && setVoucherData(values);
                 setLoader({show: false})
-                handleSubmit();
+                Boolean(handleSubmit) && handleSubmit();
             }
         }).then(r => {
 

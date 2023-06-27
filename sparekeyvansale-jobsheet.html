@@ -1,0 +1,549 @@
+<div><style media="all" type="text/css">
+
+
+    @font-face {
+        font-family: 'Google Sans';
+        font-style: normal;
+        font-weight: 400;
+        src: url(https://fonts.gstatic.com/s/googlesans/v27/4UaGrENHsxJlGDuGo1OIlL3Awp5eKQtGBlc.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    .pcs-template {
+        font-family: 'Roboto','OpenSans';
+        font-size: 8pt;
+        color: #000000;
+        background:  #FFFFFF ;
+    }
+
+    .pcs-header-content {
+        font-size: 9pt;
+        color: #333333;
+        background-color: #ffffff;
+    }
+    .pcs-template-body {
+        padding: 1rem;
+    }
+    .pcs-template-footer {
+        height: 0.700000in;
+        font-size: 6pt;
+        color: #aaaaaa;
+        padding: 1rem;
+        background-color: #ffffff;
+    }
+    .pcs-footer-content {
+        word-wrap: break-word;
+        color: #aaaaaa;
+        border-top: 1px solid #adadad;
+    }
+
+    .pcs-label {
+        color: #333333;
+    }
+    .pcs-entity-title {
+        font-size: 28pt;
+        color: #000000;
+    }
+    .pcs-orgname {
+        font-size: 10pt;
+        color: #333333;
+    }
+    .pcs-customer-name {
+        font-size: 9pt;
+        color: #333333;
+    }
+    .pcs-itemtable-header {
+        font-size: 9pt;
+        color: #ffffff;
+        background-color: #3c3d3a;
+    }
+    .pcs-itemtable-breakword {
+        word-wrap: break-word;
+    }
+    .pcs-taxtable-header {
+        font-size: 9pt;
+        color: #ffffff;
+        background-color: #3c3d3a;
+    }
+    .breakrow-inside {
+        page-break-inside: avoid;
+    }
+    .breakrow-after {
+        page-break-after:auto;
+    }
+    .pcs-item-row {
+        font-size: 9pt;
+        border-bottom: 1px solid #adadad;
+        background-color: #ffffff;
+        color: #000000;
+    }
+    .pcs-item-sku {
+        margin-top: 2px;
+        font-size: 10px;
+        color: #444444;
+    }
+    .pcs-item-desc {
+        color: #333333;
+        font-size: 8pt;
+    }
+    .pcs-balance {
+        background-color: #f5f4f3;
+        font-size: 9pt;
+        color: #000000;
+    }
+    .pcs-totals {
+        font-size: 9pt;
+        color: #000000;
+        background-color: #ffffff;
+    }
+    .pcs-notes {
+        font-size: 8pt;
+    }
+    .pcs-terms {
+        font-size: 8pt;
+    }
+    .pcs-header-first {
+        background-color: #ffffff;
+        font-size: 9pt;
+        color: #333333;
+        height: auto;
+    }
+
+    .pcs-status {
+        font-size: 15pt;
+        border: 3px solid ;
+        padding: 3px 8px;
+    }
+    .billto-section {
+        padding-top: 0mm;
+        padding-left: 0mm;
+    }
+    .shipto-section {
+        padding-top: 0mm;
+        padding-left: 0mm;
+    }
+
+    @page :first {
+        @top-center {
+            content: element(header);
+        }
+        margin-top: 0.700000in;
+    }
+
+    .pcs-template-header {
+        padding: 1rem;
+        height: 0.700000in;
+    }
+    .pcs-itemtable-description {
+        width: 40%
+    }
+
+    .pcs-template-fill-emptydiv {
+        display: table-cell;
+        content: " ";
+        width: 100%;
+    }
+
+    .inline {
+        display: inline-block;
+    }
+    .v-top {
+        vertical-align: top;
+    }
+    .text-align-right {
+        text-align: right;
+    }
+    .rtl .text-align-right {
+        text-align: left;
+    }
+    .text-align-left {
+        text-align: left;
+    }
+    .rtl .text-align-left {
+        text-align: right;
+    }
+    .float-section-right {
+        float: right;
+    }
+    .rtl .float-section-right{
+        float: left;
+    }
+    .float-section-left {
+        float: left;
+    }
+    .rtl .float-section-left{
+        float: right;
+    }
+
+    /* Helper Classes End */
+
+    .item-details-inline {
+        display: inline-block;
+        margin: 0 10px;
+        vertical-align: top;
+        max-width: 70%;
+    }
+
+    .total-in-words-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .total-in-words-label {
+        vertical-align: top;
+        padding: 0 10px;
+    }
+    .total-in-words-value {
+        width: 170px;
+    }
+    .total-section-label {
+        padding: 5px 10px 5px 0;
+        vertical-align: middle;
+    }
+    .total-section-value {
+        width: 120px;
+        vertical-align: middle;
+        padding: 10px 10px 10px 5px;
+    }
+    .rtl .total-section-value {
+        padding: 10px 5px 10px 10px;
+    }
+
+    .tax-summary-description {
+        color: #727272;
+        font-size: 8pt;
+    }
+
+    .bharatqr-bg {
+        background-color: #f4f3f8;
+    }
+
+    .rtl th {
+        text-align: inherit;
+    }
+    .sign-border {
+        width: 200px;
+        border-bottom: 1px solid #000;
+    }
+    .sign-label {
+        display: table-cell;
+        font-size: 10pt;
+        padding-right: 5px;
+    }
+
+    .subject-block {
+        margin-top: 20px;
+    }
+    .subject-block-value {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        line-height: 14pt;
+        margin-top:5px;
+    }
+
+    .lineitem-column {
+        padding: 10px 10px 5px 10px;
+        word-wrap: break-word;
+        vertical-align: top;
+    }
+    .lineitem-content-right {
+        padding: 10px 10px 10px 5px;
+    }
+    .rtl .lineitem-content-right {
+        padding: 10px 5px 10px 10px;
+    }
+    .total-number-section {
+        width: 45%;
+        padding: 5px 10px 3px 3px;
+        font-size: 9pt;
+        float: left;
+    }
+    .rtl .total-number-section {
+        float: right;
+    }
+    .total-section {
+        float: right;
+        width: 50%;
+    }
+    .rtl .total-section {
+        float: left;
+    }
+    .d-flex{
+        display: flex;
+        align-items: center;
+    }
+    .mr-3{
+        margin-right: 1rem;
+    }
+    .badge-Paid{
+        color: green;
+    }
+    .badge-Unpaid{
+        color: red;
+    }
+</style>
+
+
+
+    <div class="pcs-template ">
+
+
+        <div class="pcs-template-body">
+            <table style="width:100%;table-layout: fixed;">
+                <tbody>
+                <tr>
+                    <td style="vertical-align: middle; width:50%;">
+                        <div class="d-flex">
+                            {{#logo}}
+                            <div class="mr-3">
+                                <img src="{{logo}}" style="max-width:150px;" id="logo_content">
+                            </div>
+                            {{/logo}}
+                            <div>
+                                <span class="pcs-orgname"><b>{{company}}</b></span><br>
+                                <span class="pcs-label">
+                              <span   id="tmp_org_address">
+                                   {{address}} <br/>
+                                    {{state}} <br/>
+                                    {{country}} <br/>
+                                    {{taxnumber}}
+                              </span>
+                            </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-align-right v-top" style="width:50%;vertical-align: middle">
+                        <span class="pcs-entity-title">Jobsheet</span><br>
+                        <span id="tmp_entity_number" style="font-size: 10pt;" class="pcs-label"><b>{{vouchernumber}}</b></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;margin-top:30px;table-layout:fixed;">
+                <tbody><tr>
+                    <td style="width:30%;vertical-align:top;word-wrap: break-word;">
+                        <div><label style="font-size: 10pt;"   class="pcs-label">Clients Billing</label>
+                            <br><br>
+                            <span style="white-space: pre-wrap;"  ><strong><span class="pcs-customer-name" id="zb-pdf-customer-detail">{{billtoname}}</span></strong>
+{{billtoaddress}}
+{{billtotax}}</span>
+                        </div>
+
+                    </td>
+
+
+
+                    <td style="width:30%;vertical-align:top;word-wrap: break-word;">
+                        <div style="clear:both;width:50%;">
+                            <label style="font-size: 10pt;" id="tmp_shipping_address_label" class="pcs-label">Clients Asset</label>
+                            <br><br>
+                            <span style="white-space: pre-wrap;" id="tmp_shipping_address"><strong>{{assetname}}</strong>
+<span style="font-size: 12px">{{assetdetail}}</span> </span>
+                        </div>
+
+                    </td>
+
+                    <td align="right" style="vertical-align:top;">
+                        <table style="word-wrap: break-word;" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                            <tr>
+                                <td style="padding:0px 10px 5px 0px;font-size:10pt;" class="text-align-right">
+                                    <span class="pcs-label">Estimate Date :</span>
+                                </td>
+                                <td class="text-align-right" style="width: 70px">
+                                    <span id="tmp_entity_date">{{voucherdate}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px 10px 5px 0px;font-size: 10pt;" class="text-align-right">
+                                    <span class="pcs-label">Estimated Due Date :</span>
+                                </td>
+                                <td class="text-align-right">
+                                    <span id="tmp_due_date">{{voucherduedate}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px 10px 5px 0px;font-size: 10pt;" class="text-align-right">
+                                    <span class="pcs-label">Reference# :</span>
+                                </td>
+                                <td class="text-align-right">
+                                    <span id="tmp_ref_number">{{voucherorder}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px 10px 5px 0px;font-size: 10pt;" class="text-align-right">
+                                    <span class="pcs-label">Advance Payment:</span>
+                                </td>
+                                <td class="text-align-right">
+                                    <span id="">{{advancepayment}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody></table>
+            <div style="white-space: pre-wrap;margin: 2rem 0;" id="tmp_attention_content">Place Of Supply: {{placeofsupply}}</div>
+
+
+
+            <table style="width:100%;margin-top:20px;table-layout:fixed;" class="pcs-itemtable" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr style="height:32px;">
+                    <td style="padding: 5px 0px 5px 5px;width: 5%;text-align: center;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        #
+                    </td>
+                    <td style="padding: 5px 10px 5px 20px;width: 30%;text-align: left;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        Item &amp; Description
+                    </td>
+                    <td style="padding: 5px 10px 5px 5px;width: 15%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        HSN/SAC
+                    </td>
+                    <td style="padding: 5px 10px 5px 5px;width: 11%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        Qty
+                    </td>
+                    <td style="padding: 5px 10px 5px 5px;width: 11%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        Rate
+                    </td>
+                    <td style="padding: 5px 10px 5px 5px;width: 11%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        Discount
+                    </td>
+                    {{#taxnames}}
+                    <td style="padding: 5px 10px 5px 5px;width: 11%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        {{taxname}}
+                    </td>
+                    {{/taxnames}}
+                    <td style="padding: 5px 10px 5px 5px;width: 15%;text-align: right;" class="pcs-itemtable-header pcs-itemtable-breakword">
+                        Amount
+                    </td>
+
+                </tr>
+                </thead>
+                <tbody class="itemBody">
+                {{#voucheritems}}
+                <tr class="breakrow-inside breakrow-after">
+                    <td valign="top" style="padding: 10px 0 10px 5px;text-align: center;word-wrap: break-word;" class="pcs-item-row">
+                        {{voucheritemid}}
+                    </td>
+                    <td style="padding: 10px 0px 10px 20px;" class="pcs-item-row lineitem-column">
+                        <div>
+                            <div>
+                                <span style="word-wrap: break-word;" id="tmp_item_name">{{voucheritemname}}</span><br>
+                                <span style="white-space: pre-wrap;word-wrap: break-word;" class="pcs-item-desc" id="tmp_item_description">{{voucheritemdescription}}</span>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td valign="top" class="pcs-item-row lineitem-column text-align-right">
+                        <span >{{voucheritemhsn}}</span>
+                    </td>
+                    <td valign="top" class="pcs-item-row lineitem-column text-align-right">
+                        <span >{{voucheritemqty}}</span>
+                        <span class="pcs-item-desc">{{voucheritemunit}}</span>
+                    </td>
+                    <td valign="top" class="pcs-item-row lineitem-column text-align-right">
+                        <span id="tmp_item_rate">{{voucheritemrate}}</span>
+                    </td>
+                    <td valign="top" class="pcs-item-row lineitem-column text-align-right" id="tmp_item_discount">
+                        {{voucheritemdiscount}}
+                    </td>
+
+                    {{#voucheritemtax}}
+                    <td valign="top" class="pcs-item-row lineitem-column lineitem-content-right text-align-right">
+                        <div id="tmp_item_tax_amount">{{voucheritemtaxamount}}
+                            <span class="pcs-item-desc">({{voucheritemtaxper}}%) </span> </div>
+                    </td>
+                    {{/voucheritemtax}}
+
+                    <td valign="top" class="pcs-item-row lineitem-column lineitem-content-right text-align-right">
+                        <span id="tmp_item_amount">{{voucheritemamount}}</span>
+                    </td>
+                </tr>
+                {{/voucheritems}}
+                </tbody>
+            </table>
+            <div style="width: 100%;margin-top: 1px;">
+                <div class="total-number-section">
+                    <div>
+                        <div>
+
+                            <div style="clear:both;width:100%;">
+                                Total In Words : <label style="font-size: 10pt;"  class="pcs-label">{{vouchertotalinwords}}</label>
+                            </div>
+
+                            {{#customernotes}}
+                            <div style="clear:both;margin-top:30px;width:100%;">
+                                <label style="font-size: 10pt;"   class="pcs-label">Notes</label><br>
+                                <p style="margin-top:7px;white-space: pre-wrap;word-wrap: break-word;" class="pcs-notes">{{customernotes}}</p>
+                            </div>
+                            {{/customernotes}}
+
+                            <div style="clear:both;margin-top:10px;width:100%;">
+                                <p style="margin-top:7px;white-space: pre-wrap;word-wrap: break-word;" class="pcs-terms">{{vouchertoc}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="total-section">
+                    <table class="pcs-totals" cellspacing="0" border="0" width="100%">
+                        <tbody>
+                        <tr>
+                            <td class="total-section-label text-align-right">Sub Total</td>
+                            <td id="tmp_subtotal" class="total-section-value text-align-right">{{vouchersubtotal}}</td>
+                        </tr>
+
+                        {{#vouchertax}}
+                        <tr style="height:10px;">
+                            <td class="total-section-label text-align-right">{{taxname}}  </td>
+                            <td class="total-section-value text-align-right">{{taxamount}} </td>
+                        </tr>
+                        {{/vouchertax}}
+
+                        <tr>
+                            <td class="total-section-label text-align-right">Discount</td>
+                            <td class="total-section-value text-align-right">
+                                {{vouchertotaldiscount}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="total-section-label text-align-right">Roundoff</td>
+                            <td class="total-section-value text-align-right">{{voucherroundoff}} </td>
+                        </tr>
+
+                        <tr style="height:40px;" class="pcs-balance">
+                            <td class="total-section-label text-align-right"><b>Total</b></td>
+                            <td id="tmp_total" class="total-section-value text-align-right"><b>{{vouchertotal}}</b></td>               </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+
+
+
+
+
+            <div style="page-break-inside: avoid;">
+                <div style="margin-top:30px;" class="">
+                    <label class="pcs-label sign-label">Authorized Signature</label>
+                    <div style="display: table-cell;">
+                        <div class="sign-border inline"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div style="float: right">
+                <div>
+                    <img style="height:200px" src="https://{{signature}}">
+                </div>
+            </div>
+
+            <div style="clear: both"></div>
+
+
+        </div>
+
+
+    </div>
+</div>

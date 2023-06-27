@@ -39,6 +39,7 @@ import DeleteButton from "../../components/Button/DeleteButton";
 import {v4 as uuidv4} from "uuid";
 import {NavigationActions} from "react-navigation";
 import JobDetailCard from "./JobDetailCard";
+import Signature from "../Voucher/EditJobsheet/Signature";
 
 
 const {tickettype, tasktype}: any = defaultvalues;
@@ -192,7 +193,8 @@ class AddEditTask extends Component<any> {
             return status.ticketstatusdisplay ? {
                 label: status.ticketstatusname,
                 value: key,
-                color: status.ticketstatuscolor
+                color: status.ticketstatuscolor,
+                ...status
             } : false
         }).filter((value: any) => {
             return Boolean(value)
@@ -839,9 +841,20 @@ class AddEditTask extends Component<any> {
                                                 listtype={'task_status'}
 
                                                 selectedValue={this.initdata['ticketstatus']}
-                                                onChange={(value: any) => {
-                                                    this.initdata['ticketstatus'] = value
+                                                onChange={(value: any,more:any) => {
+                                                    this.initdata['ticketstatus'] = value;
+
+                                                    if (this.initdata.signaturerequired && (more.taskstatus === 'done')) {
+                                                        setModal({
+                                                            title: 'Signature',
+                                                            visible: true,
+                                                            component: () => <Signature />
+                                                        })
+                                                    }
+
                                                 }}
+
+
                                             />
 
                                         </View>

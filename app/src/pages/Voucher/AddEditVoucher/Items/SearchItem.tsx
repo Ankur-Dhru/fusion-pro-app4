@@ -58,7 +58,7 @@ class SearchItem extends Component<any> {
         super(props);
 
 
-        this.favouriteitems = props.companydetails.companies[props.companydetails.currentuser].services[voucher.type.vouchertypeid] || [];
+        this.favouriteitems = props.companydetails?.companies[props.companydetails.currentuser].services[voucher.type.vouchertypeid] || [];
 
         this.state = {
             searchbar: false,
