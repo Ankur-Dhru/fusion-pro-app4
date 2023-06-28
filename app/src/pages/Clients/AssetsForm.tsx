@@ -566,6 +566,7 @@ const AssetsForm = ({
                                                                         {...props}
                                                                         value={props.input.value}
                                                                         label={name}
+                                                                        placeholder={''}
                                                                         inputtype={type === "textarea" ? 'textarea' : 'textbox'}
                                                                         secureTextEntry={type === "password"}
                                                                         multiline={type === "textarea"}
@@ -588,6 +589,7 @@ const AssetsForm = ({
                                                                         {...props}
                                                                         value={props.input.value}
                                                                         label={name}
+                                                                        placeholder={''}
                                                                         inputtype={'scan'}
                                                                         validateWithError={true}
 

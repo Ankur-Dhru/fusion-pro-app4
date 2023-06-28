@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Appearance, Platform, TouchableOpacity, View} from 'react-native';
+import {Appearance, Image, Platform, TouchableOpacity, View} from 'react-native';
 import {styles} from "../../../theme";
 import {v4 as uuidv4} from 'uuid';
 import requestApi, {actions, jsonToQueryString, methods, SUCCESS} from "../../../lib/ServerRequest";
@@ -158,6 +158,7 @@ class VoucherView extends Component<any> {
             }
         }
 
+
     }
 
     setOutsourcingData = () => {
@@ -191,8 +192,8 @@ class VoucherView extends Component<any> {
             istcs,
             isadjustment,
             paymentreceiptaccountid,
+            isdisplaysign,
         } = vouchers[voucher?.type?.vouchertypeid];
-
 
         let currentdate = moment().format("YYYY-MM-DD");
 
@@ -259,6 +260,7 @@ class VoucherView extends Component<any> {
             istds,
             istcs,
             adjustmenttype: 'qty',
+            isdisplaysign:isdisplaysign,
             ...voucher.data.copyinvoice,
         }
 
@@ -329,7 +331,7 @@ class VoucherView extends Component<any> {
 
                 if (result.status === SUCCESS) {
 
-                    const {vouchercreatetime, date, tcsaccount, tcsamount, tdsaccount, tdsamount} = result.data;
+                    const {vouchercreatetime, date, tcsaccount, tcsamount, tdsaccount, tdsamount,signature} = result.data;
 
                     let time = moment(vouchercreatetime, 'hh:mm A').format('HH:mm');
 
@@ -378,12 +380,18 @@ class VoucherView extends Component<any> {
                         duedate: result?.data?.voucherduedate
                     };
 
-
                     voucher.data = {
                         ...voucher.data,
                         vouchertotaldisplay: setDecimal(voucher.data.vouchertotaldisplay),
                         bankcharges: setDecimal(voucher.data.bankcharges),
                     };
+
+                    if(Boolean(signature)){
+                        voucher.data = {
+                            ...voucher.data,
+                            signature:`https://${signature}`,
+                        };
+                    }
 
                     if (voucher.data.convertedid) {
                         voucher.settings.enableedit = false
@@ -1512,8 +1520,10 @@ class VoucherView extends Component<any> {
             headerTitle: this.subtitle,
         });
 
+
         /////////// BIND CLIENT CAN NOT CHANGE ON PAID PARTIAL PAID AND PAYMENT MADE AND RECEIPT
         const canChangeClient = ((voucher.settings.canChangeCLient) || !Boolean(voucher.data.voucherid) || (!voucher.settings.canChangeCLient && voucher.data.voucherstatus === 'Unpaid'));
+
 
         return (
             <Container>
@@ -1976,6 +1986,20 @@ class VoucherView extends Component<any> {
                                                                 this.forceUpdate()
                                                             }}
                                                             inputtype={'attachment'}
+                                                            navigation={navigation}
+                                                        />
+                                                    </View>}
+                                                </View>
+                                            </>}
+
+
+                                            {voucher?.data?.isdisplaysign  && <>
+                                                <View>
+                                                    {<View>
+                                                        <InputField
+                                                            label={'Customer Signature'}
+                                                            editmode={editmode}
+                                                            inputtype={'signature'}
                                                             navigation={navigation}
                                                         />
                                                     </View>}

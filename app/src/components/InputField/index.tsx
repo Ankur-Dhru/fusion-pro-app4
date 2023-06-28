@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Divider, Paragraph, Text, Title, withTheme} from 'react-native-paper';
+import {Card, Divider, Paragraph, Text, Title, withTheme} from 'react-native-paper';
 import {styles} from "../../theme";
 import {
+    Image,
     Platform,
     TextInput as TextInputReact,
     TouchableHighlight,
@@ -24,6 +25,7 @@ import Tags from "../Tags";
 import {PERMISSIONS, requestMultiple} from "react-native-permissions";
 import ToggleSwitch from "./Switch";
 import {chevronRight, voucher} from "../../lib/setting";
+import Signature from "../../pages/Signature";
 
 
 class Index extends React.Component<any, any> {
@@ -137,6 +139,7 @@ class Index extends React.Component<any, any> {
             message,
             validateWithError,
             descriptionStyle,
+            readonly,
             customRef
         }: any = this.props;
 
@@ -430,6 +433,15 @@ class Index extends React.Component<any, any> {
                             singleImage={singleImage}
                             preview={preview}/>
                     </View>
+                }
+
+
+                {inputtype === 'signature' &&
+                     <Signature editmode={editmode}
+                                readonly={readonly}
+                                navigation={navigation}
+                                label={label}
+                     />
                 }
 
 

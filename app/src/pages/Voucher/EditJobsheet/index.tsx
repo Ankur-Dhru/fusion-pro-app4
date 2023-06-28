@@ -3,7 +3,7 @@ import {Button, Container, Menu, ProIcon} from "../../../components";
 import {setNavigationOptions} from "../../../lib/navigation_options";
 import {Card, Paragraph, Title, withTheme} from "react-native-paper";
 import {apiUrl, backupVoucher, current, update, voucher} from "../../../lib/setting";
-import {View} from "react-native";
+import {Image, View} from "react-native";
 import {styles} from "../../../theme";
 import InputField from "../../../components/InputField";
 import {ACCESS_TYPE, taxTypes} from "../../../lib/static";
@@ -99,6 +99,7 @@ class EditJobsheet extends Component<any, any> {
             istds,
             istcs,
             isadjustment,
+            isdisplaysign,
         } = vouchers[voucher.type.vouchertypeid];
 
         let currentdate = moment().format("YYYY-MM-DD");
@@ -158,6 +159,7 @@ class EditJobsheet extends Component<any, any> {
             advancepayment: '0',
             istds,
             istcs,
+            isdisplaysign:isdisplaysign,
             ...voucher.data.copyinvoice,
         }
 
@@ -257,7 +259,8 @@ class EditJobsheet extends Component<any, any> {
                         tcsamount,
                         tdsaccount,
                         tdsamount,
-                        accessories
+                        accessories,
+                        signature
                     } = result.data;
 
                     let time = moment(vouchercreatetime, 'hh:mm A').format('HH:mm');
@@ -364,6 +367,13 @@ class EditJobsheet extends Component<any, any> {
                         vouchertotaldisplay: setDecimal(voucher.data.vouchertotaldisplay),
                         bankcharges: setDecimal(voucher.data.bankcharges),
                     };
+
+                    if(Boolean(signature)){
+                        voucher.data = {
+                            ...voucher.data,
+                            signature:`https://${signature}`,
+                        };
+                    }
 
                     if (voucher.data.convertedid) {
                         voucher.settings.enableedit = false
@@ -738,11 +748,13 @@ class EditJobsheet extends Component<any, any> {
         voucher.data = {...voucher.data, ...appendData}
     }
 
+
     render() {
 
         const {navigation, settings, theme: {colors}, vouchers, setModal}: any = this.props;
         const {isloading, editmode}: any = this.state;
 
+        console.log('voucher.settings',voucher.settings)
 
         navigation.forceRefresh = this.forceRefresh;
         let title = `${voucher?.type?.vouchernumberprefix}${voucher?.type?.voucherdisplayid ? voucher?.type?.voucherdisplayid : ''}`;
@@ -844,10 +856,11 @@ class EditJobsheet extends Component<any, any> {
 
 
 
+
                                                         voucher.data.voucherstatus = v;
                                                         voucher.data.taskstatus = v;
 
-                                                        if (voucher.data.signaturerequired && (more.taskstatus === 'done')) { // status is done //v === '11a7d9ae-48aa-4f85-b766-33403636dc07' ||
+                                                        if ((voucher.data.signaturerequired && (more.taskstatus === 'done'))) { // status is done //v === '11a7d9ae-48aa-4f85-b766-33403636dc07' ||
                                                             setModal({
                                                                 title: 'Signature',
                                                                 visible: true,
@@ -1009,6 +1022,21 @@ class EditJobsheet extends Component<any, any> {
                                                     this.forceUpdate()
                                                 }}
                                                 inputtype={'attachment'}
+                                                navigation={navigation}
+                                            />
+                                        </View>}
+                                    </View>
+                                </>}
+
+
+                                {(voucher.data.isdisplaysign || voucher?.data?.signature) && <>
+                                    <View>
+                                        {<View>
+                                            <InputField
+                                                label={'Customer Signature'}
+                                                editmode={!!editmode || Boolean(voucher?.data?.signature)}
+                                                readonly={Boolean(voucher?.data?.signature)}
+                                                inputtype={'signature'}
                                                 navigation={navigation}
                                             />
                                         </View>}

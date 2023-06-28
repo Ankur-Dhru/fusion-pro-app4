@@ -100,7 +100,7 @@ const requestApi = async ({
     }
 
     if (token) {
-        console.log('token',token)
+
         headers = {
             ...headers,
             'Authorization': 'Bearer ' + token,
@@ -158,11 +158,8 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
 
                 let message = data.message;
 
-                console.log('data.code',data.code)
                 if (data.code === 401) {
                     await refreshToken().then((flag) => {
-
-                        console.log('flag', flag)
 
                         if (flag) {
                             notifyMe(true).then();
@@ -204,6 +201,7 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
                         logoutUser()
                     }
                 }
+
 
                 resolve(data);
 

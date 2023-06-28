@@ -33,7 +33,7 @@ class Index extends React.Component<any> {
 
     handleOK = async (signature:any) => {
 
-        const {values,setVoucherData,handleSubmit,setModal,setLoader}:any = this.props;
+        const {values,setVoucherData,handleSubmit,setModal,setLoader,setSignature}:any = this.props;
 
         let fileName = "ID" + voucher.data.voucherdisplayid + "_" + moment().format("DD_MM_YYYY_HH_mm_ss");
 
@@ -50,6 +50,8 @@ class Index extends React.Component<any> {
                 Boolean(setVoucherData) && setVoucherData(values);
                 setLoader({show: false})
                 Boolean(handleSubmit) && handleSubmit();
+                Boolean(setSignature) && setSignature();
+
             }
         }).then(r => {
 
@@ -75,12 +77,8 @@ class Index extends React.Component<any> {
                         ref={this.ref}
                         onOK={this.handleOK}
                         imageType={'image/png'}
-
                         autoClear={false}
-                        bgWidth={imgWidth}
-                        bgHeight={imgHeight}
                         webStyle={style}
-
                     />
                 </View>
 
