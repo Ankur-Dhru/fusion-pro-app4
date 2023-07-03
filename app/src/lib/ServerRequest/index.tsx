@@ -5,7 +5,7 @@ import {DEFAULT_MESSAGE, ERROR, SUCCESS} from "./status";
 import {apiUrl, auth, current, defaultvalues, isDevelopment} from "../setting";
 import {setAlert, setLoader} from "../Store/actions/components";
 import {logout} from "../Store/actions/authentication";
-import {errorAlert, log, loginUser, logoutUser, notifyMe, refreshToken, setAppType} from "../functions";
+import {errorAlert, log, logoutUser, notifyMe, refreshToken, setAppType} from "../functions";
 import React from "react";
 import {Alert} from "react-native";
 
@@ -24,7 +24,7 @@ const requestApi = async ({
                               successalert = true,
                               erroralert = true,
                               showlog = false,
-                              doNotReplaceProtocol=false
+                              doNotReplaceProtocol = false
                           }: any) => {
 
 
@@ -60,7 +60,7 @@ const requestApi = async ({
         return
     }
 
-    if (!isMethod ) {
+    if (!isMethod) {
         let msg = "Set ";
         if (!isMethod) {
             msg += "method"
@@ -77,7 +77,7 @@ const requestApi = async ({
         return responseJson;
     }
 
-    const company = companyname   || current.company || (appApiData && appApiData.companydetails && appApiData.companydetails.current)
+    const company = companyname || current.company || (appApiData && appApiData.companydetails && appApiData.companydetails.current)
 
     let url = other && other.url ? other.url : apiUrl(company);
 
@@ -115,9 +115,9 @@ const requestApi = async ({
 
     if (body) {
 
-        if (doNotReplaceProtocol){
+        if (doNotReplaceProtocol) {
             init.body = JSON.stringify(body);
-        }   else {
+        } else {
             init.body = JSON.stringify(body).replace('http://', '').replace('https://', '');
         }
     }
@@ -197,7 +197,8 @@ const fetchData: any = ({url, init, requestparams, loader}: any) => {
 
                 if (data.code === 403) {
                     if (other && !other.fromlogin) {
-                        setAppType("account").then(() => {})
+                        setAppType("account").then(() => {
+                        })
                         logoutUser()
                     }
                 }
