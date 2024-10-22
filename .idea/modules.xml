@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/2029638205/app.react-native-camera.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/2029638205/app.react-native-camera.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app1.iml" filepath="$PROJECT_DIR$/.idea/modules/app1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/fusion-pro-app4.iml" filepath="$PROJECT_DIR$/.idea/fusion-pro-app4.iml" />
     </modules>
   </component>

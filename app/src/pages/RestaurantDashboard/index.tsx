@@ -164,8 +164,13 @@ const Index = (props: any) => {
 
 
 
+
     const {navigation, companydetails: {currentuser, companies}}: any = props;
-    const locationid = companies[currentuser].locationid
+    const locationid = companies[currentuser].locationid;
+
+    let locationsObject = companies[currentuser]?.locations;
+
+    const {industrytype} = locationsObject[locationid];
 
     const [data,setData]:any = useState({orderstatistics:[],
         payments:[],
@@ -320,7 +325,7 @@ const Index = (props: any) => {
                             </Card>
                         </>
 
-                        {Boolean(ordertypewise?.length) &&   <>
+                        {Boolean(ordertypewise?.length) &&  industrytype=== 'foodservices' &&  <>
                             <Card  style={[styles.card]}>
                                 <Card.Content>
                                     <View>
@@ -337,7 +342,7 @@ const Index = (props: any) => {
                         </>}
 
 
-                        {Boolean(sourcewise?.length) &&   <>
+                        {Boolean(sourcewise?.length)  &&  industrytype=== 'foodservices' &&   <>
                             <Card  style={[styles.card]}>
                                 <Card.Content>
                                     <View>

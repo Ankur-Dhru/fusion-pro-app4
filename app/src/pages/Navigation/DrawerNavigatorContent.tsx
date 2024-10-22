@@ -229,9 +229,11 @@ class drawerContentComponents extends Component<any> {
 
                                 {
                                     Boolean(companydetails?.companies) && Object.keys(companydetails?.companies).map((currentuser, id) => {
+
                                         let cmp = companydetails.companies[currentuser];
                                         let companylocations: any = objToArray(cmp.locations);
                                         let cw = Boolean(companydetails['currentuser'] === currentuser);
+
 
                                         return (
 
@@ -239,7 +241,7 @@ class drawerContentComponents extends Component<any> {
                                                 <List.Item
                                                     style={[styles.listitem]}
                                                     titleStyle={[cw && styles.bold]}
-                                                    title={cmp.company}
+                                                    title={cmp.alias || cmp.company}
                                                     left={props => <List.Icon    {...props}
                                                                                  icon={() => <Avatar label={cmp.company}
                                                                                                      value={cmp.company}

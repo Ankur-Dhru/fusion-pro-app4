@@ -91,6 +91,8 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
             companies
         };
 
+
+
         if (Boolean(workspaces.length)) {
 
             let activeworkspaces: any = findObject(workspaces, 'status', 'Active');
@@ -116,12 +118,15 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
 
 
             activeworkspaces.map((workspace: any) => {
-                const {name, status}: any = workspace;
+
+                const {name, status,alias}: any = workspace;
+
                 let currentcompany = name + '-' + clientid;
 
                 if (!Object.keys(companydetail.companies).includes(currentcompany)) {
                     companydetail.companies[currentcompany] = {
-                        company: name,
+                        company:  name,
+                        alias:alias,
                         status: status,
                         firstname: firstname,
                         lastname: lastname,
@@ -144,8 +149,6 @@ export const checkLogin = (result:any,navigation:any,values:any,companydetail:an
                 store.dispatch(setSettings(companydetail.companies[companydetail.currentuser].init));
             }
         }
-
-        console.log('companydetail',companydetail)
 
         storeData('fusion-pro-app', companydetail).then(async (r: any) => {
 
@@ -218,13 +221,10 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                 showlog: false
             }).then(async (result) => {
 
-                console.log('result')
                 if (result.status === SUCCESS) {
-                    console.log('1')
                     checkLogin(result,navigation,values,companydetail,storecurrentuser,storecurrentname)
                 }
                 else if(result.code === 403){
-                    console.log('2')
                     companydetail.currentuser = '';
                     companydetail.token = 'logout';
 
@@ -235,7 +235,6 @@ export const loginProcess = async (values: any, navigation: any, callback: any) 
                     })
                 }
                 else if(result.code === 201){
-                    console.log('3')
                     navigation.navigate('LoginStack', {
                         screen: 'VerifyOTP',
                         params: {
